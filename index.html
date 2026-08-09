@@ -19,46 +19,30 @@
 ========================================================= */
 
 :root {
-
   --blue: #283b54;
   --blue-dark: #1d2c40;
 
-  --paper: #f7f4ec;
-  --paper-dark: #ebe6d9;
-
-  --ink: #252525;
+  --paper: #f7f3e9;
+  --ink: #242424;
 
   --white: #ffffff;
-
 }
-
-
-/* =========================================================
-   RESET
-========================================================= */
 
 * {
-
   box-sizing: border-box;
-
   margin: 0;
   padding: 0;
-
 }
-
 
 html,
 body {
-
   width: 100%;
   height: 100%;
-
-  overflow: hidden;
-
 }
 
-
 body {
+
+  overflow: hidden;
 
   background: var(--blue);
 
@@ -69,20 +53,19 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-
 }
 
 
 /* =========================================================
-   APLICAÇÃO
+   APP
 ========================================================= */
 
 #app {
 
-  position: relative;
-
   width: 100vw;
   height: 100vh;
+
+  position: relative;
 
   overflow: hidden;
 
@@ -90,7 +73,7 @@ body {
 
 
 /* =========================================================
-   TELA DE CARREGAMENTO
+   TELA INICIAL
 ========================================================= */
 
 .loading {
@@ -113,108 +96,78 @@ body {
   color: white;
 
   transition:
-    opacity 1s ease,
-    visibility 1s ease;
+    opacity .8s ease,
+    visibility .8s ease;
 
 }
 
-
-.loading.hidden {
+.loading.hide {
 
   opacity: 0;
 
   visibility: hidden;
 
-  pointer-events: none;
-
 }
-
 
 .loading-title {
 
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  font-family: Georgia, serif;
 
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(22px, 4vw, 34px);
 
-  letter-spacing: .04em;
+  letter-spacing: .5px;
 
-  animation:
-    loadingPulse 2s ease-in-out infinite;
+  margin-bottom: 12px;
 
 }
 
-
 .loading-subtitle {
 
-  margin-top: 12px;
-
   font-size: 12px;
-
-  letter-spacing: .18em;
-
-  text-transform: uppercase;
 
   opacity: .55;
 
 }
 
-
 .loading-line {
 
   width: 90px;
+
   height: 1px;
 
-  background: rgba(255,255,255,.55);
+  background: rgba(255,255,255,.4);
 
-  margin-top: 28px;
+  margin-top: 25px;
 
-  transform-origin: left;
+  overflow: hidden;
+
+}
+
+.loading-line::after {
+
+  content: "";
+
+  display: block;
+
+  width: 40%;
+
+  height: 100%;
+
+  background: white;
 
   animation:
-    loadingLine 2.5s ease-in-out infinite;
+    loading 1.4s infinite ease-in-out;
 
 }
 
-
-@keyframes loadingPulse {
-
-  0%,
-  100% {
-
-    opacity: .55;
-
-  }
-
-  50% {
-
-    opacity: 1;
-
-  }
-
-}
-
-
-@keyframes loadingLine {
+@keyframes loading {
 
   0% {
-
-    transform: scaleX(0);
-
-  }
-
-  50% {
-
-    transform: scaleX(1);
-
+    transform: translateX(-120%);
   }
 
   100% {
-
-    transform: scaleX(0);
-
+    transform: translateX(350%);
   }
 
 }
@@ -224,40 +177,62 @@ body {
    INTERFACE PRINCIPAL
 ========================================================= */
 
-.interface {
+.scene {
 
   position: absolute;
 
   inset: 0;
 
-  width: 100%;
-  height: 100%;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
 
   background: var(--blue);
 
 }
 
 
-/* =========================================================
-   IMAGEM PRINCIPAL DA MESA
-========================================================= */
+/*
+   A imagem inteira fica dentro deste elemento.
 
-.interface-background {
+   IMPORTANTE:
+   Ela nunca ultrapassa a tela.
+*/
 
-  position: absolute;
+.scene-image {
 
-  inset: 0;
+  position: relative;
 
-  width: 100%;
-  height: 100%;
+  width: 100vw;
 
-  object-fit: cover;
+  height: 100vh;
 
-  object-position: center center;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+/*
+   A imagem mantém sua proporção original.
+
+   contain = nunca corta a imagem.
+*/
+
+.scene-image > img {
 
   display: block;
 
-  z-index: 1;
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: contain;
+
+  object-position: center;
 
   user-select: none;
 
@@ -268,91 +243,96 @@ body {
 
 /* =========================================================
    ÁREAS CLICÁVEIS
-=========================================================
-
-   IMPORTANTE:
-
-   Esses elementos são INVISÍVEIS.
-
-   Eles ficam sobre os objetos da imagem.
-
 ========================================================= */
 
+/*
+   ATENÇÃO:
 
-/* -------------------------
-   LIVRO
-------------------------- */
+   Estas áreas são posicionadas em PORCENTAGEM
+   da imagem inteira.
 
-.book-hotspot {
+   Assim elas acompanham a imagem quando a tela
+   muda de tamanho.
+*/
+
+
+.click-area {
 
   position: absolute;
+
+  border: none;
+
+  background: transparent;
+
+  cursor: pointer;
 
   z-index: 20;
 
-  cursor: pointer;
+  padding: 0;
 
-  background: transparent;
+  margin: 0;
 
-  /*
-     POSIÇÃO DO LIVRO
-  */
-
-  width: 25%;
-  height: 42%;
-
-  left: 37.5%;
-  top: 28%;
-
-  border-radius: 12px;
-
-}
-
-
-/* -------------------------
-   CANETA
-------------------------- */
-
-.pen-hotspot {
-
-  position: absolute;
-
-  z-index: 21;
-
-  cursor: pointer;
-
-  background: transparent;
-
-  /*
-     POSIÇÃO DA CANETA
-  */
-
-  width: 20%;
-  height: 9%;
-
-  right: 20%;
-  bottom: 17%;
-
-  transform: rotate(-30deg);
-
-  border-radius: 999px;
+  -webkit-tap-highlight-color: transparent;
 
 }
 
 
 /*
-   Durante o ajuste da caneta,
-   você pode trocar transparent por:
-
-   rgba(255,0,0,.25)
-
-   para enxergar a área clicável.
-
-   Depois volte para transparent.
+   Não mostrar nada visualmente.
 */
+
+.click-area:hover {
+
+  background: rgba(255,255,255,0.02);
+
+}
 
 
 /* =========================================================
-   MODAL
+   LIVRO
+========================================================= */
+
+/*
+   AJUSTE ESTAS 4 MEDIDAS CASO NECESSÁRIO.
+
+   left = posição horizontal
+   top = posição vertical
+   width = largura
+   height = altura
+*/
+
+#bookButton {
+
+  left: 31%;
+
+  top: 30%;
+
+  width: 38%;
+
+  height: 43%;
+
+}
+
+
+/* =========================================================
+   CANETA
+========================================================= */
+
+#penButton {
+
+  left: 63%;
+
+  top: 67%;
+
+  width: 18%;
+
+  height: 10%;
+
+}
+
+
+/* =========================================================
+   MODAL DE SENHA
 ========================================================= */
 
 .overlay {
@@ -361,7 +341,7 @@ body {
 
   inset: 0;
 
-  z-index: 1000;
+  z-index: 500;
 
   display: flex;
 
@@ -371,7 +351,7 @@ body {
   padding: 20px;
 
   background:
-    rgba(12,21,32,.84);
+    rgba(10,18,28,.86);
 
   backdrop-filter:
     blur(14px);
@@ -381,183 +361,165 @@ body {
 
 }
 
+.hidden {
+
+  display: none !important;
+
+}
 
 .modal {
 
-  width: min(440px, 92vw);
-
-  padding: 36px;
+  width:
+    min(420px, 92vw);
 
   background:
-    rgba(247,244,236,.98);
+    rgba(247,243,233,.98);
 
-  color: #222;
+  color:
+    #202020;
 
-  border-radius: 24px;
+  border-radius:
+    24px;
+
+  padding:
+    32px;
 
   box-shadow:
-    0 30px 80px rgba(0,0,0,.45);
+    0 30px 90px rgba(0,0,0,.5);
 
-  text-align: center;
-
-  animation:
-    modalIn .35s ease;
+  text-align:
+    center;
 
 }
-
-
-@keyframes modalIn {
-
-  from {
-
-    opacity: 0;
-
-    transform:
-      translateY(15px)
-      scale(.97);
-
-  }
-
-  to {
-
-    opacity: 1;
-
-    transform:
-      translateY(0)
-      scale(1);
-
-  }
-
-}
-
 
 .modal h2 {
 
   font-family:
     Georgia,
-    "Times New Roman",
     serif;
 
-  font-size: 25px;
+  font-weight:
+    500;
 
-  margin-bottom: 12px;
+  margin-bottom:
+    10px;
 
 }
-
 
 .modal p {
 
-  color: #666;
+  color:
+    #666;
 
-  line-height: 1.5;
+  line-height:
+    1.5;
 
-  margin-bottom: 24px;
+  font-size:
+    14px;
+
+  margin-bottom:
+    22px;
 
 }
 
+.modal input {
 
-input,
-textarea {
+  width:
+    100%;
 
-  width: 100%;
+  height:
+    50px;
 
   border:
     1px solid #d5d0c5;
 
   background:
-    #fffdf8;
+    #fff;
 
-  color: #222;
+  color:
+    #222;
 
-  border-radius: 14px;
+  border-radius:
+    13px;
 
-  padding: 14px 15px;
+  padding:
+    0 15px;
 
-  font-size: 16px;
+  font-size:
+    16px;
 
-  font-family: inherit;
+  outline:
+    none;
 
-  outline: none;
+  text-align:
+    center;
+
+  margin-bottom:
+    14px;
 
 }
 
-
-input:focus,
-textarea:focus {
+.modal input:focus {
 
   border-color:
     var(--blue);
 
-  box-shadow:
-    0 0 0 3px
-    rgba(40,59,84,.08);
-
 }
 
-
-button {
-
-  border: none;
-
-  border-radius: 999px;
-
-  padding: 13px 22px;
-
-  cursor: pointer;
-
-  background: var(--blue);
-
-  color: white;
-
-  font-size: 15px;
-
-  font-family: inherit;
-
-  transition:
-    transform .2s ease,
-    opacity .2s ease;
-
-}
-
-
-button:hover {
-
-  transform:
-    translateY(-2px);
-
-  opacity: .9;
-
-}
-
-
-button:disabled {
-
-  opacity: .5;
-
-  cursor: default;
-
-  transform: none;
-
-}
-
-
-.secondary {
-
-  background: transparent;
-
-  color: #303030;
+.modal button {
 
   border:
-    1px solid #ccc5b7;
+    none;
 
-  margin-left: 8px;
+  border-radius:
+    999px;
+
+  padding:
+    12px 22px;
+
+  background:
+    var(--blue);
+
+  color:
+    white;
+
+  cursor:
+    pointer;
+
+  font-size:
+    14px;
 
 }
 
+.modal .secondary {
 
-.hidden {
+  background:
+    transparent;
 
-  display: none !important;
+  color:
+    #333;
+
+  border:
+    1px solid #ccc;
+
+  margin-left:
+    6px;
+
+}
+
+.error {
+
+  color:
+    #a33b3b !important;
+
+  min-height:
+    20px;
+
+  margin-top:
+    10px;
+
+  margin-bottom:
+    0 !important;
 
 }
 
@@ -572,7 +534,7 @@ button:disabled {
 
   inset: 0;
 
-  z-index: 2000;
+  z-index: 700;
 
   background:
     rgba(24,37,54,.97);
@@ -586,55 +548,57 @@ button:disabled {
 
 }
 
-
-.letter {
+.letter-window {
 
   position: relative;
 
-  width: min(900px, 94vw);
+  width:
+    min(90vw, 850px);
 
-  height: min(88vh, 900px);
+  height:
+    min(88vh, 760px);
 
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
-  justify-content: center;
+  align-items:
+    center;
 
-  background: transparent;
-
-  overflow: hidden;
+  justify-content:
+    center;
 
 }
-
-
-/*
-   A página sempre será reduzida
-   para caber inteira dentro da tela.
-*/
 
 .letter-page {
 
-  display: none;
+  display:
+    none;
 
-  width: 100%;
-  height: 100%;
+  max-width:
+    100%;
 
-  object-fit: contain;
+  max-height:
+    100%;
 
-  object-position: center center;
+  width:
+    auto;
 
-  background: white;
+  height:
+    auto;
 
-  user-select: none;
+  object-fit:
+    contain;
 
-  -webkit-user-drag: none;
+  box-shadow:
+    0 25px 70px
+    rgba(0,0,0,.5);
 
 }
 
-
 .letter-page.active {
 
-  display: block;
+  display:
+    block;
 
 }
 
@@ -645,121 +609,131 @@ button:disabled {
 
 .letter-controls {
 
-  position: absolute;
+  position:
+    absolute;
 
-  left: 50%;
-  bottom: 18px;
+  bottom:
+    -4px;
+
+  left:
+    50%;
 
   transform:
     translateX(-50%);
 
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  gap: 10px;
+  gap:
+    10px;
 
-  padding: 7px;
+  padding:
+    7px 9px;
 
   background:
-    rgba(0,0,0,.72);
+    rgba(0,0,0,.75);
 
-  border-radius: 999px;
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.25);
+  border-radius:
+    999px;
 
 }
-
 
 .letter-controls button {
 
-  width: 42px;
-  height: 42px;
+  width:
+    36px;
 
-  padding: 0;
+  height:
+    36px;
 
-  display: flex;
+  border:
+    none;
 
-  align-items: center;
-  justify-content: center;
+  border-radius:
+    50%;
+
+  background:
+    rgba(255,255,255,.12);
+
+  color:
+    white;
+
+  cursor:
+    pointer;
 
 }
 
+.letter-controls button:disabled {
+
+  opacity:
+    .25;
+
+  cursor:
+    default;
+
+}
 
 .page-number {
 
-  min-width: 58px;
+  min-width:
+    55px;
 
-  text-align: center;
+  text-align:
+    center;
 
-  color: white;
+  font-size:
+    12px;
 
-  font-size: 13px;
-
-}
-
-
-.letter-message {
-
-  position: absolute;
-
-  left: 50%;
-
-  bottom: 76px;
-
-  transform:
-    translateX(-50%);
-
-  padding:
-    11px 18px;
-
-  background:
-    rgba(40,59,84,.95);
-
-  color: white;
-
-  border-radius: 999px;
-
-  font-size: 13px;
-
-  white-space: nowrap;
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.25);
+  color:
+    white;
 
 }
 
 
 /* =========================================================
-   FECHAR CARTA
+   FECHAR
 ========================================================= */
 
-.close {
+.close-button {
 
-  position: absolute;
+  position:
+    fixed;
 
-  top: 18px;
-  right: 18px;
+  top:
+    18px;
 
-  z-index: 10;
+  right:
+    18px;
 
-  width: 42px;
-  height: 42px;
+  z-index:
+    900;
 
-  padding: 0;
+  width:
+    42px;
 
-  border-radius: 50%;
+  height:
+    42px;
+
+  border:
+    none;
+
+  border-radius:
+    50%;
 
   background:
     rgba(0,0,0,.65);
 
-  display: flex;
+  color:
+    white;
 
-  align-items: center;
-  justify-content: center;
+  font-size:
+    23px;
 
-  font-size: 22px;
+  cursor:
+    pointer;
 
 }
 
@@ -770,32 +744,47 @@ button:disabled {
 
 .messages-overlay {
 
-  position: fixed;
+  position:
+    fixed;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 3000;
+  z-index:
+    800;
 
   background:
-    rgba(24,37,54,.97);
+    var(--blue);
 
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
-  justify-content: center;
+  align-items:
+    center;
 
-  padding: 18px;
+  justify-content:
+    center;
+
+  padding:
+    18px;
 
 }
 
 
+/* =========================================================
+   FOLHA
+========================================================= */
+
 .paper {
 
-  position: relative;
+  position:
+    relative;
 
-  width: min(900px, 94vw);
+  width:
+    min(850px, 94vw);
 
-  height: min(84vh, 850px);
+  height:
+    min(88vh, 850px);
 
   background:
     var(--paper);
@@ -804,87 +793,85 @@ button:disabled {
     var(--ink);
 
   padding:
-    50px;
+    45px;
 
   box-shadow:
     0 30px 90px
-    rgba(0,0,0,.45);
+    rgba(0,0,0,.5);
 
-  overflow: hidden;
-
-  border-radius: 3px;
+  overflow:
+    hidden;
 
 }
-
 
 .paper::before {
 
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
-  inset: 25px;
+  inset:
+    22px;
 
   border:
     1px solid
-    rgba(50,50,50,.08);
+    rgba(0,0,0,.07);
 
-  pointer-events: none;
+  pointer-events:
+    none;
 
 }
-
 
 .paper-title {
 
-  position: relative;
+  position:
+    relative;
 
-  z-index: 2;
+  z-index:
+    2;
 
-  text-align: center;
+  text-align:
+    center;
 
   font-family:
     Georgia,
-    "Times New Roman",
     serif;
 
-  font-size: 22px;
+  font-size:
+    20px;
 
-  margin-bottom: 25px;
+  margin-bottom:
+    22px;
 
 }
 
+
+/* =========================================================
+   MENSAGENS
+========================================================= */
 
 .messages {
 
-  position: relative;
+  position:
+    relative;
 
   height:
-    calc(100% - 120px);
+    calc(100% - 190px);
 
-  overflow-y: auto;
+  overflow-y:
+    auto;
 
-  padding-right: 10px;
-
-}
-
-
-.messages::-webkit-scrollbar {
-
-  width: 4px;
+  padding:
+    5px 10px 20px;
 
 }
-
-
-.messages::-webkit-scrollbar-thumb {
-
-  background: rgba(0,0,0,.15);
-
-  border-radius: 999px;
-
-}
-
 
 .message {
+
+  margin-bottom:
+    22px;
 
   font-family:
     "Segoe Print",
@@ -892,47 +879,44 @@ button:disabled {
     "Comic Sans MS",
     cursive;
 
-  margin-bottom: 22px;
-
-  line-height: 1.45;
-
-  transform:
-    rotate(var(--rotation));
+  line-height:
+    1.5;
 
 }
-
 
 .message-name {
 
-  font-weight: bold;
+  font-size:
+    16px;
 
-  font-size: 17px;
+  font-weight:
+    bold;
 
 }
-
 
 .message-text {
 
-  white-space: pre-wrap;
+  font-size:
+    15px;
 
-  font-size: 16px;
+  white-space:
+    pre-wrap;
 
 }
 
-
 .message-date {
 
+  margin-top:
+    4px;
+
   font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
     sans-serif;
 
-  font-size: 10px;
+  font-size:
+    10px;
 
-  opacity: .45;
-
-  margin-top: 4px;
+  opacity:
+    .45;
 
 }
 
@@ -943,339 +927,332 @@ button:disabled {
 
 .message-form {
 
-  position: absolute;
+  position:
+    absolute;
 
-  left: 50%;
+  left:
+    35px;
 
-  bottom: 18px;
+  right:
+    35px;
 
-  transform:
-    translateX(-50%);
+  bottom:
+    20px;
 
-  width: calc(100% - 100px);
+  display:
+    grid;
 
-  display: flex;
+  grid-template-columns:
+    150px 1fr auto;
 
-  gap: 8px;
+  gap:
+    8px;
+
+  z-index:
+    5;
 
 }
-
 
 .message-form input {
 
-  margin: 0;
+  min-width:
+    0;
+
+  height:
+    45px;
+
+  border:
+    1px solid #d3cec1;
+
+  border-radius:
+    10px;
+
+  padding:
+    0 12px;
+
+  background:
+    #fffdf8;
+
+  outline:
+    none;
 
 }
-
-
-.message-form input:first-child {
-
-  width: 28%;
-
-}
-
-
-.message-form input:nth-child(2) {
-
-  width: 52%;
-
-}
-
 
 .message-form button {
 
-  width: 20%;
+  height:
+    45px;
 
-}
+  padding:
+    0 20px;
 
+  border:
+    none;
 
-/* =========================================================
-   BOTÕES DAS MENSAGENS
-========================================================= */
-
-.archive-button {
-
-  position: absolute;
-
-  top: 20px;
-  left: 20px;
-
-  z-index: 5;
+  border-radius:
+    999px;
 
   background:
-    rgba(40,59,84,.95);
+    var(--blue);
 
-}
+  color:
+    white;
 
-
-.close-messages {
-
-  position: absolute;
-
-  top: 20px;
-  right: 20px;
-
-  z-index: 5;
-
-  width: 40px;
-  height: 40px;
-
-  padding: 0;
-
-  border-radius: 50%;
+  cursor:
+    pointer;
 
 }
 
 
 /* =========================================================
-   ARQUIVO DE FOLHAS
+   ARQUIVO
 ========================================================= */
 
 .archive {
 
-  position: fixed;
+  position:
+    fixed;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 4000;
+  z-index:
+    900;
 
   background:
     rgba(24,37,54,.98);
 
-  display: flex;
+  display:
+    flex;
 
-  flex-direction: column;
+  flex-direction:
+    column;
 
-  align-items: center;
-  justify-content: center;
+  align-items:
+    center;
 
-  padding: 25px;
+  justify-content:
+    center;
+
+  padding:
+    20px;
 
 }
-
 
 .archive h2 {
 
   font-family:
     Georgia,
-    "Times New Roman",
     serif;
 
-  margin-bottom: 20px;
+  margin-bottom:
+    20px;
 
 }
-
 
 .archive-list {
 
-  display: flex;
+  display:
+    flex;
 
-  gap: 10px;
+  flex-wrap:
+    wrap;
 
-  flex-wrap: wrap;
+  justify-content:
+    center;
 
-  justify-content: center;
+  gap:
+    10px;
 
-  max-width: 700px;
+  max-width:
+    700px;
 
 }
 
-
 .archive-list button {
 
+  border:
+    none;
+
+  border-radius:
+    999px;
+
+  padding:
+    12px 18px;
+
   background:
-    #f7f4ec;
+    var(--paper);
 
   color:
     #222;
 
-}
+  cursor:
+    pointer;
 
+}
 
 .archive-close {
 
-  position: absolute;
+  position:
+    absolute;
 
-  right: 20px;
-  top: 20px;
+  top:
+    18px;
+
+  right:
+    18px;
+
+  border:
+    none;
+
+  border-radius:
+    999px;
+
+  padding:
+    10px 18px;
+
+  background:
+    rgba(255,255,255,.1);
+
+  color:
+    white;
+
+  cursor:
+    pointer;
 
 }
 
 
 /* =========================================================
-   RESPONSIVO — CELULAR
+   CELULAR
 ========================================================= */
 
 @media (max-width: 700px) {
 
+  .scene-image {
 
-  /* -------------------------
-     INTERFACE
-  ------------------------- */
+    width:
+      100vw;
 
-  .interface-background {
-
-    object-fit: cover;
+    height:
+      100vh;
 
   }
 
 
   /*
-     Ajuste dos hotspots no celular.
+     No celular a imagem continua inteira.
+     Não fazemos zoom.
   */
 
-  .book-hotspot {
+  .scene-image > img {
 
-    width: 34%;
+    width:
+      100%;
 
-    height: 38%;
+    height:
+      100%;
 
-    left: 33%;
-
-    top: 31%;
-
-  }
-
-
-  .pen-hotspot {
-
-    width: 27%;
-
-    height: 10%;
-
-    right: 14%;
-
-    bottom: 17%;
+    object-fit:
+      contain;
 
   }
 
 
-  /* -------------------------
-     MODAL
-  ------------------------- */
+  /*
+     Áreas clicáveis menores e proporcionais.
+  */
 
-  .modal {
+  #bookButton {
 
-    padding: 28px 22px;
+    left:
+      27%;
 
-    border-radius: 20px;
+    top:
+      31%;
+
+    width:
+      46%;
+
+    height:
+      39%;
 
   }
 
 
-  .modal h2 {
+  #penButton {
 
-    font-size: 23px;
+    left:
+      57%;
+
+    top:
+      67%;
+
+    width:
+      27%;
+
+    height:
+      12%;
 
   }
 
-
-  /* -------------------------
-     CARTA
-  ------------------------- */
 
   .letter-overlay {
 
-    padding: 8px;
+    padding:
+      8px;
 
   }
 
 
-  .letter {
+  .letter-window {
 
-    width: 96vw;
+    width:
+      96vw;
 
-    height: 88vh;
+    height:
+      86vh;
 
   }
 
 
   .letter-page {
 
-    width: 100%;
-    height: 100%;
+    max-width:
+      96vw;
 
-    object-fit: contain;
+    max-height:
+      80vh;
 
   }
 
 
   .letter-controls {
 
-    bottom: 10px;
-
-    gap: 5px;
-
-    padding: 5px;
-
-  }
-
-
-  .letter-controls button {
-
-    width: 40px;
-    height: 40px;
-
-  }
-
-
-  .letter-message {
-
-    bottom: 66px;
-
-    max-width: 85vw;
-
-    white-space: normal;
-
-    text-align: center;
-
-    font-size: 11px;
-
-  }
-
-
-  .close {
-
-    top: 10px;
-    right: 10px;
-
-  }
-
-
-  /* -------------------------
-     PAPEL
-  ------------------------- */
-
-  .messages-overlay {
-
-    padding: 8px;
+    bottom:
+      0;
 
   }
 
 
   .paper {
 
-    width: 96vw;
+    width:
+      94vw;
 
-    height: 88vh;
+    height:
+      90vh;
 
-    padding: 45px 22px 115px;
-
-  }
-
-
-  .paper::before {
-
-    inset: 16px;
+    padding:
+      30px 20px;
 
   }
 
 
   .paper-title {
 
-    font-size: 18px;
-
-    margin-bottom: 20px;
+    font-size:
+      17px;
 
   }
 
@@ -1283,67 +1260,30 @@ button:disabled {
   .messages {
 
     height:
-      calc(100% - 100px);
+      calc(100% - 210px);
 
   }
 
-
-  /* -------------------------
-     FORMULÁRIO
-  ------------------------- */
 
   .message-form {
 
-    width:
-      calc(100% - 40px);
+    left:
+      20px;
 
-    flex-wrap: wrap;
+    right:
+      20px;
 
-    gap: 7px;
-
-  }
-
-
-  .message-form input:first-child {
-
-    width: 100%;
+    grid-template-columns:
+      1fr;
 
   }
 
 
-  .message-form input:nth-child(2) {
-
-    width: calc(100% - 78px);
-
-  }
-
-
+  .message-form input,
   .message-form button {
 
-    width: 70px;
-
-    padding-left: 10px;
-    padding-right: 10px;
-
-  }
-
-
-  .archive-button {
-
-    top: 12px;
-    left: 12px;
-
-    font-size: 12px;
-
-    padding: 10px 14px;
-
-  }
-
-
-  .close-messages {
-
-    top: 12px;
-    right: 12px;
+    width:
+      100%;
 
   }
 
@@ -1354,30 +1294,19 @@ button:disabled {
    TELAS MUITO PEQUENAS
 ========================================================= */
 
-@media (max-width: 400px) {
+@media (max-height: 600px) {
 
-  .letter {
+  .letter-window {
 
-    width: 98vw;
-
-    height: 84vh;
-
-  }
-
-
-  .letter-message {
-
-    font-size: 10px;
-
-    padding:
-      9px 13px;
+    height:
+      82vh;
 
   }
 
+  .letter-page {
 
-  .paper {
-
-    height: 90vh;
+    max-height:
+      74vh;
 
   }
 
@@ -1388,15 +1317,20 @@ button:disabled {
    ACESSIBILIDADE
 ========================================================= */
 
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
+button {
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+}
+
+button:focus-visible {
 
   outline:
-    2px solid
-    rgba(40,59,84,.7);
+    2px solid white;
 
-  outline-offset: 2px;
+  outline-offset:
+    3px;
 
 }
 
@@ -1411,9 +1345,9 @@ textarea:focus-visible {
 <div id="app">
 
 
-<!-- ======================================================
+<!-- =====================================================
      CARREGAMENTO
-====================================================== -->
+===================================================== -->
 
 <div
   class="loading"
@@ -1424,56 +1358,79 @@ textarea:focus-visible {
     Um Ano Depois...
   </div>
 
-  <div class="loading-line"></div>
-
   <div class="loading-subtitle">
     Feito por João Arthur.
+  </div>
+
+  <div class="loading-line"></div>
+
+</div>
+
+
+<!-- =====================================================
+     CENA
+===================================================== -->
+
+<div class="scene">
+
+  <div class="scene-image">
+
+    <!--
+      ====================================================
+      IMPORTANTE
+
+      COLOQUE A SUA IMAGEM PRINCIPAL AQUI.
+
+      Se ela estiver em:
+
+      assets/interface.png
+
+      deixe exatamente assim.
+
+      Se o nome for diferente, altere somente:
+      interface.png
+      ====================================================
+    -->
+
+    <img
+      src="assets/interface.png"
+      alt="Mesa"
+      id="mainImage"
+    >
+
+
+    <!-- ==================================================
+         LIVRO CLICÁVEL
+    ================================================== -->
+
+    <button
+      id="bookButton"
+      class="click-area"
+      aria-label="Abrir livro"
+      title="Abrir livro"
+    ></button>
+
+
+    <!-- ==================================================
+         CANETA CLICÁVEL
+    ================================================== -->
+
+    <button
+      id="penButton"
+      class="click-area"
+      aria-label="Escrever mensagem"
+      title="Escrever mensagem"
+    ></button>
+
+
   </div>
 
 </div>
 
 
-<!-- ======================================================
-     INTERFACE PRINCIPAL
-====================================================== -->
-
-<div class="interface">
-
-
-  <!-- IMAGEM DA MESA -->
-
-  <img
-    src="assets/interface.png"
-    class="interface-background"
-    alt=""
-    draggable="false"
-  >
-
-
-  <!-- ÁREA CLICÁVEL DO LIVRO -->
-
-  <div
-    class="book-hotspot"
-    id="book"
-    title="Abrir livro"
-  ></div>
-
-
-  <!-- ÁREA CLICÁVEL DA CANETA -->
-
-  <div
-    class="pen-hotspot"
-    id="pen"
-    title="Escrever"
-  ></div>
-
-
-</div>
-
-
-<!-- ======================================================
-     MODAL DA SENHA
-====================================================== -->
+<!-- =====================================================
+     SENHA
+===================================================== -->
 
 <div
   class="overlay hidden"
@@ -1482,29 +1439,26 @@ textarea:focus-visible {
 
   <div class="modal">
 
-    <h2>
+    <h2 id="passwordTitle">
       Teu aniversário
     </h2>
 
-    <p>
-      Para continuar, digite a data
-      somente com números.
+    <p id="passwordDescription">
+      Digite a data somente com números.
     </p>
 
     <input
       id="passwordInput"
       type="password"
       inputmode="numeric"
-      placeholder="DDMMAAAA"
       maxlength="8"
+      placeholder="DDMMAAAA"
       autocomplete="off"
     >
 
-    <div style="margin-top:18px;">
+    <div>
 
-      <button
-        id="unlockButton"
-      >
+      <button id="unlockButton">
         abrir
       </button>
 
@@ -1518,12 +1472,8 @@ textarea:focus-visible {
     </div>
 
     <p
+      class="error"
       id="passwordError"
-      style="
-        color:#9b3d3d;
-        margin-top:15px;
-        margin-bottom:0;
-      "
     ></p>
 
   </div>
@@ -1531,9 +1481,9 @@ textarea:focus-visible {
 </div>
 
 
-<!-- ======================================================
+<!-- =====================================================
      CARTA
-====================================================== -->
+===================================================== -->
 
 <div
   class="letter-overlay hidden"
@@ -1542,62 +1492,63 @@ textarea:focus-visible {
 
 
   <button
-    class="close"
+    class="close-button"
     id="closeLetter"
+    aria-label="Fechar"
   >
     ×
   </button>
 
 
-  <div class="letter">
+  <div class="letter-window">
 
 
-    <!-- PÁGINA 1 -->
+    <!--
+      ====================================================
+      PÁGINAS DA CARTA
+
+      Os arquivos precisam estar assim:
+
+      assets/page-1.png
+      assets/page-2.png
+      assets/page-3.png
+      etc.
+
+      Se você tiver 4 páginas, deixe as quatro.
+      ====================================================
+    -->
+
 
     <img
-      class="letter-page active"
       src="assets/page-1.png"
+      class="letter-page active"
       alt="Página 1"
-      draggable="false"
     >
 
-
-    <!-- PÁGINA 2 -->
-
     <img
-      class="letter-page"
       src="assets/page-2.png"
+      class="letter-page"
       alt="Página 2"
-      draggable="false"
     >
 
-
-    <!-- PÁGINA 3 -->
-
     <img
-      class="letter-page"
       src="assets/page-3.png"
+      class="letter-page"
       alt="Página 3"
-      draggable="false"
     >
-
-
-    <!-- PÁGINA 4 -->
 
     <img
-      class="letter-page"
       src="assets/page-4.png"
+      class="letter-page"
       alt="Página 4"
-      draggable="false"
     >
 
-
-    <!-- CONTROLES -->
 
     <div class="letter-controls">
 
       <button
         id="previousPage"
+        aria-label="Página anterior"
       >
         ←
       </button>
@@ -1611,20 +1562,11 @@ textarea:focus-visible {
 
       <button
         id="nextPage"
+        aria-label="Próxima página"
       >
         →
       </button>
 
-    </div>
-
-
-    <!-- MENSAGEM FINAL -->
-
-    <div
-      class="letter-message hidden"
-      id="letterMessage"
-    >
-      Deixe uma mensagem ou comentário na caneta encima da mesa.
     </div>
 
 
@@ -1633,14 +1575,22 @@ textarea:focus-visible {
 </div>
 
 
-<!-- ======================================================
+<!-- =====================================================
      MENSAGENS
-====================================================== -->
+===================================================== -->
 
 <div
   class="messages-overlay hidden"
   id="messagesOverlay"
 >
+
+
+  <button
+    class="close-button"
+    id="closeMessages"
+  >
+    ×
+  </button>
 
 
   <div class="paper">
@@ -1651,14 +1601,6 @@ textarea:focus-visible {
       id="archiveButton"
     >
       folhas anteriores
-    </button>
-
-
-    <button
-      class="close-messages"
-      id="closeMessages"
-    >
-      ×
     </button>
 
 
@@ -1678,14 +1620,12 @@ textarea:focus-visible {
 
     <div class="message-form">
 
-
       <input
         id="nameInput"
         type="text"
         maxlength="80"
         placeholder="teu nome"
       >
-
 
       <input
         id="messageInput"
@@ -1694,13 +1634,11 @@ textarea:focus-visible {
         placeholder="escreva aqui..."
       >
 
-
       <button
         id="sendButton"
       >
         enviar
       </button>
-
 
     </div>
 
@@ -1710,15 +1648,14 @@ textarea:focus-visible {
 </div>
 
 
-<!-- ======================================================
-     ARQUIVO DE FOLHAS
-====================================================== -->
+<!-- =====================================================
+     ARQUIVO
+===================================================== -->
 
 <div
   class="archive hidden"
   id="archive"
 >
-
 
   <button
     class="archive-close"
@@ -1737,7 +1674,6 @@ textarea:focus-visible {
     class="archive-list"
     id="archiveList"
   ></div>
-
 
 </div>
 
@@ -1760,7 +1696,9 @@ const PASSWORD = "25102008";
 
 
 /*
-   GOOGLE APPS SCRIPT
+   URL DO GOOGLE APPS SCRIPT
+
+   NÃO ALTERE se ela já estiver funcionando.
 */
 
 const API_URL =
@@ -1768,7 +1706,7 @@ const API_URL =
 
 
 /*
-   QUANTIDADE DE MENSAGENS POR FOLHA
+   MENSAGENS POR FOLHA
 */
 
 const MESSAGES_PER_SHEET = 6;
@@ -1781,11 +1719,11 @@ const MESSAGES_PER_SHEET = 6;
 const loading =
   document.getElementById("loading");
 
-const book =
-  document.getElementById("book");
+const bookButton =
+  document.getElementById("bookButton");
 
-const pen =
-  document.getElementById("pen");
+const penButton =
+  document.getElementById("penButton");
 
 const passwordOverlay =
   document.getElementById("passwordOverlay");
@@ -1795,6 +1733,12 @@ const passwordInput =
 
 const passwordError =
   document.getElementById("passwordError");
+
+const passwordTitle =
+  document.getElementById("passwordTitle");
+
+const passwordDescription =
+  document.getElementById("passwordDescription");
 
 const unlockButton =
   document.getElementById("unlockButton");
@@ -1819,9 +1763,6 @@ const nextPage =
 
 const pageNumber =
   document.getElementById("pageNumber");
-
-const letterMessage =
-  document.getElementById("letterMessage");
 
 const messagesOverlay =
   document.getElementById("messagesOverlay");
@@ -1858,9 +1799,11 @@ const closeArchive =
    ESTADO
 ========================================================= */
 
-let currentPage = 0;
-
 let unlocked = false;
+
+let passwordPurpose = "book";
+
+let currentPage = 0;
 
 let allMessages = [];
 
@@ -1869,10 +1812,7 @@ let currentMessageSheet = 0;
 
 /* =========================================================
    CARREGAMENTO
-=========================================================
-
-   5 segundos conforme solicitado.
-*/
+========================================================= */
 
 window.addEventListener(
   "load",
@@ -1881,7 +1821,7 @@ window.addEventListener(
     setTimeout(
       function() {
 
-        loading.classList.add("hidden");
+        loading.classList.add("hide");
 
       },
       5000
@@ -1892,20 +1832,63 @@ window.addEventListener(
 
 
 /* =========================================================
+   ABRIR SENHA
+========================================================= */
+
+function pedirSenha(purpose) {
+
+  passwordPurpose =
+    purpose;
+
+  passwordInput.value = "";
+
+  passwordError.textContent = "";
+
+  if (purpose === "book") {
+
+    passwordTitle.textContent =
+      "Teu aniversário";
+
+    passwordDescription.textContent =
+      "Para abrir o livro, digite a data somente com números.";
+
+  } else {
+
+    passwordTitle.textContent =
+      "Teu aniversário";
+
+    passwordDescription.textContent =
+      "Para escrever uma mensagem, digite a data somente com números.";
+
+  }
+
+  passwordOverlay
+    .classList
+    .remove("hidden");
+
+  setTimeout(
+    function() {
+
+      passwordInput.focus();
+
+    },
+    100
+  );
+
+}
+
+
+/* =========================================================
    LIVRO
 ========================================================= */
 
-book.addEventListener(
+bookButton.addEventListener(
   "click",
   function() {
 
     if (!unlocked) {
 
-      passwordOverlay
-        .classList
-        .remove("hidden");
-
-      passwordInput.focus();
+      pedirSenha("book");
 
       return;
 
@@ -1921,17 +1904,13 @@ book.addEventListener(
    CANETA
 ========================================================= */
 
-pen.addEventListener(
+penButton.addEventListener(
   "click",
   function() {
 
     if (!unlocked) {
 
-      passwordOverlay
-        .classList
-        .remove("hidden");
-
-      passwordInput.focus();
+      pedirSenha("pen");
 
       return;
 
@@ -1985,12 +1964,16 @@ function verificarSenha() {
 
     passwordError.textContent = "";
 
-    /*
-       Depois de desbloquear,
-       abrimos o livro.
-    */
 
-    abrirCarta();
+    if (passwordPurpose === "book") {
+
+      abrirCarta();
+
+    } else {
+
+      abrirMensagens();
+
+    }
 
   } else {
 
@@ -2061,24 +2044,6 @@ function atualizarPagina() {
 
   nextPage.disabled =
     currentPage === pages.length - 1;
-
-
-  if (
-    currentPage ===
-    pages.length - 1
-  ) {
-
-    letterMessage
-      .classList
-      .remove("hidden");
-
-  } else {
-
-    letterMessage
-      .classList
-      .add("hidden");
-
-  }
 
 }
 
@@ -2209,7 +2174,7 @@ async function carregarMensagens() {
 
 
 /* =========================================================
-   ORGANIZAR FOLHAS
+   FOLHAS
 ========================================================= */
 
 function obterFolhas() {
@@ -2246,7 +2211,7 @@ function obterFolhas() {
 
 
 /* =========================================================
-   RENDERIZAR FOLHA ATUAL
+   FOLHA ATUAL
 ========================================================= */
 
 function renderizarFolhaAtual() {
@@ -2298,7 +2263,7 @@ function renderizarSheet(index) {
     empty.style.cssText =
       `
       text-align:center;
-      margin-top:100px;
+      margin-top:80px;
       opacity:.45;
       font-family:Georgia,serif;
       `;
@@ -2327,17 +2292,6 @@ function renderizarSheet(index) {
 
       wrapper.className =
         "message";
-
-
-      const rotation =
-        (Math.random() * 2 - 1)
-        .toFixed(2);
-
-
-      wrapper.style.setProperty(
-        "--rotation",
-        rotation + "deg"
-      );
 
 
       const name =
@@ -2415,8 +2369,8 @@ function atualizarArquivo(sheets) {
       document.createElement("p");
 
 
-    text.style.opacity =
-      ".6";
+    text.style.color =
+      "rgba(255,255,255,.6)";
 
 
     text.textContent =
@@ -2454,13 +2408,11 @@ function atualizarArquivo(sheets) {
         currentMessageSheet =
           i;
 
-
         renderizarSheet(i);
 
-
-        archive.classList.add(
-          "hidden"
-        );
+        archive
+          .classList
+          .add("hidden");
 
       }
     );
@@ -2482,13 +2434,12 @@ archiveButton.addEventListener(
     const sheets =
       obterFolhas();
 
-
     atualizarArquivo(
       sheets
     );
 
-
-    archive.classList
+    archive
+      .classList
       .remove("hidden");
 
   }
@@ -2499,7 +2450,8 @@ closeArchive.addEventListener(
   "click",
   function() {
 
-    archive.classList
+    archive
+      .classList
       .add("hidden");
 
   }
@@ -2586,7 +2538,8 @@ async function enviarMensagem() {
         API_URL,
         {
 
-          method: "POST",
+          method:
+            "POST",
 
           headers: {
 
@@ -2627,7 +2580,6 @@ async function enviarMensagem() {
     nameInput.value =
       "";
 
-
     messageInput.value =
       "";
 
@@ -2643,7 +2595,6 @@ async function enviarMensagem() {
   } catch (error) {
 
     console.error(
-      "Erro ao enviar:",
       error
     );
 
@@ -2671,25 +2622,48 @@ async function enviarMensagem() {
 
 function formatarData(value) {
 
+  if (!value) {
+
+    return "";
+
+  }
+
+
   try {
 
     const date =
       new Date(value);
 
 
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return "";
+
+    }
+
+
     return date.toLocaleString(
       "pt-BR",
       {
 
-        day: "2-digit",
+        day:
+          "2-digit",
 
-        month: "2-digit",
+        month:
+          "2-digit",
 
-        year: "numeric",
+        year:
+          "numeric",
 
-        hour: "2-digit",
+        hour:
+          "2-digit",
 
-        minute: "2-digit"
+        minute:
+          "2-digit"
 
       }
     );
@@ -2712,44 +2686,7 @@ document.addEventListener(
   function(event) {
 
     if (
-      event.key === "Escape"
-    ) {
-
-      passwordOverlay
-        .classList
-        .add("hidden");
-
-
-      letterOverlay
-        .classList
-        .add("hidden");
-
-
-      messagesOverlay
-        .classList
-        .add("hidden");
-
-
-      archive
-        .classList
-        .add("hidden");
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   NAVEGAÇÃO DA CARTA PELO TECLADO
-========================================================= */
-
-document.addEventListener(
-  "keydown",
-  function(event) {
-
-    if (
-      letterOverlay.classList.contains("hidden")
+      event.key !== "Escape"
     ) {
 
       return;
@@ -2757,35 +2694,24 @@ document.addEventListener(
     }
 
 
-    if (event.key === "ArrowRight") {
-
-      if (
-        currentPage <
-        pages.length - 1
-      ) {
-
-        currentPage++;
-
-        atualizarPagina();
-
-      }
-
-    }
+    passwordOverlay
+      .classList
+      .add("hidden");
 
 
-    if (event.key === "ArrowLeft") {
+    letterOverlay
+      .classList
+      .add("hidden");
 
-      if (
-        currentPage > 0
-      ) {
 
-        currentPage--;
+    messagesOverlay
+      .classList
+      .add("hidden");
 
-        atualizarPagina();
 
-      }
-
-    }
+    archive
+      .classList
+      .add("hidden");
 
   }
 );
