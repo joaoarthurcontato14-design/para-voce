@@ -7,16 +7,10 @@
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1, viewport-fit=cover"
->
-
-<meta
-  name="theme-color"
-  content="#283b54"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 >
 
 <title>para você.</title>
-
 
 <style>
 
@@ -27,10 +21,12 @@
 :root {
 
   --blue: #283b54;
-  --blue-dark: #1d2c40;
+  --blue-dark: #1c2b3e;
 
-  --paper: #f4f0e5;
-  --ink: #242424;
+  --paper: #f6f1e6;
+  --paper-shadow: rgba(0,0,0,.45);
+
+  --ink: #252525;
 
   --white: #ffffff;
 
@@ -46,6 +42,7 @@
   box-sizing: border-box;
 
   margin: 0;
+
   padding: 0;
 
 }
@@ -57,16 +54,15 @@ body {
   width: 100%;
   height: 100%;
 
-  overflow: hidden;
-
 }
 
 
 body {
 
-  background: var(--blue);
+  overflow: hidden;
 
-  color: white;
+  background:
+    var(--blue);
 
   font-family:
     -apple-system,
@@ -74,274 +70,33 @@ body {
     "Segoe UI",
     sans-serif;
 
+  color:
+    white;
+
 }
 
 
 /* =========================================================
-   APP
+   APLICAÇÃO
 ========================================================= */
 
 #app {
 
+  width: 100vw;
+  height: 100vh;
+
   position: relative;
 
-  width: 100vw;
-  height: 100dvh;
-
   overflow: hidden;
 
-  background: var(--blue);
-
 }
 
 
 /* =========================================================
-   CENÁRIO
+   TELA DE CARREGAMENTO
 ========================================================= */
 
-/*
-   A fotografia inteira fica aqui.
-
-   IMPORTANTE:
-   o arquivo precisa estar em:
-
-   assets/interface.png
-*/
-
-.scene {
-
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  overflow: hidden;
-
-  background:
-    var(--blue);
-
-}
-
-
-/*
-   A imagem ocupa o cenário inteiro.
-*/
-
-.scene-image {
-
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: contain;
-
-  object-position: center;
-
-  display: block;
-
-  user-select: none;
-
-  -webkit-user-drag: none;
-
-}
-
-
-/*
-   Caso a imagem não carregue,
-   mantemos o fundo azul-petróleo.
-*/
-
-.scene::before {
-
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  background:
-    var(--blue);
-
-  z-index: 0;
-
-}
-
-
-.scene-image {
-
-  z-index: 1;
-
-}
-
-
-/* =========================================================
-   ÁREAS CLICÁVEIS
-========================================================= */
-
-.hotspot {
-
-  position: absolute;
-
-  background: transparent;
-
-  border: 0;
-
-  padding: 0;
-
-  cursor: pointer;
-
-  z-index: 10;
-
-  touch-action: manipulation;
-
-}
-
-
-.hotspot:focus-visible {
-
-  outline:
-    2px solid
-    rgba(255,255,255,.85);
-
-  outline-offset: 4px;
-
-  border-radius: 12px;
-
-}
-
-
-/*
-   LIVRO
-*/
-
-.book-hotspot {
-
-  left: 36%;
-
-  top: 34%;
-
-  width: 28%;
-
-  height: 49%;
-
-}
-
-
-/*
-   CANETA
-*/
-
-.pen-hotspot {
-
-  left: 69%;
-
-  top: 70%;
-
-  width: 25%;
-
-  height: 18%;
-
-}
-
-
-/*
-   CALENDÁRIO
-*/
-
-.calendar-hotspot {
-
-  left: 58%;
-
-  top: 6%;
-
-  width: 24%;
-
-  height: 32%;
-
-}
-
-
-/*
-   GLOBO
-*/
-
-.globe-hotspot {
-
-  left: 4%;
-
-  top: 4%;
-
-  width: 34%;
-
-  height: 47%;
-
-}
-
-
-/*
-   CADILLAC
-*/
-
-.car-hotspot {
-
-  left: 67%;
-
-  top: 29%;
-
-  width: 30%;
-
-  height: 36%;
-
-}
-
-
-/* =========================================================
-   DICA
-========================================================= */
-
-.hint {
-
-  position: absolute;
-
-  left: 50%;
-
-  bottom: 18px;
-
-  transform:
-    translateX(-50%);
-
-  z-index: 20;
-
-  font-size: 11px;
-
-  letter-spacing: .08em;
-
-  text-transform: uppercase;
-
-  opacity: .45;
-
-  pointer-events: none;
-
-  white-space: nowrap;
-
-}
-
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.loader {
+.loading {
 
   position: fixed;
 
@@ -354,19 +109,22 @@ body {
 
   display: flex;
 
+  flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
 
-  text-align: center;
+  color: white;
 
   transition:
-    opacity .8s ease,
-    visibility .8s ease;
+    opacity 1s ease,
+    visibility 1s ease;
 
 }
 
 
-.loader.hide {
+.loading.hidden {
 
   opacity: 0;
 
@@ -377,114 +135,88 @@ body {
 }
 
 
-.loader-inner {
+.loading-title {
 
-  animation:
-    loaderRise 1.8s ease both;
-
-}
-
-
-.loader-title {
-
-  font:
-    400
-    clamp(28px,5vw,52px)
-    /1.1
+  font-family:
     Georgia,
+    "Times New Roman",
     serif;
 
+  font-size:
+    clamp(26px, 5vw, 48px);
+
   letter-spacing:
-    .02em;
+    .03em;
+
+  margin-bottom:
+    15px;
 
 }
 
 
-.loader-sub {
+.loading-author {
 
-  margin-top: 16px;
-
-  font:
-    400
-    12px
-    /1.5
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-
-  letter-spacing:
-    .14em;
-
-  text-transform:
-    uppercase;
+  font-size:
+    13px;
 
   opacity:
     .55;
 
+  letter-spacing:
+    .08em;
+
 }
 
 
-.loader-line {
+.loading-line {
 
-  width: 70px;
+  width:
+    80px;
 
-  height: 1px;
+  height:
+    1px;
 
   background:
     rgba(255,255,255,.5);
 
-  margin:
-    28px auto 0;
+  margin-top:
+    28px;
 
   animation:
-    loaderLine 5s linear both;
+    loadingLine 1.5s ease-in-out infinite;
 
 }
 
 
-@keyframes loaderRise {
+@keyframes loadingLine {
 
-  from {
-
-    opacity: 0;
+  0% {
 
     transform:
-      translateY(12px);
+      scaleX(.2);
+
+    opacity:
+      .2;
 
   }
 
-  to {
-
-    opacity: 1;
-
-    transform:
-      translateY(0);
-
-  }
-
-}
-
-
-@keyframes loaderLine {
-
-  from {
-
-    transform:
-      scaleX(0);
-
-    transform-origin:
-      left;
-
-  }
-
-  to {
+  50% {
 
     transform:
       scaleX(1);
 
-    transform-origin:
-      left;
+    opacity:
+      1;
+
+  }
+
+  100% {
+
+    transform:
+      scaleX(.2);
+
+    opacity:
+      .2;
 
   }
 
@@ -492,39 +224,133 @@ body {
 
 
 /* =========================================================
-   MODAIS
+   INTERFACE PRINCIPAL
 ========================================================= */
 
-.modal-backdrop,
-.letter-overlay,
-.messages-overlay {
+.main-interface {
 
-  position: fixed;
+  position: absolute;
 
   inset: 0;
 
-  z-index: 100;
+  background-color:
+    var(--blue);
 
-  background:
-    rgba(18,29,42,.90);
+  background-image:
+    url("./assets/interface.png");
 
-  backdrop-filter:
-    blur(14px);
+  background-position:
+    center;
 
-  display: flex;
+  background-repeat:
+    no-repeat;
 
-  align-items: center;
-  justify-content: center;
-
-  padding: 18px;
+  background-size:
+    cover;
 
 }
 
 
-.hidden {
+/*
+   Uma camada muito discreta para melhorar
+   a leitura e dar profundidade.
+*/
 
-  display:
-    none !important;
+.main-interface::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 35%,
+      rgba(0,0,0,.16) 100%
+    );
+
+  pointer-events:
+    none;
+
+}
+
+
+/* =========================================================
+   ÁREAS CLICÁVEIS
+========================================================= */
+
+/*
+   Essas áreas são invisíveis.
+
+   Elas ficam por cima da imagem da mesa.
+
+   Se precisar mudar a posição posteriormente,
+   basta alterar left/top/width/height.
+*/
+
+
+.hotspot {
+
+  position: absolute;
+
+  z-index: 20;
+
+  border: none;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+}
+
+
+/* LIVRO */
+
+.book-hotspot {
+
+  left: 50%;
+
+  top: 50%;
+
+  width: 27%;
+
+  height: 48%;
+
+  transform:
+    translate(-50%, -50%);
+
+}
+
+
+/* CANETA */
+
+.pen-hotspot {
+
+  left: 68%;
+
+  top: 73%;
+
+  width: 18%;
+
+  height: 13%;
+
+  transform:
+    translate(-50%, -50%);
+
+}
+
+
+/* efeito discreto ao passar o mouse */
+
+.hotspot:hover {
+
+  background:
+    rgba(255,255,255,.025);
 
 }
 
@@ -533,48 +359,116 @@ body {
    MODAL DE SENHA
 ========================================================= */
 
-.modal {
+.overlay {
 
-  width:
-    min(420px,92vw);
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
 
   background:
-    rgba(248,246,239,.98);
+    rgba(15,25,38,.82);
 
-  color:
-    #202020;
+  backdrop-filter:
+    blur(18px);
 
-  border-radius:
-    24px;
+  -webkit-backdrop-filter:
+    blur(18px);
+
+}
+
+
+.overlay.hidden {
+
+  display: none;
+
+}
+
+
+.password-modal {
+
+  width:
+    min(420px, 92vw);
 
   padding:
-    32px;
+    38px 30px;
 
-  box-shadow:
-    0 30px 100px
-    rgba(0,0,0,.5);
+  border-radius:
+    26px;
+
+  background:
+    rgba(247,244,236,.98);
+
+  color:
+    #222;
 
   text-align:
     center;
 
+  box-shadow:
+    0 30px 90px
+    rgba(0,0,0,.45);
+
+  animation:
+    modalIn .35s ease;
+
 }
 
 
-.modal h2 {
+@keyframes modalIn {
 
-  font:
-    400
-    25px
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(15px)
+      scale(.98);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+.password-modal h2 {
+
+  font-family:
     Georgia,
+    "Times New Roman",
     serif;
 
-  margin:
-    0 0 9px;
+  font-weight:
+    400;
+
+  font-size:
+    25px;
+
+  margin-bottom:
+    10px;
 
 }
 
 
-.modal p {
+.password-modal p {
 
   color:
     #666;
@@ -585,23 +479,23 @@ body {
   font-size:
     14px;
 
-  margin:
-    0 0 20px;
+  margin-bottom:
+    23px;
 
 }
 
 
-.modal input,
-.modal textarea,
-.message-form input,
-.message-form textarea {
+.password-input {
 
-  width:
-    100%;
+  width: 100%;
+
+  height: 52px;
 
   border:
-    1px solid
-    #d6d0c4;
+    1px solid #d7d0c3;
+
+  border-radius:
+    14px;
 
   background:
     #fffdf8;
@@ -609,24 +503,25 @@ body {
   color:
     #222;
 
-  border-radius:
-    13px;
+  text-align:
+    center;
 
-  padding:
-    13px 14px;
+  font-size:
+    18px;
 
-  font:
-    inherit;
+  letter-spacing:
+    .18em;
 
   outline:
     none;
 
+  margin-bottom:
+    14px;
+
 }
 
 
-.modal input:focus,
-.message-form input:focus,
-.message-form textarea:focus {
+.password-input:focus {
 
   border-color:
     var(--blue);
@@ -634,13 +529,16 @@ body {
 }
 
 
-button {
+.primary-button {
 
   border:
-    0;
+    none;
 
   border-radius:
     999px;
+
+  padding:
+    13px 25px;
 
   background:
     var(--blue);
@@ -648,38 +546,25 @@ button {
   color:
     white;
 
-  padding:
-    12px 19px;
-
   cursor:
     pointer;
 
-  font:
-    inherit;
+  font-size:
+    14px;
 
 }
 
 
-button:hover {
+.secondary-button {
 
-  opacity:
-    .9;
+  border:
+    1px solid #d2cabe;
 
-}
+  border-radius:
+    999px;
 
-
-button:disabled {
-
-  opacity:
-    .45;
-
-  cursor:
-    default;
-
-}
-
-
-button.secondary {
+  padding:
+    12px 22px;
 
   background:
     transparent;
@@ -687,69 +572,93 @@ button.secondary {
   color:
     #333;
 
-  border:
-    1px solid
-    #cfc7b8;
+  cursor:
+    pointer;
+
+  font-size:
+    14px;
 
   margin-left:
-    6px;
+    7px;
 
 }
 
 
-.error {
+.password-error {
 
   color:
-    #a04a4a !important;
-
-  min-height:
-    20px;
+    #9c3f3f !important;
 
   margin-top:
-    12px !important;
+    14px;
 
   margin-bottom:
     0 !important;
+
+  min-height:
+    20px;
 
 }
 
 
 /* =========================================================
-   LIVRO
+   CARTA
 ========================================================= */
 
 .letter-overlay {
 
-  z-index:
-    200;
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 2000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  background:
+    rgba(26,39,56,.96);
+
+  backdrop-filter:
+    blur(12px);
 
 }
 
 
-.letter-shell {
+.letter-overlay.hidden {
 
-  position:
-    relative;
+  display: none;
+
+}
+
+
+.letter-window {
+
+  position: relative;
 
   width:
-    min(900px,94vw);
+    min(900px, 94vw);
 
   height:
-    min(88vh,820px);
+    min(86vh, 780px);
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  justify-content:
-    center;
+  justify-content: center;
 
 }
 
 
 .letter-page {
+
+  display: none;
 
   max-width:
     100%;
@@ -767,14 +676,11 @@ button.secondary {
     contain;
 
   background:
-    #fff;
+    white;
 
   box-shadow:
     0 30px 90px
-    rgba(0,0,0,.55);
-
-  display:
-    none;
+    rgba(0,0,0,.5);
 
 }
 
@@ -787,86 +693,79 @@ button.secondary {
 }
 
 
-.letter-close {
-
-  position:
-    absolute;
-
-  right:
-    0;
-
-  top:
-    0;
-
-  width:
-    42px;
-
-  height:
-    42px;
-
-  padding:
-    0;
-
-  border-radius:
-    50%;
-
-  background:
-    rgba(0,0,0,.65);
-
-  z-index:
-    5;
-
-  font-size:
-    22px;
-
-}
-
+/* =========================================================
+   CONTROLES DA CARTA
+========================================================= */
 
 .letter-controls {
 
-  position:
-    absolute;
+  position: absolute;
 
-  left:
-    50%;
+  left: 50%;
 
-  bottom:
-    -3px;
+  bottom: -5px;
 
   transform:
-    translate(-50%,100%);
+    translateX(-50%);
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  gap:
-    12px;
-
-  background:
-    rgba(0,0,0,.72);
+  gap: 12px;
 
   padding:
-    7px;
+    8px;
 
   border-radius:
     999px;
 
+  background:
+    rgba(0,0,0,.72);
+
+  box-shadow:
+    0 10px 30px
+    rgba(0,0,0,.3);
+
 }
 
 
-.letter-controls button {
+.page-button {
 
   width:
-    40px;
+    38px;
 
   height:
-    40px;
+    38px;
 
-  padding:
-    0;
+  border:
+    none;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(255,255,255,.12);
+
+  color:
+    white;
+
+  cursor:
+    pointer;
+
+  font-size:
+    17px;
+
+}
+
+
+.page-button:disabled {
+
+  opacity:
+    .25;
+
+  cursor:
+    default;
 
 }
 
@@ -874,10 +773,13 @@ button.secondary {
 .page-number {
 
   min-width:
-    65px;
+    60px;
 
   text-align:
     center;
+
+  color:
+    white;
 
   font-size:
     12px;
@@ -885,34 +787,82 @@ button.secondary {
 }
 
 
-.last-note {
+.letter-close {
 
-  position:
-    absolute;
+  position: absolute;
 
-  bottom:
-    16px;
+  right: 0;
 
-  left:
+  top: -5px;
+
+  z-index: 10;
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  border:
+    none;
+
+  border-radius:
     50%;
 
-  transform:
-    translateX(-50%);
-
   background:
-    rgba(40,59,84,.94);
+    rgba(0,0,0,.65);
+
+  color:
+    white;
+
+  font-size:
+    25px;
+
+  cursor:
+    pointer;
+
+}
+
+
+.letter-final-message {
+
+  position: absolute;
+
+  right: 20px;
+
+  bottom: 20px;
 
   padding:
-    10px 16px;
+    11px 17px;
 
   border-radius:
     999px;
 
+  background:
+    rgba(40,59,84,.94);
+
+  color:
+    white;
+
   font-size:
     12px;
 
-  white-space:
-    nowrap;
+  opacity:
+    0;
+
+  pointer-events:
+    none;
+
+  transition:
+    opacity .3s ease;
+
+}
+
+
+.letter-final-message.visible {
+
+  opacity:
+    1;
 
 }
 
@@ -923,62 +873,56 @@ button.secondary {
 
 .messages-overlay {
 
-  z-index:
-    300;
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 3000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+  background:
+    rgba(27,42,59,.97);
 
 }
 
 
-.paper-wrap {
-
-  position:
-    relative;
-
-  width:
-    min(900px,94vw);
-
-  height:
-    min(86vh,820px);
+.messages-overlay.hidden {
 
   display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
+    none;
 
 }
 
 
 .paper {
 
-  position:
-    relative;
+  position: relative;
 
   width:
-    100%;
+    min(900px, 94vw);
 
   height:
-    100%;
+    min(85vh, 820px);
+
+  padding:
+    55px 55px 115px;
 
   background:
-    linear-gradient(
-      135deg,
-      #f8f5ed,
-      #eee8da
-    );
+    var(--paper);
 
   color:
     var(--ink);
 
   box-shadow:
-    0 30px 100px
-    rgba(0,0,0,.55);
-
-  padding:
-    clamp(28px,5vw,60px);
+    0 30px 90px
+    var(--paper-shadow);
 
   overflow:
     hidden;
@@ -986,16 +930,13 @@ button.secondary {
 }
 
 
-.paper:after {
+.paper::before {
 
-  content:
-    "";
+  content: "";
 
-  position:
-    absolute;
+  position: absolute;
 
-  inset:
-    18px;
+  inset: 22px;
 
   border:
     1px solid
@@ -1007,19 +948,27 @@ button.secondary {
 }
 
 
-.paper h1 {
+.paper-title {
 
-  font:
-    400
-    clamp(20px,3vw,28px)
-    Georgia,
-    serif;
+  position:
+    relative;
 
   text-align:
     center;
 
-  margin:
-    0 0 25px;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    21px;
+
+  line-height:
+    1.4;
+
+  margin-bottom:
+    28px;
 
 }
 
@@ -1027,182 +976,291 @@ button.secondary {
 .messages {
 
   position:
-    absolute;
+    relative;
 
-  left:
-    7%;
+  height:
+    calc(100% - 65px);
 
-  right:
-    7%;
-
-  top:
-    18%;
-
-  bottom:
-    27%;
-
-  overflow:
+  overflow-y:
     auto;
 
   padding-right:
-    8px;
+    10px;
 
 }
 
 
+.messages::-webkit-scrollbar {
+
+  width:
+    4px;
+
+}
+
+
+.messages::-webkit-scrollbar-thumb {
+
+  background:
+    rgba(0,0,0,.2);
+
+}
+
+
+/* =========================================================
+   MENSAGEM INDIVIDUAL
+========================================================= */
+
 .message {
+
+  margin-bottom:
+    24px;
+
+  padding-bottom:
+    16px;
+
+  border-bottom:
+    1px dashed
+    rgba(0,0,0,.12);
 
   font-family:
     "Segoe Print",
     "Bradley Hand",
+    "Comic Sans MS",
     cursive;
-
-  margin:
-    0 0 22px;
-
-  transform:
-    rotate(var(--rot));
-
-  white-space:
-    pre-wrap;
 
 }
 
 
 .message-name {
 
-  font-weight:
-    700;
-
   font-size:
-    16px;
+    17px;
+
+  font-weight:
+    bold;
+
+  margin-bottom:
+    4px;
 
 }
 
 
 .message-text {
 
+  white-space:
+    pre-wrap;
+
+  word-break:
+    break-word;
+
   font-size:
-    15px;
+    16px;
 
   line-height:
-    1.45;
+    1.5;
 
 }
 
 
 .message-date {
 
-  font:
-    10px
+  margin-top:
+    6px;
+
+  font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
 
-  opacity:
-    .42;
+  font-size:
+    10px;
 
-  margin-top:
-    4px;
+  opacity:
+    .45;
 
 }
 
 
+/* =========================================================
+   FORMULÁRIO
+========================================================= */
+
 .message-form {
 
-  position:
-    absolute;
+  position: absolute;
 
   left:
-    7%;
-
-  right:
-    7%;
+    50%;
 
   bottom:
-    5%;
+    22px;
+
+  transform:
+    translateX(-50%);
+
+  width:
+    calc(100% - 70px);
 
   display:
-    grid;
-
-  grid-template-columns:
-    150px 1fr auto;
+    flex;
 
   gap:
     8px;
 
-  z-index:
-    2;
-
 }
 
 
-.message-form textarea {
+.message-form input {
 
   height:
-    52px;
+    46px;
 
-  resize:
+  border:
+    1px solid #d5cec0;
+
+  border-radius:
+    12px;
+
+  padding:
+    0 13px;
+
+  background:
+    #fffdf8;
+
+  color:
+    #222;
+
+  outline:
     none;
 
 }
 
 
-.archive-button {
+.name-input {
 
-  position:
-    absolute;
-
-  top:
-    18px;
-
-  left:
-    18px;
-
-  z-index:
-    4;
-
-  background:
-    rgba(40,59,84,.92);
-
-  font-size:
-    12px;
+  width:
+    25%;
 
 }
 
 
-.messages-close {
+.message-input {
 
-  position:
-    absolute;
+  flex:
+    1;
 
-  right:
-    18px;
+}
+
+
+.send-button {
+
+  height:
+    46px;
+
+  padding:
+    0 20px;
+
+  border:
+    none;
+
+  border-radius:
+    12px;
+
+  background:
+    var(--blue);
+
+  color:
+    white;
+
+  cursor:
+    pointer;
+
+}
+
+
+.send-button:disabled {
+
+  opacity:
+    .5;
+
+  cursor:
+    wait;
+
+}
+
+
+/* =========================================================
+   BOTÕES DA FOLHA
+========================================================= */
+
+.archive-button {
+
+  position: absolute;
+
+  top:
+    20px;
+
+  left:
+    20px;
+
+  border:
+    none;
+
+  border-radius:
+    999px;
+
+  padding:
+    9px 14px;
+
+  background:
+    var(--blue);
+
+  color:
+    white;
+
+  font-size:
+    11px;
+
+  cursor:
+    pointer;
+
+}
+
+
+.close-messages {
+
+  position: absolute;
 
   top:
     18px;
 
+  right:
+    18px;
+
   width:
-    42px;
+    38px;
 
   height:
-    42px;
+    38px;
 
-  padding:
-    0;
+  border:
+    none;
 
   border-radius:
     50%;
 
   background:
-    rgba(0,0,0,.65);
+    var(--blue);
 
-  z-index:
-    5;
+  color:
+    white;
 
   font-size:
-    22px;
+    21px;
+
+  cursor:
+    pointer;
 
 }
 
@@ -1213,17 +1271,14 @@ button.secondary {
 
 .archive {
 
-  position:
-    fixed;
+  position: fixed;
 
-  inset:
-    0;
+  inset: 0;
 
-  z-index:
-    400;
+  z-index: 4000;
 
   background:
-    rgba(18,29,42,.97);
+    rgba(27,42,59,.98);
 
   display:
     flex;
@@ -1238,21 +1293,30 @@ button.secondary {
     center;
 
   padding:
-    20px;
+    25px;
+
+}
+
+
+.archive.hidden {
+
+  display:
+    none;
 
 }
 
 
 .archive h2 {
 
-  font:
-    400
-    25px
+  font-family:
     Georgia,
     serif;
 
-  margin:
-    0 0 20px;
+  font-weight:
+    400;
+
+  margin-bottom:
+    22px;
 
 }
 
@@ -1262,14 +1326,14 @@ button.secondary {
   display:
     flex;
 
-  gap:
-    10px;
-
   flex-wrap:
     wrap;
 
   justify-content:
     center;
+
+  gap:
+    10px;
 
   max-width:
     700px;
@@ -1279,11 +1343,23 @@ button.secondary {
 
 .archive-list button {
 
+  border:
+    none;
+
+  border-radius:
+    999px;
+
+  padding:
+    11px 18px;
+
   background:
     var(--paper);
 
   color:
     #222;
+
+  cursor:
+    pointer;
 
 }
 
@@ -1293,25 +1369,236 @@ button.secondary {
   position:
     absolute;
 
+  top:
+    20px;
+
   right:
     20px;
 
-  top:
-    20px;
+  border:
+    none;
+
+  border-radius:
+    999px;
+
+  padding:
+    10px 17px;
+
+  background:
+    var(--paper);
+
+  color:
+    #222;
+
+  cursor:
+    pointer;
 
 }
 
 
-.empty {
+/* =========================================================
+   RESPONSIVO — CELULAR
+========================================================= */
 
-  opacity:
-    .45;
+@media (max-width: 700px) {
+
+  .main-interface {
+
+    background-size:
+      cover;
+
+    background-position:
+      center;
+
+  }
+
+
+  /*
+     Áreas clicáveis maiores no celular.
+  */
+
+  .book-hotspot {
+
+    width:
+      42%;
+
+    height:
+      43%;
+
+    left:
+      50%;
+
+    top:
+      49%;
+
+  }
+
+
+  .pen-hotspot {
+
+    width:
+      30%;
+
+    height:
+      17%;
+
+    left:
+      69%;
+
+    top:
+      73%;
+
+  }
+
+
+  .letter-overlay {
+
+    padding:
+      10px;
+
+  }
+
+
+  .letter-window {
+
+    width:
+      96vw;
+
+    height:
+      86vh;
+
+  }
+
+
+  .letter-page {
+
+    max-width:
+      94vw;
+
+    max-height:
+      78vh;
+
+  }
+
+
+  .letter-controls {
+
+    bottom:
+      0;
+
+  }
+
+
+  .letter-close {
+
+    right:
+      3px;
+
+    top:
+      -45px;
+
+  }
+
+
+  .letter-final-message {
+
+    left:
+      50%;
+
+    right:
+      auto;
+
+    bottom:
+      50px;
+
+    transform:
+      translateX(-50%);
+
+    white-space:
+      nowrap;
+
+  }
+
+
+  .paper {
+
+    width:
+      94vw;
+
+    height:
+      88vh;
+
+    padding:
+      55px 22px 130px;
+
+  }
+
+
+  .paper-title {
+
+    font-size:
+      18px;
+
+  }
+
+
+  .message-form {
+
+    width:
+      calc(100% - 40px);
+
+    flex-wrap:
+      wrap;
+
+  }
+
+
+  .name-input {
+
+    width:
+      100%;
+
+  }
+
+
+  .message-input {
+
+    width:
+      calc(100% - 65px);
+
+    flex:
+      none;
+
+  }
+
+
+  .send-button {
+
+    width:
+      57px;
+
+    padding:
+      0 8px;
+
+  }
+
+}
+
+
+/* =========================================================
+   MENSAGEM VAZIA
+========================================================= */
+
+.empty-message {
 
   text-align:
     center;
 
   margin-top:
-    70px;
+    100px;
+
+  opacity:
+    .45;
 
   font-family:
     Georgia,
@@ -1321,301 +1608,15 @@ button.secondary {
 
 
 /* =========================================================
-   AVISOS
+   OCULTO
 ========================================================= */
 
-.toast {
-
-  position:
-    fixed;
-
-  left:
-    50%;
-
-  bottom:
-    25px;
-
-  transform:
-    translateX(-50%)
-    translateY(20px);
-
-  background:
-    #111;
-
-  color:
-    #fff;
-
-  padding:
-    12px 18px;
-
-  border-radius:
-    999px;
-
-  opacity:
-    0;
-
-  pointer-events:
-    none;
-
-  transition:
-    .3s;
-
-  z-index:
-    10000;
-
-  font-size:
-    13px;
-
-}
-
-
-.toast.show {
-
-  opacity:
-    1;
-
-  transform:
-    translateX(-50%)
-    translateY(0);
-
-}
-
-
-/* =========================================================
-   CELULAR
-========================================================= */
-
-@media (max-width:700px) {
-
-  .scene-image {
-
-    object-fit:
-      contain;
-
-  }
-
-
-  .hint {
-
-    bottom:
-      9px;
-
-    font-size:
-      9px;
-
-  }
-
-
-  .book-hotspot {
-
-    left:
-      33%;
-
-    top:
-      35%;
-
-    width:
-      34%;
-
-    height:
-      47%;
-
-  }
-
-
-  .pen-hotspot {
-
-    left:
-      64%;
-
-    top:
-      66%;
-
-    width:
-      31%;
-
-    height:
-      19%;
-
-  }
-
-
-  .globe-hotspot {
-
-    left:
-      2%;
-
-    top:
-      4%;
-
-    width:
-      38%;
-
-    height:
-      45%;
-
-  }
-
-
-  .calendar-hotspot {
-
-    left:
-      57%;
-
-    top:
-      5%;
-
-    width:
-      27%;
-
-    height:
-      31%;
-
-  }
-
-
-  .car-hotspot {
-
-    left:
-      64%;
-
-    top:
-      28%;
-
-    width:
-      34%;
-
-    height:
-      37%;
-
-  }
-
-
-  .message-form {
-
-    grid-template-columns:
-      1fr;
-
-    bottom:
-      3%;
-
-  }
-
-
-  .messages {
-
-    bottom:
-      31%;
-
-    top:
-      17%;
-
-  }
-
-
-  .paper {
-
-    height:
-      90vh;
-
-    padding:
-      28px 22px;
-
-  }
-
-
-  .letter-controls {
-
-    bottom:
-      -8px;
-
-  }
-
-
-  .last-note {
-
-    bottom:
-      15px;
-
-    font-size:
-      10px;
-
-  }
-
-}
-
-
-/* =========================================================
-   IMAGEM NÃO CARREGADA
-========================================================= */
-
-.image-error {
-
-  position:
-    absolute;
-
-  inset:
-    0;
-
-  z-index:
-    50;
+.hidden {
 
   display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
-
-  text-align:
-    center;
-
-  padding:
-    30px;
-
-  background:
-    var(--blue);
+    none !important;
 
 }
-
-
-.image-error-box {
-
-  max-width:
-    420px;
-
-}
-
-
-.image-error-title {
-
-  font:
-    400
-    26px
-    Georgia,
-    serif;
-
-  margin-bottom:
-    12px;
-
-}
-
-
-.image-error-text {
-
-  font-size:
-    13px;
-
-  line-height:
-    1.6;
-
-  opacity:
-    .65;
-
-}
-
 
 </style>
 
@@ -1627,416 +1628,313 @@ button.secondary {
 <div id="app">
 
 
-  <!-- =====================================================
-       CENÁRIO
-  ====================================================== -->
+<!-- =====================================================
+     CARREGAMENTO
+===================================================== -->
 
-  <div class="scene">
+<div
+  class="loading"
+  id="loading"
+>
+
+  <div class="loading-title">
+    Um Ano Depois...
+  </div>
+
+  <div class="loading-author">
+    Feito por João Arthur.
+  </div>
+
+  <div class="loading-line"></div>
+
+</div>
 
 
-    <!--
-       IMPORTANTE:
+<!-- =====================================================
+     INTERFACE / IMAGEM DA MESA
+===================================================== -->
 
-       Esta é a imagem principal do site.
+<div
+  class="main-interface"
+  id="mainInterface"
+>
 
-       Caminho:
 
-       assets/interface.png
-    -->
+  <!-- LIVRO CLICÁVEL -->
 
-    <img
-      id="sceneImage"
-      class="scene-image"
-      src="./assets/interface.png"
-      alt="Mesa com livro, globo, calendário, Cadillac e caneta"
+  <button
+    class="hotspot book-hotspot"
+    id="bookHotspot"
+    aria-label="Abrir carta"
+  ></button>
+
+
+  <!-- CANETA CLICÁVEL -->
+
+  <button
+    class="hotspot pen-hotspot"
+    id="penHotspot"
+    aria-label="Escrever uma mensagem"
+  ></button>
+
+
+</div>
+
+
+<!-- =====================================================
+     SENHA
+===================================================== -->
+
+<div
+  class="overlay hidden"
+  id="passwordOverlay"
+>
+
+  <div class="password-modal">
+
+    <h2>
+      Teu aniversário
+    </h2>
+
+    <p>
+      Para continuar, digite a data
+      somente com números.
+    </p>
+
+
+    <input
+      class="password-input"
+      id="passwordInput"
+      type="password"
+      inputmode="numeric"
+      autocomplete="off"
+      maxlength="8"
+      placeholder="DDMMAAAA"
     >
 
 
-    <!--
-       Caso a imagem não seja encontrada,
-       esta mensagem aparecerá.
-    -->
-
-    <div
-      id="imageError"
-      class="image-error hidden"
-    >
-
-      <div class="image-error-box">
-
-        <div class="image-error-title">
-          para você.
-        </div>
-
-        <div class="image-error-text">
-
-          A imagem da mesa não foi encontrada.<br><br>
-
-          Confira se o arquivo está em:<br>
-
-          <strong>assets/interface.png</strong>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- ===================================================
-         OBJETOS CLICÁVEIS
-    ==================================================== -->
-
-
-    <button
-      class="hotspot globe-hotspot"
-      id="globeHotspot"
-      aria-label="Globo"
-    ></button>
-
-
-    <button
-      class="hotspot calendar-hotspot"
-      id="calendarHotspot"
-      aria-label="Calendário"
-    ></button>
-
-
-    <button
-      class="hotspot car-hotspot"
-      id="carHotspot"
-      aria-label="Cadillac"
-    ></button>
-
-
-    <button
-      class="hotspot book-hotspot"
-      id="book"
-      aria-label="Abrir carta"
-    ></button>
-
-
-    <button
-      class="hotspot pen-hotspot"
-      id="pen"
-      aria-label="Escrever mensagem"
-    ></button>
-
-
-    <div class="hint">
-      toque nos objetos
-    </div>
-
-
-  </div>
-
-
-  <!-- =====================================================
-       LOADING
-  ====================================================== -->
-
-  <div
-    class="loader"
-    id="loader"
-  >
-
-    <div class="loader-inner">
-
-      <div class="loader-title">
-        Um Ano Depois...
-      </div>
-
-      <div class="loader-sub">
-        Feito por João Arthur.
-      </div>
-
-      <div class="loader-line"></div>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       SENHA
-  ====================================================== -->
-
-  <div
-    class="modal-backdrop hidden"
-    id="passwordOverlay"
-  >
-
-    <div class="modal">
-
-      <h2>
-        Teu aniversário
-      </h2>
-
-      <p>
-        Para continuar, digite a data
-        somente com números.
-      </p>
-
-
-      <input
-        id="passwordInput"
-        type="password"
-        inputmode="numeric"
-        maxlength="8"
-        placeholder="DDMMAAAA"
-        autocomplete="off"
-      >
-
-
-      <div>
-
-        <button
-          id="unlockButton"
-        >
-          abrir
-        </button>
-
-
-        <button
-          class="secondary"
-          id="cancelPassword"
-        >
-          cancelar
-        </button>
-
-      </div>
-
-
-      <p
-        class="error"
-        id="passwordError"
-      ></p>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       CARTA
-  ====================================================== -->
-
-  <div
-    class="letter-overlay hidden"
-    id="letterOverlay"
-  >
-
-    <div class="letter-shell">
-
+    <div>
 
       <button
-        class="letter-close"
-        id="closeLetter"
+        class="primary-button"
+        id="unlockButton"
       >
-        ×
+        abrir
       </button>
 
-
-      <!--
-        ATENÇÃO:
-
-        As páginas precisam estar dentro de:
-
-        assets/letter/
-
-        com os nomes:
-
-        page-1.png
-        page-2.png
-        page-3.png
-        page-4.png
-      -->
-
-
-      <img
-        class="letter-page active"
-        src="./assets/letter/page-1.png"
-        alt="Página 1"
+      <button
+        class="secondary-button"
+        id="cancelPassword"
       >
-
-
-      <img
-        class="letter-page"
-        src="./assets/letter/page-2.png"
-        alt="Página 2"
-      >
-
-
-      <img
-        class="letter-page"
-        src="./assets/letter/page-3.png"
-        alt="Página 3"
-      >
-
-
-      <img
-        class="letter-page"
-        src="./assets/letter/page-4.png"
-        alt="Página 4"
-      >
-
-
-      <div class="letter-controls">
-
-        <button
-          id="previousPage"
-        >
-          ←
-        </button>
-
-
-        <span
-          class="page-number"
-          id="pageNumber"
-        >
-          1 / 4
-        </span>
-
-
-        <button
-          id="nextPage"
-        >
-          →
-        </button>
-
-      </div>
-
-
-      <div
-        class="last-note hidden"
-        id="lastNote"
-      >
-        Deixe uma mensagem ou comentário na caneta em cima da mesa
-      </div>
-
+        cancelar
+      </button>
 
     </div>
 
-  </div>
 
-
-  <!-- =====================================================
-       MENSAGENS
-  ====================================================== -->
-
-  <div
-    class="messages-overlay hidden"
-    id="messagesOverlay"
-  >
-
-    <div class="paper-wrap">
-
-      <div class="paper">
-
-
-        <button
-          class="archive-button"
-          id="archiveButton"
-        >
-          folhas anteriores
-        </button>
-
-
-        <button
-          class="messages-close"
-          id="closeMessages"
-        >
-          ×
-        </button>
-
-
-        <h1>
-
-          if u have something to say,<br>
-
-          say it here.
-
-        </h1>
-
-
-        <div
-          class="messages"
-          id="messages"
-        ></div>
-
-
-        <div class="message-form">
-
-
-          <input
-            id="nameInput"
-            maxlength="80"
-            placeholder="teu nome"
-          >
-
-
-          <textarea
-            id="messageInput"
-            maxlength="2000"
-            placeholder="escreva aqui..."
-          ></textarea>
-
-
-          <button
-            id="sendButton"
-          >
-            enviar
-          </button>
-
-
-        </div>
-
-
-      </div>
-
-    </div>
+    <p
+      class="password-error"
+      id="passwordError"
+    ></p>
 
   </div>
 
+</div>
 
-  <!-- =====================================================
-       ARQUIVO
-  ====================================================== -->
+
+<!-- =====================================================
+     CARTA
+===================================================== -->
+
+<div
+  class="letter-overlay hidden"
+  id="letterOverlay"
+>
+
 
   <div
-    class="archive hidden"
-    id="archive"
+    class="letter-window"
+    id="letterWindow"
   >
 
     <button
-      class="archive-close"
-      id="closeArchive"
+      class="letter-close"
+      id="closeLetter"
     >
-      fechar
+      ×
     </button>
 
 
-    <h2>
-      folhas anteriores
-    </h2>
+    <!--
+      AS PÁGINAS SERÃO INSERIDAS AUTOMATICAMENTE
+      PELO JAVASCRIPT.
+
+      Ele procura:
+      page-1.png
+      page-2.png
+      page-3.png
+      etc.
+
+      Portanto você NÃO precisa colocar
+      manualmente cada página aqui.
+    -->
+
+    <div
+      id="pagesContainer"
+    ></div>
 
 
     <div
-      class="archive-list"
-      id="archiveList"
-    ></div>
+      class="letter-controls"
+      id="letterControls"
+    >
+
+      <button
+        class="page-button"
+        id="previousPage"
+      >
+        ←
+      </button>
+
+
+      <span
+        class="page-number"
+        id="pageNumber"
+      >
+        1 / 1
+      </span>
+
+
+      <button
+        class="page-button"
+        id="nextPage"
+      >
+        →
+      </button>
+
+    </div>
+
+
+    <div
+      class="letter-final-message"
+      id="letterFinalMessage"
+    >
+      Deixe uma mensagem ou comentário na caneta encima da mesa.
+    </div>
 
   </div>
 
+</div>
 
-  <!-- =====================================================
-       TOAST
-  ====================================================== -->
+
+<!-- =====================================================
+     MENSAGENS
+===================================================== -->
+
+<div
+  class="messages-overlay hidden"
+  id="messagesOverlay"
+>
+
+  <div class="paper">
+
+
+    <button
+      class="archive-button"
+      id="archiveButton"
+    >
+      folhas anteriores
+    </button>
+
+
+    <button
+      class="close-messages"
+      id="closeMessages"
+    >
+      ×
+    </button>
+
+
+    <div class="paper-title">
+
+      if u have something to say,<br>
+      say it here.
+
+    </div>
+
+
+    <div
+      class="messages"
+      id="messages"
+    ></div>
+
+
+    <div class="message-form">
+
+
+      <input
+        class="name-input"
+        id="nameInput"
+        type="text"
+        maxlength="80"
+        placeholder="teu nome"
+      >
+
+
+      <input
+        class="message-input"
+        id="messageInput"
+        type="text"
+        maxlength="2000"
+        placeholder="escreva aqui..."
+      >
+
+
+      <button
+        class="send-button"
+        id="sendButton"
+      >
+        enviar
+      </button>
+
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     ARQUIVO DE FOLHAS
+===================================================== -->
+
+<div
+  class="archive hidden"
+  id="archive"
+>
+
+
+  <button
+    class="archive-close"
+    id="closeArchive"
+  >
+    fechar
+  </button>
+
+
+  <h2>
+    folhas anteriores
+  </h2>
+
 
   <div
-    class="toast"
-    id="toast"
+    class="archive-list"
+    id="archiveList"
   ></div>
+
+
+</div>
 
 
 </div>
@@ -2050,47 +1948,28 @@ button.secondary {
 
 
 /*
-   SENHA
+   SENHA DO LIVRO E DA CANETA
 */
 
 const PASSWORD = "25102008";
 
 
 /*
-   URL DO GOOGLE APPS SCRIPT
+   GOOGLE APPS SCRIPT
 
-   Se você já possui um config.js funcionando,
-   pode colocar a URL nele.
+   Este é o endereço utilizado para salvar
+   as mensagens.
 
-   O código abaixo também aceita config.js.
+   Se você criou uma nova implantação do Apps Script,
+   substitua apenas esta URL.
 */
 
-let API_URL = "";
-
-
-try {
-
-  if (
-    window.SITE_CONFIG &&
-    window.SITE_CONFIG.API_URL
-  ) {
-
-    API_URL =
-      window.SITE_CONFIG.API_URL;
-
-  }
-
-} catch (error) {
-
-  console.log(
-    "config.js não encontrado ou não carregado."
-  );
-
-}
+const API_URL =
+"https://script.google.com/macros/s/AKfycbz7mUY2SZA9sdeXLLVdheKYA4rVh7AbnDojfyLPxEXy204IGUwnARLYkXhh7pr7DWCcaw/exec";
 
 
 /*
-   Quantas mensagens cabem em cada folha.
+   QUANTAS MENSAGENS CABEM EM CADA FOLHA
 */
 
 const MESSAGES_PER_SHEET = 6;
@@ -2100,17 +1979,86 @@ const MESSAGES_PER_SHEET = 6;
    ELEMENTOS
 ========================================================= */
 
-const $ =
-  id =>
-  document.getElementById(id);
+const loading =
+document.getElementById("loading");
 
+const bookHotspot =
+document.getElementById("bookHotspot");
 
-const pages =
-  [
-    ...document.querySelectorAll(
-      ".letter-page"
-    )
-  ];
+const penHotspot =
+document.getElementById("penHotspot");
+
+const passwordOverlay =
+document.getElementById("passwordOverlay");
+
+const passwordInput =
+document.getElementById("passwordInput");
+
+const passwordError =
+document.getElementById("passwordError");
+
+const unlockButton =
+document.getElementById("unlockButton");
+
+const cancelPassword =
+document.getElementById("cancelPassword");
+
+const letterOverlay =
+document.getElementById("letterOverlay");
+
+const letterWindow =
+document.getElementById("letterWindow");
+
+const closeLetter =
+document.getElementById("closeLetter");
+
+const pagesContainer =
+document.getElementById("pagesContainer");
+
+const previousPage =
+document.getElementById("previousPage");
+
+const nextPage =
+document.getElementById("nextPage");
+
+const pageNumber =
+document.getElementById("pageNumber");
+
+const letterControls =
+document.getElementById("letterControls");
+
+const letterFinalMessage =
+document.getElementById("letterFinalMessage");
+
+const messagesOverlay =
+document.getElementById("messagesOverlay");
+
+const closeMessages =
+document.getElementById("closeMessages");
+
+const messagesContainer =
+document.getElementById("messages");
+
+const nameInput =
+document.getElementById("nameInput");
+
+const messageInput =
+document.getElementById("messageInput");
+
+const sendButton =
+document.getElementById("sendButton");
+
+const archiveButton =
+document.getElementById("archiveButton");
+
+const archive =
+document.getElementById("archive");
+
+const archiveList =
+document.getElementById("archiveList");
+
+const closeArchive =
+document.getElementById("closeArchive");
 
 
 /* =========================================================
@@ -2121,55 +2069,15 @@ let unlocked = false;
 
 let currentPage = 0;
 
+let pages = [];
+
 let allMessages = [];
 
-let currentSheet = 0;
-
-let pendingAction = null;
+let currentMessageSheet = 0;
 
 
 /* =========================================================
-   CARREGAMENTO DA IMAGEM
-========================================================= */
-
-const sceneImage =
-  $("sceneImage");
-
-
-const imageError =
-  $("imageError");
-
-
-sceneImage.addEventListener(
-  "load",
-  function() {
-
-    console.log(
-      "Imagem da interface carregada corretamente."
-    );
-
-  }
-);
-
-
-sceneImage.addEventListener(
-  "error",
-  function() {
-
-    console.error(
-      "Não foi possível carregar assets/interface.png"
-    );
-
-    imageError.classList.remove(
-      "hidden"
-    );
-
-  }
-);
-
-
-/* =========================================================
-   LOADING
+   CARREGAMENTO
 ========================================================= */
 
 window.addEventListener(
@@ -2179,210 +2087,225 @@ window.addEventListener(
     setTimeout(
       function() {
 
-        $("loader")
-          .classList
-          .add("hide");
+        loading.classList.add("hidden");
 
       },
       5000
     );
+
+    carregarPaginas();
 
   }
 );
 
 
 /* =========================================================
-   TOAST
+   CARREGAR PÁGINAS DA CARTA
 ========================================================= */
 
-function toast(text) {
+/*
+   Aqui está uma das principais correções.
 
-  const element =
-    $("toast");
+   O site tenta encontrar:
 
-  element.textContent =
-    text;
+   page-1.png
+   page-2.png
+   page-3.png
+   page-4.png
+   ...
 
-  element.classList.add(
-    "show"
-  );
+   Quando encontra uma página, ela entra na carta.
 
+   Quando chega a uma página que não existe,
+   ela simplesmente é ignorada.
+
+   Assim você não precisa informar quantas páginas
+   existem.
+*/
+
+function carregarPaginas() {
+
+  pagesContainer.innerHTML = "";
+
+  pages = [];
+
+  let carregadas = 0;
+
+  let finalizado = false;
+
+
+  /*
+     Tentaremos encontrar até 50 páginas.
+  */
+
+  for (
+    let number = 1;
+    number <= 50;
+    number++
+  ) {
+
+    const img =
+      document.createElement("img");
+
+
+    img.className =
+      "letter-page";
+
+
+    img.alt =
+      "Página " + number;
+
+
+    img.dataset.page =
+      number;
+
+
+    img.src =
+      "./assets/page-" +
+      number +
+      ".png";
+
+
+    img.onload =
+      function() {
+
+        carregadas++;
+
+        /*
+           Ordena as páginas depois que carregam.
+        */
+
+        pages =
+          Array.from(
+            pagesContainer
+              .querySelectorAll(
+                ".letter-page"
+              )
+          ).sort(
+            function(a,b) {
+
+              return (
+                Number(a.dataset.page) -
+                Number(b.dataset.page)
+              );
+
+            }
+          );
+
+
+        atualizarCarta();
+
+      };
+
+
+    img.onerror =
+      function() {
+
+        /*
+           Se o arquivo não existir,
+           removemos o elemento.
+        */
+
+        img.remove();
+
+        /*
+           Depois que já temos algumas páginas,
+           atualizamos a interface.
+        */
+
+        if (carregadas > 0) {
+
+          atualizarCarta();
+
+        }
+
+      };
+
+
+    pagesContainer.appendChild(img);
+
+  }
+
+
+  /*
+     Pequeno atraso para garantir que
+     as páginas existentes tenham sido
+     processadas.
+  */
 
   setTimeout(
     function() {
 
-      element.classList.remove(
-        "show"
-      );
+      pages =
+        Array.from(
+          pagesContainer
+            .querySelectorAll(
+              ".letter-page"
+            )
+        ).sort(
+          function(a,b) {
+
+            return (
+              Number(a.dataset.page) -
+              Number(b.dataset.page)
+            );
+
+          }
+        );
+
+
+      atualizarCarta();
 
     },
-    2600
+    1000
   );
 
 }
 
 
 /* =========================================================
-   SENHA
+   ATUALIZAR CARTA
 ========================================================= */
 
-function askPassword(action) {
+function atualizarCarta() {
 
-  pendingAction =
-    action;
+  if (pages.length === 0) {
 
-  $("passwordOverlay")
-    .classList
-    .remove("hidden");
+    pageNumber.textContent =
+      "nenhuma página";
 
-  $("passwordInput")
-    .focus();
+    previousPage.disabled =
+      true;
 
-}
+    nextPage.disabled =
+      true;
 
-
-$("book").onclick =
-  function() {
-
-    if (unlocked) {
-
-      openLetter();
-
-    } else {
-
-      askPassword("letter");
-
-    }
-
-  };
-
-
-$("pen").onclick =
-  function() {
-
-    if (unlocked) {
-
-      openMessages();
-
-    } else {
-
-      askPassword("messages");
-
-    }
-
-  };
-
-
-$("cancelPassword").onclick =
-  function() {
-
-    $("passwordOverlay")
-      .classList
-      .add("hidden");
-
-    $("passwordInput")
-      .value = "";
-
-    $("passwordError")
-      .textContent = "";
-
-  };
-
-
-$("unlockButton").onclick =
-  verifyPassword;
-
-
-$("passwordInput").onkeydown =
-  function(event) {
-
-    if (
-      event.key === "Enter"
-    ) {
-
-      verifyPassword();
-
-    }
-
-  };
-
-
-function verifyPassword() {
-
-  const value =
-    $("passwordInput")
-      .value
-      .trim();
-
-
-  if (
-    value === PASSWORD
-  ) {
-
-    unlocked = true;
-
-    $("passwordOverlay")
-      .classList
-      .add("hidden");
-
-    $("passwordInput")
-      .value = "";
-
-    $("passwordError")
-      .textContent = "";
-
-
-    if (
-      pendingAction === "messages"
-    ) {
-
-      openMessages();
-
-    } else {
-
-      openLetter();
-
-    }
-
-
-  } else {
-
-    $("passwordError")
-      .textContent =
-      "A senha não está correta.";
-
-    $("passwordInput")
-      .select();
+    return;
 
   }
 
-}
+
+  if (
+    currentPage >= pages.length
+  ) {
+
+    currentPage =
+      pages.length - 1;
+
+  }
 
 
-/* =========================================================
-   CARTA
-========================================================= */
+  if (
+    currentPage < 0
+  ) {
 
-function openLetter() {
+    currentPage = 0;
 
-  currentPage = 0;
+  }
 
-  updatePage();
-
-  $("letterOverlay")
-    .classList
-    .remove("hidden");
-
-}
-
-
-function updatePage() {
 
   pages.forEach(
-    function(
-      page,
-      index
-    ) {
+    function(page, index) {
 
       page.classList.toggle(
         "active",
@@ -2393,32 +2316,223 @@ function updatePage() {
   );
 
 
-  $("pageNumber")
-    .textContent =
+  pageNumber.textContent =
     `${currentPage + 1} / ${pages.length}`;
 
 
-  $("previousPage")
-    .disabled =
+  previousPage.disabled =
     currentPage === 0;
 
 
-  $("nextPage")
-    .disabled =
-    currentPage === pages.length - 1;
+  nextPage.disabled =
+    currentPage ===
+    pages.length - 1;
 
 
-  $("lastNote")
-    .classList
-    .toggle(
-      "hidden",
-      currentPage !== pages.length - 1
-    );
+  /*
+     Mostra o aviso na última página.
+  */
+
+  if (
+    currentPage ===
+    pages.length - 1
+  ) {
+
+    letterFinalMessage
+      .classList
+      .add("visible");
+
+  } else {
+
+    letterFinalMessage
+      .classList
+      .remove("visible");
+
+  }
 
 }
 
 
-$("previousPage").onclick =
+/* =========================================================
+   ABRIR SENHA
+========================================================= */
+
+function abrirSenha() {
+
+  passwordOverlay
+    .classList
+    .remove("hidden");
+
+  passwordInput.focus();
+
+}
+
+
+/* =========================================================
+   LIVRO
+========================================================= */
+
+bookHotspot.addEventListener(
+  "click",
+  function() {
+
+    if (!unlocked) {
+
+      abrirSenha();
+
+      passwordInput.dataset.action =
+        "book";
+
+      return;
+
+    }
+
+    abrirCarta();
+
+  }
+);
+
+
+/* =========================================================
+   CANETA
+========================================================= */
+
+penHotspot.addEventListener(
+  "click",
+  function() {
+
+    if (!unlocked) {
+
+      abrirSenha();
+
+      passwordInput.dataset.action =
+        "messages";
+
+      return;
+
+    }
+
+    abrirMensagens();
+
+  }
+);
+
+
+/* =========================================================
+   SENHA
+========================================================= */
+
+unlockButton.addEventListener(
+  "click",
+  verificarSenha
+);
+
+
+passwordInput.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      verificarSenha();
+
+    }
+
+  }
+);
+
+
+function verificarSenha() {
+
+  const value =
+    passwordInput.value.trim();
+
+
+  if (
+    value === PASSWORD
+  ) {
+
+    unlocked = true;
+
+    passwordOverlay
+      .classList
+      .add("hidden");
+
+    passwordInput.value = "";
+
+    passwordError.textContent = "";
+
+
+    const action =
+      passwordInput.dataset.action;
+
+
+    if (
+      action === "messages"
+    ) {
+
+      abrirMensagens();
+
+    } else {
+
+      abrirCarta();
+
+    }
+
+
+  } else {
+
+    passwordError.textContent =
+      "A senha não está correta.";
+
+    passwordInput.select();
+
+  }
+
+}
+
+
+cancelPassword.addEventListener(
+  "click",
+  function() {
+
+    passwordOverlay
+      .classList
+      .add("hidden");
+
+    passwordInput.value = "";
+
+    passwordError.textContent = "";
+
+  }
+);
+
+
+/* =========================================================
+   ABRIR CARTA
+========================================================= */
+
+function abrirCarta() {
+
+  currentPage = 0;
+
+  atualizarCarta();
+
+  letterOverlay
+    .classList
+    .remove("hidden");
+
+}
+
+
+/* =========================================================
+   PÁGINA ANTERIOR
+========================================================= */
+
+previousPage.addEventListener(
+  "click",
   function() {
 
     if (
@@ -2427,14 +2541,20 @@ $("previousPage").onclick =
 
       currentPage--;
 
-      updatePage();
+      atualizarCarta();
 
     }
 
-  };
+  }
+);
 
 
-$("nextPage").onclick =
+/* =========================================================
+   PRÓXIMA PÁGINA
+========================================================= */
+
+nextPage.addEventListener(
+  "click",
   function() {
 
     if (
@@ -2444,66 +2564,128 @@ $("nextPage").onclick =
 
       currentPage++;
 
-      updatePage();
+      atualizarCarta();
 
     }
 
-  };
-
-
-$("closeLetter").onclick =
-  function() {
-
-    $("letterOverlay")
-      .classList
-      .add("hidden");
-
-  };
+  }
+);
 
 
 /* =========================================================
-   MENSAGENS
+   FECHAR CARTA
 ========================================================= */
 
-function openMessages() {
+closeLetter.addEventListener(
+  "click",
+  function() {
 
-  $("messagesOverlay")
+    letterOverlay
+      .classList
+      .add("hidden");
+
+  }
+);
+
+
+/* =========================================================
+   ABRIR MENSAGENS
+========================================================= */
+
+async function abrirMensagens() {
+
+  messagesOverlay
     .classList
     .remove("hidden");
 
-  loadMessages();
+  await carregarMensagens();
 
 }
 
 
-$("closeMessages").onclick =
+/* =========================================================
+   FECHAR MENSAGENS
+========================================================= */
+
+closeMessages.addEventListener(
+  "click",
   function() {
 
-    $("messagesOverlay")
+    messagesOverlay
       .classList
       .add("hidden");
 
-  };
+  }
+);
 
 
 /* =========================================================
-   FOLHAS
+   CARREGAR MENSAGENS
 ========================================================= */
 
-function sheets() {
+async function carregarMensagens() {
 
-  const result = [];
+  try {
+
+    const response =
+      await fetch(
+        API_URL +
+        "?action=messages&time=" +
+        Date.now()
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      data.success &&
+      Array.isArray(data.messages)
+    ) {
+
+      allMessages =
+        data.messages;
+
+    } else {
+
+      allMessages = [];
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "Erro ao carregar mensagens:",
+      error
+    );
+
+    allMessages = [];
+
+  }
+
+
+  renderizarFolhaAtual();
+
+}
+
+
+/* =========================================================
+   ORGANIZAR FOLHAS
+========================================================= */
+
+function obterFolhas() {
+
+  const sheets = [];
 
 
   for (
     let i = 0;
-
     i < allMessages.length;
-
     i += MESSAGES_PER_SHEET
   ) {
 
-    result.push(
+    sheets.push(
       allMessages.slice(
         i,
         i + MESSAGES_PER_SHEET
@@ -2514,15 +2696,41 @@ function sheets() {
 
 
   if (
-    result.length === 0
+    sheets.length === 0
   ) {
 
-    result.push([]);
+    sheets.push([]);
 
   }
 
 
-  return result;
+  return sheets;
+
+}
+
+
+/* =========================================================
+   RENDERIZAR FOLHA ATUAL
+========================================================= */
+
+function renderizarFolhaAtual() {
+
+  const sheets =
+    obterFolhas();
+
+
+  currentMessageSheet =
+    sheets.length - 1;
+
+
+  renderizarSheet(
+    currentMessageSheet
+  );
+
+
+  atualizarArquivo(
+    sheets
+  );
 
 }
 
@@ -2531,104 +2739,105 @@ function sheets() {
    RENDERIZAR FOLHA
 ========================================================= */
 
-function renderSheet(index) {
+function renderizarSheet(index) {
 
-  const allSheets =
-    sheets();
-
-
-  const current =
-    allSheets[index] || [];
+  const sheets =
+    obterFolhas();
 
 
-  $("messages")
-    .innerHTML = "";
+  const sheet =
+    sheets[index] || [];
+
+
+  messagesContainer.innerHTML =
+    "";
 
 
   if (
-    current.length === 0
+    sheet.length === 0
   ) {
 
-    $("messages")
-      .innerHTML =
-      '<div class="empty">ainda não há mensagens.</div>';
+    const empty =
+      document.createElement("div");
+
+
+    empty.className =
+      "empty-message";
+
+
+    empty.textContent =
+      "ainda não há mensagens.";
+
+
+    messagesContainer.appendChild(
+      empty
+    );
+
 
     return;
 
   }
 
 
-  current.forEach(
+  sheet.forEach(
     function(item) {
 
       const wrapper =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
+
 
       wrapper.className =
         "message";
 
 
-      wrapper.style
-        .setProperty(
-          "--rot",
-          (
-            Math.random() * 2 - 1
-          ).toFixed(2)
-          + "deg"
-        );
-
-
       const name =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
+
 
       name.className =
         "message-name";
 
+
       name.textContent =
-        item.name;
+        item.name || "";
 
 
       const text =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
+
 
       text.className =
         "message-text";
 
+
       text.textContent =
-        item.message;
+        item.message || "";
 
 
       const date =
-        document.createElement(
-          "div"
-        );
+        document.createElement("div");
+
 
       date.className =
         "message-date";
 
+
       date.textContent =
-        formatDate(
+        formatarData(
           item.timestamp
         );
 
 
-      wrapper.append(
-        name,
-        text,
-        date
+      wrapper.appendChild(name);
+
+      wrapper.appendChild(text);
+
+      wrapper.appendChild(date);
+
+
+      messagesContainer.appendChild(
+        wrapper
       );
-
-
-      $("messages")
-        .appendChild(
-          wrapper
-        );
 
     }
   );
@@ -2637,50 +2846,39 @@ function renderSheet(index) {
 
 
 /* =========================================================
-   ATUALIZAR
+   ARQUIVO DE FOLHAS
 ========================================================= */
 
-function refresh() {
+function atualizarArquivo(sheets) {
 
-  const allSheets =
-    sheets();
-
-
-  currentSheet =
-    allSheets.length - 1;
+  archiveList.innerHTML =
+    "";
 
 
-  renderSheet(
-    currentSheet
-  );
-
-
-  buildArchive(
-    allSheets
-  );
-
-}
-
-
-/* =========================================================
-   ARQUIVO
-========================================================= */
-
-function buildArchive(
-  allSheets
-) {
-
-  $("archiveList")
-    .innerHTML = "";
+  const oldSheets =
+    sheets.length - 1;
 
 
   if (
-    allSheets.length <= 1
+    oldSheets <= 0
   ) {
 
-    $("archiveList")
-      .innerHTML =
-      "<p style='opacity:.6'>Ainda não existem folhas anteriores.</p>";
+    const text =
+      document.createElement("p");
+
+
+    text.style.opacity =
+      ".6";
+
+
+    text.textContent =
+      "Ainda não existem folhas anteriores.";
+
+
+    archiveList.appendChild(
+      text
+    );
+
 
     return;
 
@@ -2688,386 +2886,41 @@ function buildArchive(
 
 
   for (
-    let i = 0;
-
-    i < allSheets.length - 1;
-
-    i++
+    let i = oldSheets - 1;
+    i >= 0;
+    i--
   ) {
 
     const button =
-      document.createElement(
-        "button"
-      );
+      document.createElement("button");
 
 
     button.textContent =
       `folha ${i + 1}`;
 
 
-    button.onclick =
+    button.addEventListener(
+      "click",
       function() {
 
-        $("archive")
+        currentMessageSheet =
+          i;
+
+
+        renderizarSheet(i);
+
+
+        archive
           .classList
           .add("hidden");
 
-        currentSheet =
-          i;
-
-        renderSheet(i);
-
-      };
-
-
-    $("archiveList")
-      .appendChild(
-        button
-      );
-
-  }
-
-}
-
-
-/* =========================================================
-   CARREGAR MENSAGENS
-========================================================= */
-
-async function loadMessages() {
-
-  if (!API_URL) {
-
-    allMessages = [];
-
-    refresh();
-
-    return;
-
-  }
-
-
-  try {
-
-    const data =
-      await jsonp(
-        "messages"
-      );
-
-
-    if (
-      data &&
-      data.success
-    ) {
-
-      allMessages =
-        Array.isArray(
-          data.messages
-        )
-        ? data.messages
-        : [];
-
-    } else {
-
-      allMessages = [];
-
-    }
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    toast(
-      "Não foi possível carregar as mensagens."
-    );
-
-  }
-
-
-  refresh();
-
-}
-
-
-/* =========================================================
-   JSONP
-========================================================= */
-
-function jsonp(
-  action,
-  extra = {}
-) {
-
-  return new Promise(
-    function(
-      resolve,
-      reject
-    ) {
-
-      const callbackName =
-        "callback_" +
-        Date.now() +
-        "_" +
-        Math.floor(
-          Math.random() * 9999
-        );
-
-
-      const script =
-        document.createElement(
-          "script"
-        );
-
-
-      const params =
-        new URLSearchParams({
-
-          action:
-
-            action,
-
-          callback:
-
-            callbackName,
-
-          _:
-
-            Date.now(),
-
-          ...extra
-
-        });
-
-
-      window[callbackName] =
-        function(data) {
-
-          delete window[
-            callbackName
-          ];
-
-          script.remove();
-
-          resolve(data);
-
-        };
-
-
-      script.onerror =
-        function() {
-
-          delete window[
-            callbackName
-          ];
-
-          script.remove();
-
-          reject(
-            new Error(
-              "API indisponível"
-            )
-          );
-
-        };
-
-
-      script.src =
-        API_URL +
-        "?" +
-        params.toString();
-
-
-      document.body.appendChild(
-        script
-      );
-
-
-      setTimeout(
-        function() {
-
-          if (
-            window[
-              callbackName
-            ]
-          ) {
-
-            delete window[
-              callbackName
-            ];
-
-            script.remove();
-
-            reject(
-              new Error(
-                "timeout"
-              )
-            );
-
-          }
-
-        },
-        12000
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   ENVIAR MENSAGEM
-========================================================= */
-
-$("sendButton").onclick =
-  sendMessage;
-
-
-$("messageInput").onkeydown =
-  function(event) {
-
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
-
-      event.preventDefault();
-
-      sendMessage();
-
-    }
-
-  };
-
-
-async function sendMessage() {
-
-  const name =
-    $("nameInput")
-      .value
-      .trim();
-
-
-  const message =
-    $("messageInput")
-      .value
-      .trim();
-
-
-  if (!name) {
-
-    toast(
-      "Coloque seu nome."
-    );
-
-    $("nameInput")
-      .focus();
-
-    return;
-
-  }
-
-
-  if (!message) {
-
-    toast(
-      "Escreva uma mensagem."
-    );
-
-    $("messageInput")
-      .focus();
-
-    return;
-
-  }
-
-
-  if (!API_URL) {
-
-    toast(
-      "Configure o Google Apps Script."
-    );
-
-    return;
-
-  }
-
-
-  $("sendButton")
-    .disabled = true;
-
-
-  $("sendButton")
-    .textContent =
-    "enviando...";
-
-
-  try {
-
-    const data =
-      await jsonp(
-        "save",
-        {
-          name:
-            name,
-
-          message:
-            message
-        }
-      );
-
-
-    if (
-      !data ||
-      !data.success
-    ) {
-
-      throw new Error(
-        data?.error ||
-        "erro"
-      );
-
-    }
-
-
-    $("nameInput")
-      .value = "";
-
-
-    $("messageInput")
-      .value = "";
-
-
-    toast(
-      "Mensagem guardada."
+      }
     );
 
 
-    await loadMessages();
-
-
-  } catch (error) {
-
-    console.error(
-      error
+    archiveList.appendChild(
+      button
     );
-
-    toast(
-      "Não foi possível salvar. Verifique o Apps Script."
-    );
-
-  } finally {
-
-    $("sendButton")
-      .disabled = false;
-
-
-    $("sendButton")
-      .textContent =
-      "enviar";
 
   }
 
@@ -3078,111 +2931,262 @@ async function sendMessage() {
    ABRIR ARQUIVO
 ========================================================= */
 
-$("archiveButton").onclick =
+archiveButton.addEventListener(
+  "click",
   function() {
 
-    $("archive")
+    const sheets =
+      obterFolhas();
+
+
+    atualizarArquivo(
+      sheets
+    );
+
+
+    archive
       .classList
       .remove("hidden");
 
-    buildArchive(
-      sheets()
-    );
-
-  };
+  }
+);
 
 
-$("closeArchive").onclick =
+/* =========================================================
+   FECHAR ARQUIVO
+========================================================= */
+
+closeArchive.addEventListener(
+  "click",
   function() {
 
-    $("archive")
+    archive
       .classList
       .add("hidden");
 
-  };
+  }
+);
+
+
+/* =========================================================
+   ENVIAR MENSAGEM
+========================================================= */
+
+sendButton.addEventListener(
+  "click",
+  enviarMensagem
+);
+
+
+messageInput.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
+
+      event.preventDefault();
+
+      enviarMensagem();
+
+    }
+
+  }
+);
+
+
+async function enviarMensagem() {
+
+  const name =
+    nameInput.value.trim();
+
+
+  const message =
+    messageInput.value.trim();
+
+
+  if (!name) {
+
+    alert(
+      "Antes de enviar, coloque seu nome."
+    );
+
+    nameInput.focus();
+
+    return;
+
+  }
+
+
+  if (!message) {
+
+    alert(
+      "Escreva uma mensagem."
+    );
+
+    messageInput.focus();
+
+    return;
+
+  }
+
+
+  sendButton.disabled =
+    true;
+
+
+  sendButton.textContent =
+    "enviando...";
+
+
+  try {
+
+    const response =
+      await fetch(
+        API_URL,
+        {
+          method:
+            "POST",
+
+          headers:
+            {
+              "Content-Type":
+                "text/plain;charset=utf-8"
+            },
+
+          body:
+            JSON.stringify(
+              {
+                name:
+                  name,
+
+                message:
+                  message
+              }
+            )
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !data.success
+    ) {
+
+      throw new Error(
+        data.error ||
+        "Erro ao salvar."
+      );
+
+    }
+
+
+    nameInput.value =
+      "";
+
+    messageInput.value =
+      "";
+
+
+    await carregarMensagens();
+
+
+    alert(
+      "Mensagem guardada."
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+
+    alert(
+      "Não foi possível salvar a mensagem. Verifique a publicação do Google Apps Script."
+    );
+
+  }
+
+
+  sendButton.disabled =
+    false;
+
+
+  sendButton.textContent =
+    "enviar";
+
+}
 
 
 /* =========================================================
    DATA
 ========================================================= */
 
-function formatDate(
-  value
-) {
+function formatarData(value) {
 
-  const date =
-    new Date(value);
-
-
-  if (
-    isNaN(date)
-  ) {
+  if (!value) {
 
     return "";
 
   }
 
 
-  return date.toLocaleString(
-    "pt-BR",
-    {
-      day:
-        "2-digit",
+  try {
 
-      month:
-        "2-digit",
+    const date =
+      new Date(value);
 
-      year:
-        "numeric",
 
-      hour:
-        "2-digit",
+    if (
+      isNaN(
+        date.getTime()
+      )
+    ) {
 
-      minute:
-        "2-digit"
+      return "";
 
     }
-  );
+
+
+    return date.toLocaleString(
+      "pt-BR",
+      {
+        day:
+          "2-digit",
+
+        month:
+          "2-digit",
+
+        year:
+          "numeric",
+
+        hour:
+          "2-digit",
+
+        minute:
+          "2-digit"
+      }
+    );
+
+  } catch {
+
+    return "";
+
+  }
 
 }
 
 
 /* =========================================================
-   OBJETOS DA MESA
-========================================================= */
-
-$("globeHotspot").onclick =
-  function() {
-
-    toast(
-      "Recife, PE  ·  Cacoal, RO"
-    );
-
-  };
-
-
-$("calendarHotspot").onclick =
-  function() {
-
-    toast(
-      "10 de agosto de 2025"
-    );
-
-  };
-
-
-$("carHotspot").onclick =
-  function() {
-
-    toast(
-      "Cadillac Escalade"
-    );
-
-  };
-
-
-/* =========================================================
-   ESC
+   TECLADO
 ========================================================= */
 
 document.addEventListener(
@@ -3190,25 +3194,113 @@ document.addEventListener(
   function(event) {
 
     if (
-      event.key === "Escape"
+      event.key !== "Escape"
     ) {
 
-      document
-        .querySelectorAll(
-          ".modal-backdrop, .letter-overlay, .messages-overlay, .archive"
-        )
-        .forEach(
-          function(element) {
-
-            element
-              .classList
-              .add("hidden");
-
-          }
-        );
+      return;
 
     }
 
+
+    passwordOverlay
+      .classList
+      .add("hidden");
+
+
+    letterOverlay
+      .classList
+      .add("hidden");
+
+
+    messagesOverlay
+      .classList
+      .add("hidden");
+
+
+    archive
+      .classList
+      .add("hidden");
+
+  }
+);
+
+
+/* =========================================================
+   SWIPE NO CELULAR
+========================================================= */
+
+let touchStartX = 0;
+
+
+letterWindow.addEventListener(
+  "touchstart",
+  function(event) {
+
+    touchStartX =
+      event.changedTouches[0].screenX;
+
+  },
+  {
+    passive: true
+  }
+);
+
+
+letterWindow.addEventListener(
+  "touchend",
+  function(event) {
+
+    const touchEndX =
+      event.changedTouches[0].screenX;
+
+
+    const difference =
+      touchEndX -
+      touchStartX;
+
+
+    if (
+      Math.abs(difference) <
+      50
+    ) {
+
+      return;
+
+    }
+
+
+    if (
+      difference < 0
+    ) {
+
+      if (
+        currentPage <
+        pages.length - 1
+      ) {
+
+        currentPage++;
+
+        atualizarCarta();
+
+      }
+
+    } else {
+
+      if (
+        currentPage > 0
+      ) {
+
+        currentPage--;
+
+        atualizarCarta();
+
+      }
+
+    }
+
+  },
+  {
+    passive: true
   }
 );
 
