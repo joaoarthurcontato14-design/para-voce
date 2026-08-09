@@ -7,7 +7,7 @@
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 >
 
 <title>para você.</title>
@@ -15,16 +15,16 @@
 <style>
 
 /* =========================================================
-   CONFIGURAÇÕES
+   CONFIGURAÇÕES GERAIS
 ========================================================= */
 
 :root {
 
   --blue: #283b54;
-  --blue-dark: #1c2b3e;
+  --blue-dark: #1d2c40;
 
-  --paper: #f6f1e6;
-  --paper-shadow: rgba(0,0,0,.45);
+  --paper: #f7f4ec;
+  --paper-dark: #ebe6d9;
 
   --ink: #252525;
 
@@ -42,7 +42,6 @@
   box-sizing: border-box;
 
   margin: 0;
-
   padding: 0;
 
 }
@@ -54,24 +53,22 @@ body {
   width: 100%;
   height: 100%;
 
+  overflow: hidden;
+
 }
 
 
 body {
 
-  overflow: hidden;
+  background: var(--blue);
 
-  background:
-    var(--blue);
+  color: white;
 
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-
-  color:
-    white;
 
 }
 
@@ -82,10 +79,10 @@ body {
 
 #app {
 
+  position: relative;
+
   width: 100vw;
   height: 100vh;
-
-  position: relative;
 
   overflow: hidden;
 
@@ -104,15 +101,13 @@ body {
 
   z-index: 9999;
 
-  background:
-    var(--blue);
+  background: var(--blue);
 
   display: flex;
 
   flex-direction: column;
 
   align-items: center;
-
   justify-content: center;
 
   color: white;
@@ -142,48 +137,62 @@ body {
     "Times New Roman",
     serif;
 
-  font-size:
-    clamp(26px, 5vw, 48px);
+  font-size: clamp(28px, 5vw, 48px);
 
-  letter-spacing:
-    .03em;
+  letter-spacing: .04em;
 
-  margin-bottom:
-    15px;
+  animation:
+    loadingPulse 2s ease-in-out infinite;
 
 }
 
 
-.loading-author {
+.loading-subtitle {
 
-  font-size:
-    13px;
+  margin-top: 12px;
 
-  opacity:
-    .55;
+  font-size: 12px;
 
-  letter-spacing:
-    .08em;
+  letter-spacing: .18em;
+
+  text-transform: uppercase;
+
+  opacity: .55;
 
 }
 
 
 .loading-line {
 
-  width:
-    80px;
+  width: 90px;
+  height: 1px;
 
-  height:
-    1px;
+  background: rgba(255,255,255,.55);
 
-  background:
-    rgba(255,255,255,.5);
+  margin-top: 28px;
 
-  margin-top:
-    28px;
+  transform-origin: left;
 
   animation:
-    loadingLine 1.5s ease-in-out infinite;
+    loadingLine 2.5s ease-in-out infinite;
+
+}
+
+
+@keyframes loadingPulse {
+
+  0%,
+  100% {
+
+    opacity: .55;
+
+  }
+
+  50% {
+
+    opacity: 1;
+
+  }
 
 }
 
@@ -192,31 +201,19 @@ body {
 
   0% {
 
-    transform:
-      scaleX(.2);
-
-    opacity:
-      .2;
+    transform: scaleX(0);
 
   }
 
   50% {
 
-    transform:
-      scaleX(1);
-
-    opacity:
-      1;
+    transform: scaleX(1);
 
   }
 
   100% {
 
-    transform:
-      scaleX(.2);
-
-    opacity:
-      .2;
+    transform: scaleX(0);
 
   }
 
@@ -227,136 +224,135 @@ body {
    INTERFACE PRINCIPAL
 ========================================================= */
 
-.main-interface {
+.interface {
 
   position: absolute;
 
   inset: 0;
 
-  background-color:
-    var(--blue);
+  width: 100%;
+  height: 100%;
 
-  background-image:
-    url("./assets/interface.png");
-
-  background-position:
-    center;
-
-  background-repeat:
-    no-repeat;
-
-  background-size:
-    cover;
+  background: var(--blue);
 
 }
 
 
-/*
-   Uma camada muito discreta para melhorar
-   a leitura e dar profundidade.
-*/
+/* =========================================================
+   IMAGEM PRINCIPAL DA MESA
+========================================================= */
 
-.main-interface::after {
-
-  content: "";
+.interface-background {
 
   position: absolute;
 
   inset: 0;
 
-  background:
-    radial-gradient(
-      circle at center,
-      transparent 35%,
-      rgba(0,0,0,.16) 100%
-    );
+  width: 100%;
+  height: 100%;
 
-  pointer-events:
-    none;
+  object-fit: cover;
+
+  object-position: center center;
+
+  display: block;
+
+  z-index: 1;
+
+  user-select: none;
+
+  -webkit-user-drag: none;
 
 }
 
 
 /* =========================================================
    ÁREAS CLICÁVEIS
+=========================================================
+
+   IMPORTANTE:
+
+   Esses elementos são INVISÍVEIS.
+
+   Eles ficam sobre os objetos da imagem.
+
 ========================================================= */
 
-/*
-   Essas áreas são invisíveis.
 
-   Elas ficam por cima da imagem da mesa.
+/* -------------------------
+   LIVRO
+------------------------- */
 
-   Se precisar mudar a posição posteriormente,
-   basta alterar left/top/width/height.
-*/
-
-
-.hotspot {
+.book-hotspot {
 
   position: absolute;
 
   z-index: 20;
 
-  border: none;
+  cursor: pointer;
 
   background: transparent;
 
-  cursor: pointer;
+  /*
+     POSIÇÃO DO LIVRO
+  */
 
-  -webkit-tap-highlight-color:
-    transparent;
+  width: 25%;
+  height: 42%;
 
-}
+  left: 37.5%;
+  top: 28%;
 
-
-/* LIVRO */
-
-.book-hotspot {
-
-  left: 50%;
-
-  top: 50%;
-
-  width: 27%;
-
-  height: 48%;
-
-  transform:
-    translate(-50%, -50%);
+  border-radius: 12px;
 
 }
 
 
-/* CANETA */
+/* -------------------------
+   CANETA
+------------------------- */
 
 .pen-hotspot {
 
-  left: 68%;
+  position: absolute;
 
-  top: 73%;
+  z-index: 21;
 
-  width: 18%;
+  cursor: pointer;
 
-  height: 13%;
+  background: transparent;
 
-  transform:
-    translate(-50%, -50%);
+  /*
+     POSIÇÃO DA CANETA
+  */
+
+  width: 20%;
+  height: 9%;
+
+  right: 20%;
+  bottom: 17%;
+
+  transform: rotate(-30deg);
+
+  border-radius: 999px;
 
 }
 
 
-/* efeito discreto ao passar o mouse */
+/*
+   Durante o ajuste da caneta,
+   você pode trocar transparent por:
 
-.hotspot:hover {
+   rgba(255,0,0,.25)
 
-  background:
-    rgba(255,255,255,.025);
+   para enxergar a área clicável.
 
-}
+   Depois volte para transparent.
+*/
 
 
 /* =========================================================
-   MODAL DE SENHA
+   MODAL
 ========================================================= */
 
 .overlay {
@@ -370,53 +366,39 @@ body {
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
   padding: 20px;
 
   background:
-    rgba(15,25,38,.82);
+    rgba(12,21,32,.84);
 
   backdrop-filter:
-    blur(18px);
+    blur(14px);
 
   -webkit-backdrop-filter:
-    blur(18px);
+    blur(14px);
 
 }
 
 
-.overlay.hidden {
+.modal {
 
-  display: none;
+  width: min(440px, 92vw);
 
-}
-
-
-.password-modal {
-
-  width:
-    min(420px, 92vw);
-
-  padding:
-    38px 30px;
-
-  border-radius:
-    26px;
+  padding: 36px;
 
   background:
     rgba(247,244,236,.98);
 
-  color:
-    #222;
+  color: #222;
 
-  text-align:
-    center;
+  border-radius: 24px;
 
   box-shadow:
-    0 30px 90px
-    rgba(0,0,0,.45);
+    0 30px 80px rgba(0,0,0,.45);
+
+  text-align: center;
 
   animation:
     modalIn .35s ease;
@@ -432,7 +414,7 @@ body {
 
     transform:
       translateY(15px)
-      scale(.98);
+      scale(.97);
 
   }
 
@@ -449,154 +431,133 @@ body {
 }
 
 
-.password-modal h2 {
+.modal h2 {
 
   font-family:
     Georgia,
     "Times New Roman",
     serif;
 
-  font-weight:
-    400;
+  font-size: 25px;
 
-  font-size:
-    25px;
-
-  margin-bottom:
-    10px;
+  margin-bottom: 12px;
 
 }
 
 
-.password-modal p {
+.modal p {
 
-  color:
-    #666;
+  color: #666;
 
-  line-height:
-    1.5;
+  line-height: 1.5;
 
-  font-size:
-    14px;
-
-  margin-bottom:
-    23px;
+  margin-bottom: 24px;
 
 }
 
 
-.password-input {
+input,
+textarea {
 
   width: 100%;
 
-  height: 52px;
-
   border:
-    1px solid #d7d0c3;
-
-  border-radius:
-    14px;
+    1px solid #d5d0c5;
 
   background:
     #fffdf8;
 
-  color:
-    #222;
+  color: #222;
 
-  text-align:
-    center;
+  border-radius: 14px;
 
-  font-size:
-    18px;
+  padding: 14px 15px;
 
-  letter-spacing:
-    .18em;
+  font-size: 16px;
 
-  outline:
-    none;
+  font-family: inherit;
 
-  margin-bottom:
-    14px;
+  outline: none;
 
 }
 
 
-.password-input:focus {
+input:focus,
+textarea:focus {
 
   border-color:
     var(--blue);
 
+  box-shadow:
+    0 0 0 3px
+    rgba(40,59,84,.08);
+
 }
 
 
-.primary-button {
+button {
+
+  border: none;
+
+  border-radius: 999px;
+
+  padding: 13px 22px;
+
+  cursor: pointer;
+
+  background: var(--blue);
+
+  color: white;
+
+  font-size: 15px;
+
+  font-family: inherit;
+
+  transition:
+    transform .2s ease,
+    opacity .2s ease;
+
+}
+
+
+button:hover {
+
+  transform:
+    translateY(-2px);
+
+  opacity: .9;
+
+}
+
+
+button:disabled {
+
+  opacity: .5;
+
+  cursor: default;
+
+  transform: none;
+
+}
+
+
+.secondary {
+
+  background: transparent;
+
+  color: #303030;
 
   border:
-    none;
+    1px solid #ccc5b7;
 
-  border-radius:
-    999px;
-
-  padding:
-    13px 25px;
-
-  background:
-    var(--blue);
-
-  color:
-    white;
-
-  cursor:
-    pointer;
-
-  font-size:
-    14px;
+  margin-left: 8px;
 
 }
 
 
-.secondary-button {
+.hidden {
 
-  border:
-    1px solid #d2cabe;
-
-  border-radius:
-    999px;
-
-  padding:
-    12px 22px;
-
-  background:
-    transparent;
-
-  color:
-    #333;
-
-  cursor:
-    pointer;
-
-  font-size:
-    14px;
-
-  margin-left:
-    7px;
-
-}
-
-
-.password-error {
-
-  color:
-    #9c3f3f !important;
-
-  margin-top:
-    14px;
-
-  margin-bottom:
-    0 !important;
-
-  min-height:
-    20px;
+  display: none !important;
 
 }
 
@@ -613,82 +574,67 @@ body {
 
   z-index: 2000;
 
+  background:
+    rgba(24,37,54,.97);
+
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
-  padding: 20px;
-
-  background:
-    rgba(26,39,56,.96);
-
-  backdrop-filter:
-    blur(12px);
+  padding: 18px;
 
 }
 
 
-.letter-overlay.hidden {
-
-  display: none;
-
-}
-
-
-.letter-window {
+.letter {
 
   position: relative;
 
-  width:
-    min(900px, 94vw);
+  width: min(900px, 94vw);
 
-  height:
-    min(86vh, 780px);
+  height: min(88vh, 900px);
 
   display: flex;
 
   align-items: center;
-
   justify-content: center;
+
+  background: transparent;
+
+  overflow: hidden;
 
 }
 
+
+/*
+   A página sempre será reduzida
+   para caber inteira dentro da tela.
+*/
 
 .letter-page {
 
   display: none;
 
-  max-width:
-    100%;
+  width: 100%;
+  height: 100%;
 
-  max-height:
-    100%;
+  object-fit: contain;
 
-  width:
-    auto;
+  object-position: center center;
 
-  height:
-    auto;
+  background: white;
 
-  object-fit:
-    contain;
+  user-select: none;
 
-  background:
-    white;
-
-  box-shadow:
-    0 30px 90px
-    rgba(0,0,0,.5);
+  -webkit-user-drag: none;
 
 }
 
 
 .letter-page.active {
 
-  display:
-    block;
+  display: block;
 
 }
 
@@ -702,8 +648,7 @@ body {
   position: absolute;
 
   left: 50%;
-
-  bottom: -5px;
+  bottom: 18px;
 
   transform:
     translateX(-50%);
@@ -712,157 +657,109 @@ body {
 
   align-items: center;
 
-  gap: 12px;
+  gap: 10px;
 
-  padding:
-    8px;
-
-  border-radius:
-    999px;
+  padding: 7px;
 
   background:
     rgba(0,0,0,.72);
 
+  border-radius: 999px;
+
   box-shadow:
-    0 10px 30px
-    rgba(0,0,0,.3);
+    0 10px 30px rgba(0,0,0,.25);
 
 }
 
 
-.page-button {
+.letter-controls button {
 
-  width:
-    38px;
+  width: 42px;
+  height: 42px;
 
-  height:
-    38px;
+  padding: 0;
 
-  border:
-    none;
+  display: flex;
 
-  border-radius:
-    50%;
-
-  background:
-    rgba(255,255,255,.12);
-
-  color:
-    white;
-
-  cursor:
-    pointer;
-
-  font-size:
-    17px;
-
-}
-
-
-.page-button:disabled {
-
-  opacity:
-    .25;
-
-  cursor:
-    default;
+  align-items: center;
+  justify-content: center;
 
 }
 
 
 .page-number {
 
-  min-width:
-    60px;
+  min-width: 58px;
 
-  text-align:
-    center;
+  text-align: center;
 
-  color:
-    white;
+  color: white;
 
-  font-size:
-    12px;
+  font-size: 13px;
 
 }
 
 
-.letter-close {
+.letter-message {
 
   position: absolute;
 
-  right: 0;
+  left: 50%;
 
-  top: -5px;
+  bottom: 76px;
+
+  transform:
+    translateX(-50%);
+
+  padding:
+    11px 18px;
+
+  background:
+    rgba(40,59,84,.95);
+
+  color: white;
+
+  border-radius: 999px;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.25);
+
+}
+
+
+/* =========================================================
+   FECHAR CARTA
+========================================================= */
+
+.close {
+
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
 
   z-index: 10;
 
-  width:
-    42px;
+  width: 42px;
+  height: 42px;
 
-  height:
-    42px;
+  padding: 0;
 
-  border:
-    none;
-
-  border-radius:
-    50%;
+  border-radius: 50%;
 
   background:
     rgba(0,0,0,.65);
 
-  color:
-    white;
+  display: flex;
 
-  font-size:
-    25px;
+  align-items: center;
+  justify-content: center;
 
-  cursor:
-    pointer;
-
-}
-
-
-.letter-final-message {
-
-  position: absolute;
-
-  right: 20px;
-
-  bottom: 20px;
-
-  padding:
-    11px 17px;
-
-  border-radius:
-    999px;
-
-  background:
-    rgba(40,59,84,.94);
-
-  color:
-    white;
-
-  font-size:
-    12px;
-
-  opacity:
-    0;
-
-  pointer-events:
-    none;
-
-  transition:
-    opacity .3s ease;
-
-}
-
-
-.letter-final-message.visible {
-
-  opacity:
-    1;
+  font-size: 22px;
 
 }
 
@@ -879,24 +776,15 @@ body {
 
   z-index: 3000;
 
+  background:
+    rgba(24,37,54,.97);
+
   display: flex;
 
   align-items: center;
-
   justify-content: center;
 
-  padding: 20px;
-
-  background:
-    rgba(27,42,59,.97);
-
-}
-
-
-.messages-overlay.hidden {
-
-  display:
-    none;
+  padding: 18px;
 
 }
 
@@ -905,14 +793,9 @@ body {
 
   position: relative;
 
-  width:
-    min(900px, 94vw);
+  width: min(900px, 94vw);
 
-  height:
-    min(85vh, 820px);
-
-  padding:
-    55px 55px 115px;
+  height: min(84vh, 850px);
 
   background:
     var(--paper);
@@ -920,12 +803,16 @@ body {
   color:
     var(--ink);
 
+  padding:
+    50px;
+
   box-shadow:
     0 30px 90px
-    var(--paper-shadow);
+    rgba(0,0,0,.45);
 
-  overflow:
-    hidden;
+  overflow: hidden;
+
+  border-radius: 3px;
 
 }
 
@@ -936,91 +823,68 @@ body {
 
   position: absolute;
 
-  inset: 22px;
+  inset: 25px;
 
   border:
     1px solid
-    rgba(40,40,40,.08);
+    rgba(50,50,50,.08);
 
-  pointer-events:
-    none;
+  pointer-events: none;
 
 }
 
 
 .paper-title {
 
-  position:
-    relative;
+  position: relative;
 
-  text-align:
-    center;
+  z-index: 2;
+
+  text-align: center;
 
   font-family:
     Georgia,
     "Times New Roman",
     serif;
 
-  font-size:
-    21px;
+  font-size: 22px;
 
-  line-height:
-    1.4;
-
-  margin-bottom:
-    28px;
+  margin-bottom: 25px;
 
 }
 
 
 .messages {
 
-  position:
-    relative;
+  position: relative;
 
   height:
-    calc(100% - 65px);
+    calc(100% - 120px);
 
-  overflow-y:
-    auto;
+  overflow-y: auto;
 
-  padding-right:
-    10px;
+  padding-right: 10px;
 
 }
 
 
 .messages::-webkit-scrollbar {
 
-  width:
-    4px;
+  width: 4px;
 
 }
 
 
 .messages::-webkit-scrollbar-thumb {
 
-  background:
-    rgba(0,0,0,.2);
+  background: rgba(0,0,0,.15);
+
+  border-radius: 999px;
 
 }
 
 
-/* =========================================================
-   MENSAGEM INDIVIDUAL
-========================================================= */
-
 .message {
-
-  margin-bottom:
-    24px;
-
-  padding-bottom:
-    16px;
-
-  border-bottom:
-    1px dashed
-    rgba(0,0,0,.12);
 
   font-family:
     "Segoe Print",
@@ -1028,44 +892,35 @@ body {
     "Comic Sans MS",
     cursive;
 
+  margin-bottom: 22px;
+
+  line-height: 1.45;
+
+  transform:
+    rotate(var(--rotation));
+
 }
 
 
 .message-name {
 
-  font-size:
-    17px;
+  font-weight: bold;
 
-  font-weight:
-    bold;
-
-  margin-bottom:
-    4px;
+  font-size: 17px;
 
 }
 
 
 .message-text {
 
-  white-space:
-    pre-wrap;
+  white-space: pre-wrap;
 
-  word-break:
-    break-word;
-
-  font-size:
-    16px;
-
-  line-height:
-    1.5;
+  font-size: 16px;
 
 }
 
 
 .message-date {
-
-  margin-top:
-    6px;
 
   font-family:
     -apple-system,
@@ -1073,11 +928,11 @@ body {
     "Segoe UI",
     sans-serif;
 
-  font-size:
-    10px;
+  font-size: 10px;
 
-  opacity:
-    .45;
+  opacity: .45;
+
+  margin-top: 4px;
 
 }
 
@@ -1090,140 +945,65 @@ body {
 
   position: absolute;
 
-  left:
-    50%;
+  left: 50%;
 
-  bottom:
-    22px;
+  bottom: 18px;
 
   transform:
     translateX(-50%);
 
-  width:
-    calc(100% - 70px);
+  width: calc(100% - 100px);
 
-  display:
-    flex;
+  display: flex;
 
-  gap:
-    8px;
+  gap: 8px;
 
 }
 
 
 .message-form input {
 
-  height:
-    46px;
-
-  border:
-    1px solid #d5cec0;
-
-  border-radius:
-    12px;
-
-  padding:
-    0 13px;
-
-  background:
-    #fffdf8;
-
-  color:
-    #222;
-
-  outline:
-    none;
+  margin: 0;
 
 }
 
 
-.name-input {
+.message-form input:first-child {
 
-  width:
-    25%;
-
-}
-
-
-.message-input {
-
-  flex:
-    1;
+  width: 28%;
 
 }
 
 
-.send-button {
+.message-form input:nth-child(2) {
 
-  height:
-    46px;
-
-  padding:
-    0 20px;
-
-  border:
-    none;
-
-  border-radius:
-    12px;
-
-  background:
-    var(--blue);
-
-  color:
-    white;
-
-  cursor:
-    pointer;
+  width: 52%;
 
 }
 
 
-.send-button:disabled {
+.message-form button {
 
-  opacity:
-    .5;
-
-  cursor:
-    wait;
+  width: 20%;
 
 }
 
 
 /* =========================================================
-   BOTÕES DA FOLHA
+   BOTÕES DAS MENSAGENS
 ========================================================= */
 
 .archive-button {
 
   position: absolute;
 
-  top:
-    20px;
+  top: 20px;
+  left: 20px;
 
-  left:
-    20px;
-
-  border:
-    none;
-
-  border-radius:
-    999px;
-
-  padding:
-    9px 14px;
+  z-index: 5;
 
   background:
-    var(--blue);
-
-  color:
-    white;
-
-  font-size:
-    11px;
-
-  cursor:
-    pointer;
+    rgba(40,59,84,.95);
 
 }
 
@@ -1232,41 +1012,23 @@ body {
 
   position: absolute;
 
-  top:
-    18px;
+  top: 20px;
+  right: 20px;
 
-  right:
-    18px;
+  z-index: 5;
 
-  width:
-    38px;
+  width: 40px;
+  height: 40px;
 
-  height:
-    38px;
+  padding: 0;
 
-  border:
-    none;
-
-  border-radius:
-    50%;
-
-  background:
-    var(--blue);
-
-  color:
-    white;
-
-  font-size:
-    21px;
-
-  cursor:
-    pointer;
+  border-radius: 50%;
 
 }
 
 
 /* =========================================================
-   ARQUIVO
+   ARQUIVO DE FOLHAS
 ========================================================= */
 
 .archive {
@@ -1278,30 +1040,16 @@ body {
   z-index: 4000;
 
   background:
-    rgba(27,42,59,.98);
+    rgba(24,37,54,.98);
 
-  display:
-    flex;
+  display: flex;
 
-  flex-direction:
-    column;
+  flex-direction: column;
 
-  align-items:
-    center;
+  align-items: center;
+  justify-content: center;
 
-  justify-content:
-    center;
-
-  padding:
-    25px;
-
-}
-
-
-.archive.hidden {
-
-  display:
-    none;
+  padding: 25px;
 
 }
 
@@ -1310,88 +1058,46 @@ body {
 
   font-family:
     Georgia,
+    "Times New Roman",
     serif;
 
-  font-weight:
-    400;
-
-  margin-bottom:
-    22px;
+  margin-bottom: 20px;
 
 }
 
 
 .archive-list {
 
-  display:
-    flex;
+  display: flex;
 
-  flex-wrap:
-    wrap;
+  gap: 10px;
 
-  justify-content:
-    center;
+  flex-wrap: wrap;
 
-  gap:
-    10px;
+  justify-content: center;
 
-  max-width:
-    700px;
+  max-width: 700px;
 
 }
 
 
 .archive-list button {
 
-  border:
-    none;
-
-  border-radius:
-    999px;
-
-  padding:
-    11px 18px;
-
   background:
-    var(--paper);
+    #f7f4ec;
 
   color:
     #222;
-
-  cursor:
-    pointer;
 
 }
 
 
 .archive-close {
 
-  position:
-    absolute;
+  position: absolute;
 
-  top:
-    20px;
-
-  right:
-    20px;
-
-  border:
-    none;
-
-  border-radius:
-    999px;
-
-  padding:
-    10px 17px;
-
-  background:
-    var(--paper);
-
-  color:
-    #222;
-
-  cursor:
-    pointer;
+  right: 20px;
+  top: 20px;
 
 }
 
@@ -1402,183 +1108,276 @@ body {
 
 @media (max-width: 700px) {
 
-  .main-interface {
 
-    background-size:
-      cover;
+  /* -------------------------
+     INTERFACE
+  ------------------------- */
 
-    background-position:
-      center;
+  .interface-background {
+
+    object-fit: cover;
 
   }
 
 
   /*
-     Áreas clicáveis maiores no celular.
+     Ajuste dos hotspots no celular.
   */
 
   .book-hotspot {
 
-    width:
-      42%;
+    width: 34%;
 
-    height:
-      43%;
+    height: 38%;
 
-    left:
-      50%;
+    left: 33%;
 
-    top:
-      49%;
+    top: 31%;
 
   }
 
 
   .pen-hotspot {
 
-    width:
-      30%;
+    width: 27%;
 
-    height:
-      17%;
+    height: 10%;
 
-    left:
-      69%;
+    right: 14%;
 
-    top:
-      73%;
+    bottom: 17%;
 
   }
 
+
+  /* -------------------------
+     MODAL
+  ------------------------- */
+
+  .modal {
+
+    padding: 28px 22px;
+
+    border-radius: 20px;
+
+  }
+
+
+  .modal h2 {
+
+    font-size: 23px;
+
+  }
+
+
+  /* -------------------------
+     CARTA
+  ------------------------- */
 
   .letter-overlay {
 
-    padding:
-      10px;
+    padding: 8px;
 
   }
 
 
-  .letter-window {
+  .letter {
 
-    width:
-      96vw;
+    width: 96vw;
 
-    height:
-      86vh;
+    height: 88vh;
 
   }
 
 
   .letter-page {
 
-    max-width:
-      94vw;
+    width: 100%;
+    height: 100%;
 
-    max-height:
-      78vh;
+    object-fit: contain;
 
   }
 
 
   .letter-controls {
 
-    bottom:
-      0;
+    bottom: 10px;
+
+    gap: 5px;
+
+    padding: 5px;
 
   }
 
 
-  .letter-close {
+  .letter-controls button {
 
-    right:
-      3px;
-
-    top:
-      -45px;
+    width: 40px;
+    height: 40px;
 
   }
 
 
-  .letter-final-message {
+  .letter-message {
 
-    left:
-      50%;
+    bottom: 66px;
 
-    right:
-      auto;
+    max-width: 85vw;
 
-    bottom:
-      50px;
+    white-space: normal;
 
-    transform:
-      translateX(-50%);
+    text-align: center;
 
-    white-space:
-      nowrap;
+    font-size: 11px;
+
+  }
+
+
+  .close {
+
+    top: 10px;
+    right: 10px;
+
+  }
+
+
+  /* -------------------------
+     PAPEL
+  ------------------------- */
+
+  .messages-overlay {
+
+    padding: 8px;
 
   }
 
 
   .paper {
 
-    width:
-      94vw;
+    width: 96vw;
 
-    height:
-      88vh;
+    height: 88vh;
 
-    padding:
-      55px 22px 130px;
+    padding: 45px 22px 115px;
+
+  }
+
+
+  .paper::before {
+
+    inset: 16px;
 
   }
 
 
   .paper-title {
 
-    font-size:
-      18px;
+    font-size: 18px;
+
+    margin-bottom: 20px;
 
   }
 
+
+  .messages {
+
+    height:
+      calc(100% - 100px);
+
+  }
+
+
+  /* -------------------------
+     FORMULÁRIO
+  ------------------------- */
 
   .message-form {
 
     width:
       calc(100% - 40px);
 
-    flex-wrap:
-      wrap;
+    flex-wrap: wrap;
+
+    gap: 7px;
 
   }
 
 
-  .name-input {
+  .message-form input:first-child {
 
-    width:
-      100%;
-
-  }
-
-
-  .message-input {
-
-    width:
-      calc(100% - 65px);
-
-    flex:
-      none;
+    width: 100%;
 
   }
 
 
-  .send-button {
+  .message-form input:nth-child(2) {
 
-    width:
-      57px;
+    width: calc(100% - 78px);
+
+  }
+
+
+  .message-form button {
+
+    width: 70px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+  }
+
+
+  .archive-button {
+
+    top: 12px;
+    left: 12px;
+
+    font-size: 12px;
+
+    padding: 10px 14px;
+
+  }
+
+
+  .close-messages {
+
+    top: 12px;
+    right: 12px;
+
+  }
+
+}
+
+
+/* =========================================================
+   TELAS MUITO PEQUENAS
+========================================================= */
+
+@media (max-width: 400px) {
+
+  .letter {
+
+    width: 98vw;
+
+    height: 84vh;
+
+  }
+
+
+  .letter-message {
+
+    font-size: 10px;
 
     padding:
-      0 8px;
+      9px 13px;
+
+  }
+
+
+  .paper {
+
+    height: 90vh;
 
   }
 
@@ -1586,35 +1385,18 @@ body {
 
 
 /* =========================================================
-   MENSAGEM VAZIA
+   ACESSIBILIDADE
 ========================================================= */
 
-.empty-message {
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
 
-  text-align:
-    center;
+  outline:
+    2px solid
+    rgba(40,59,84,.7);
 
-  margin-top:
-    100px;
-
-  opacity:
-    .45;
-
-  font-family:
-    Georgia,
-    serif;
-
-}
-
-
-/* =========================================================
-   OCULTO
-========================================================= */
-
-.hidden {
-
-  display:
-    none !important;
+  outline-offset: 2px;
 
 }
 
@@ -1625,12 +1407,13 @@ body {
 
 <body>
 
+
 <div id="app">
 
 
-<!-- =====================================================
+<!-- ======================================================
      CARREGAMENTO
-===================================================== -->
+====================================================== -->
 
 <div
   class="loading"
@@ -1641,56 +1424,63 @@ body {
     Um Ano Depois...
   </div>
 
-  <div class="loading-author">
+  <div class="loading-line"></div>
+
+  <div class="loading-subtitle">
     Feito por João Arthur.
   </div>
 
-  <div class="loading-line"></div>
+</div>
+
+
+<!-- ======================================================
+     INTERFACE PRINCIPAL
+====================================================== -->
+
+<div class="interface">
+
+
+  <!-- IMAGEM DA MESA -->
+
+  <img
+    src="assets/interface.png"
+    class="interface-background"
+    alt=""
+    draggable="false"
+  >
+
+
+  <!-- ÁREA CLICÁVEL DO LIVRO -->
+
+  <div
+    class="book-hotspot"
+    id="book"
+    title="Abrir livro"
+  ></div>
+
+
+  <!-- ÁREA CLICÁVEL DA CANETA -->
+
+  <div
+    class="pen-hotspot"
+    id="pen"
+    title="Escrever"
+  ></div>
+
 
 </div>
 
 
-<!-- =====================================================
-     INTERFACE / IMAGEM DA MESA
-===================================================== -->
-
-<div
-  class="main-interface"
-  id="mainInterface"
->
-
-
-  <!-- LIVRO CLICÁVEL -->
-
-  <button
-    class="hotspot book-hotspot"
-    id="bookHotspot"
-    aria-label="Abrir carta"
-  ></button>
-
-
-  <!-- CANETA CLICÁVEL -->
-
-  <button
-    class="hotspot pen-hotspot"
-    id="penHotspot"
-    aria-label="Escrever uma mensagem"
-  ></button>
-
-
-</div>
-
-
-<!-- =====================================================
-     SENHA
-===================================================== -->
+<!-- ======================================================
+     MODAL DA SENHA
+====================================================== -->
 
 <div
   class="overlay hidden"
   id="passwordOverlay"
 >
 
-  <div class="password-modal">
+  <div class="modal">
 
     <h2>
       Teu aniversário
@@ -1701,29 +1491,25 @@ body {
       somente com números.
     </p>
 
-
     <input
-      class="password-input"
       id="passwordInput"
       type="password"
       inputmode="numeric"
-      autocomplete="off"
-      maxlength="8"
       placeholder="DDMMAAAA"
+      maxlength="8"
+      autocomplete="off"
     >
 
-
-    <div>
+    <div style="margin-top:18px;">
 
       <button
-        class="primary-button"
         id="unlockButton"
       >
         abrir
       </button>
 
       <button
-        class="secondary-button"
+        class="secondary"
         id="cancelPassword"
       >
         cancelar
@@ -1731,10 +1517,13 @@ body {
 
     </div>
 
-
     <p
-      class="password-error"
       id="passwordError"
+      style="
+        color:#9b3d3d;
+        margin-top:15px;
+        margin-bottom:0;
+      "
     ></p>
 
   </div>
@@ -1742,9 +1531,9 @@ body {
 </div>
 
 
-<!-- =====================================================
+<!-- ======================================================
      CARTA
-===================================================== -->
+====================================================== -->
 
 <div
   class="letter-overlay hidden"
@@ -1752,61 +1541,75 @@ body {
 >
 
 
-  <div
-    class="letter-window"
-    id="letterWindow"
+  <button
+    class="close"
+    id="closeLetter"
   >
+    ×
+  </button>
 
-    <button
-      class="letter-close"
-      id="closeLetter"
+
+  <div class="letter">
+
+
+    <!-- PÁGINA 1 -->
+
+    <img
+      class="letter-page active"
+      src="assets/page-1.png"
+      alt="Página 1"
+      draggable="false"
     >
-      ×
-    </button>
 
 
-    <!--
-      AS PÁGINAS SERÃO INSERIDAS AUTOMATICAMENTE
-      PELO JAVASCRIPT.
+    <!-- PÁGINA 2 -->
 
-      Ele procura:
-      page-1.png
-      page-2.png
-      page-3.png
-      etc.
-
-      Portanto você NÃO precisa colocar
-      manualmente cada página aqui.
-    -->
-
-    <div
-      id="pagesContainer"
-    ></div>
-
-
-    <div
-      class="letter-controls"
-      id="letterControls"
+    <img
+      class="letter-page"
+      src="assets/page-2.png"
+      alt="Página 2"
+      draggable="false"
     >
+
+
+    <!-- PÁGINA 3 -->
+
+    <img
+      class="letter-page"
+      src="assets/page-3.png"
+      alt="Página 3"
+      draggable="false"
+    >
+
+
+    <!-- PÁGINA 4 -->
+
+    <img
+      class="letter-page"
+      src="assets/page-4.png"
+      alt="Página 4"
+      draggable="false"
+    >
+
+
+    <!-- CONTROLES -->
+
+    <div class="letter-controls">
 
       <button
-        class="page-button"
         id="previousPage"
       >
         ←
       </button>
 
-
       <span
         class="page-number"
         id="pageNumber"
       >
-        1 / 1
+        1 / 4
       </span>
 
-
       <button
-        class="page-button"
         id="nextPage"
       >
         →
@@ -1815,26 +1618,30 @@ body {
     </div>
 
 
+    <!-- MENSAGEM FINAL -->
+
     <div
-      class="letter-final-message"
-      id="letterFinalMessage"
+      class="letter-message hidden"
+      id="letterMessage"
     >
       Deixe uma mensagem ou comentário na caneta encima da mesa.
     </div>
+
 
   </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- ======================================================
      MENSAGENS
-===================================================== -->
+====================================================== -->
 
 <div
   class="messages-overlay hidden"
   id="messagesOverlay"
 >
+
 
   <div class="paper">
 
@@ -1873,7 +1680,6 @@ body {
 
 
       <input
-        class="name-input"
         id="nameInput"
         type="text"
         maxlength="80"
@@ -1882,7 +1688,6 @@ body {
 
 
       <input
-        class="message-input"
         id="messageInput"
         type="text"
         maxlength="2000"
@@ -1891,7 +1696,6 @@ body {
 
 
       <button
-        class="send-button"
         id="sendButton"
       >
         enviar
@@ -1900,14 +1704,15 @@ body {
 
     </div>
 
+
   </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- ======================================================
      ARQUIVO DE FOLHAS
-===================================================== -->
+====================================================== -->
 
 <div
   class="archive hidden"
@@ -1948,7 +1753,7 @@ body {
 
 
 /*
-   SENHA DO LIVRO E DA CANETA
+   SENHA
 */
 
 const PASSWORD = "25102008";
@@ -1956,12 +1761,6 @@ const PASSWORD = "25102008";
 
 /*
    GOOGLE APPS SCRIPT
-
-   Este é o endereço utilizado para salvar
-   as mensagens.
-
-   Se você criou uma nova implantação do Apps Script,
-   substitua apenas esta URL.
 */
 
 const API_URL =
@@ -1969,7 +1768,7 @@ const API_URL =
 
 
 /*
-   QUANTAS MENSAGENS CABEM EM CADA FOLHA
+   QUANTIDADE DE MENSAGENS POR FOLHA
 */
 
 const MESSAGES_PER_SHEET = 6;
@@ -1980,96 +1779,88 @@ const MESSAGES_PER_SHEET = 6;
 ========================================================= */
 
 const loading =
-document.getElementById("loading");
+  document.getElementById("loading");
 
-const bookHotspot =
-document.getElementById("bookHotspot");
+const book =
+  document.getElementById("book");
 
-const penHotspot =
-document.getElementById("penHotspot");
+const pen =
+  document.getElementById("pen");
 
 const passwordOverlay =
-document.getElementById("passwordOverlay");
+  document.getElementById("passwordOverlay");
 
 const passwordInput =
-document.getElementById("passwordInput");
+  document.getElementById("passwordInput");
 
 const passwordError =
-document.getElementById("passwordError");
+  document.getElementById("passwordError");
 
 const unlockButton =
-document.getElementById("unlockButton");
+  document.getElementById("unlockButton");
 
 const cancelPassword =
-document.getElementById("cancelPassword");
+  document.getElementById("cancelPassword");
 
 const letterOverlay =
-document.getElementById("letterOverlay");
-
-const letterWindow =
-document.getElementById("letterWindow");
+  document.getElementById("letterOverlay");
 
 const closeLetter =
-document.getElementById("closeLetter");
+  document.getElementById("closeLetter");
 
-const pagesContainer =
-document.getElementById("pagesContainer");
+const pages =
+  document.querySelectorAll(".letter-page");
 
 const previousPage =
-document.getElementById("previousPage");
+  document.getElementById("previousPage");
 
 const nextPage =
-document.getElementById("nextPage");
+  document.getElementById("nextPage");
 
 const pageNumber =
-document.getElementById("pageNumber");
+  document.getElementById("pageNumber");
 
-const letterControls =
-document.getElementById("letterControls");
-
-const letterFinalMessage =
-document.getElementById("letterFinalMessage");
+const letterMessage =
+  document.getElementById("letterMessage");
 
 const messagesOverlay =
-document.getElementById("messagesOverlay");
+  document.getElementById("messagesOverlay");
 
 const closeMessages =
-document.getElementById("closeMessages");
+  document.getElementById("closeMessages");
 
 const messagesContainer =
-document.getElementById("messages");
+  document.getElementById("messages");
 
 const nameInput =
-document.getElementById("nameInput");
+  document.getElementById("nameInput");
 
 const messageInput =
-document.getElementById("messageInput");
+  document.getElementById("messageInput");
 
 const sendButton =
-document.getElementById("sendButton");
+  document.getElementById("sendButton");
 
 const archiveButton =
-document.getElementById("archiveButton");
+  document.getElementById("archiveButton");
 
 const archive =
-document.getElementById("archive");
+  document.getElementById("archive");
 
 const archiveList =
-document.getElementById("archiveList");
+  document.getElementById("archiveList");
 
 const closeArchive =
-document.getElementById("closeArchive");
+  document.getElementById("closeArchive");
 
 
 /* =========================================================
    ESTADO
 ========================================================= */
 
-let unlocked = false;
-
 let currentPage = 0;
 
-let pages = [];
+let unlocked = false;
 
 let allMessages = [];
 
@@ -2078,7 +1869,10 @@ let currentMessageSheet = 0;
 
 /* =========================================================
    CARREGAMENTO
-========================================================= */
+=========================================================
+
+   5 segundos conforme solicitado.
+*/
 
 window.addEventListener(
   "load",
@@ -2093,295 +1887,25 @@ window.addEventListener(
       5000
     );
 
-    carregarPaginas();
-
   }
 );
-
-
-/* =========================================================
-   CARREGAR PÁGINAS DA CARTA
-========================================================= */
-
-/*
-   Aqui está uma das principais correções.
-
-   O site tenta encontrar:
-
-   page-1.png
-   page-2.png
-   page-3.png
-   page-4.png
-   ...
-
-   Quando encontra uma página, ela entra na carta.
-
-   Quando chega a uma página que não existe,
-   ela simplesmente é ignorada.
-
-   Assim você não precisa informar quantas páginas
-   existem.
-*/
-
-function carregarPaginas() {
-
-  pagesContainer.innerHTML = "";
-
-  pages = [];
-
-  let carregadas = 0;
-
-  let finalizado = false;
-
-
-  /*
-     Tentaremos encontrar até 50 páginas.
-  */
-
-  for (
-    let number = 1;
-    number <= 50;
-    number++
-  ) {
-
-    const img =
-      document.createElement("img");
-
-
-    img.className =
-      "letter-page";
-
-
-    img.alt =
-      "Página " + number;
-
-
-    img.dataset.page =
-      number;
-
-
-    img.src =
-      "./assets/page-" +
-      number +
-      ".png";
-
-
-    img.onload =
-      function() {
-
-        carregadas++;
-
-        /*
-           Ordena as páginas depois que carregam.
-        */
-
-        pages =
-          Array.from(
-            pagesContainer
-              .querySelectorAll(
-                ".letter-page"
-              )
-          ).sort(
-            function(a,b) {
-
-              return (
-                Number(a.dataset.page) -
-                Number(b.dataset.page)
-              );
-
-            }
-          );
-
-
-        atualizarCarta();
-
-      };
-
-
-    img.onerror =
-      function() {
-
-        /*
-           Se o arquivo não existir,
-           removemos o elemento.
-        */
-
-        img.remove();
-
-        /*
-           Depois que já temos algumas páginas,
-           atualizamos a interface.
-        */
-
-        if (carregadas > 0) {
-
-          atualizarCarta();
-
-        }
-
-      };
-
-
-    pagesContainer.appendChild(img);
-
-  }
-
-
-  /*
-     Pequeno atraso para garantir que
-     as páginas existentes tenham sido
-     processadas.
-  */
-
-  setTimeout(
-    function() {
-
-      pages =
-        Array.from(
-          pagesContainer
-            .querySelectorAll(
-              ".letter-page"
-            )
-        ).sort(
-          function(a,b) {
-
-            return (
-              Number(a.dataset.page) -
-              Number(b.dataset.page)
-            );
-
-          }
-        );
-
-
-      atualizarCarta();
-
-    },
-    1000
-  );
-
-}
-
-
-/* =========================================================
-   ATUALIZAR CARTA
-========================================================= */
-
-function atualizarCarta() {
-
-  if (pages.length === 0) {
-
-    pageNumber.textContent =
-      "nenhuma página";
-
-    previousPage.disabled =
-      true;
-
-    nextPage.disabled =
-      true;
-
-    return;
-
-  }
-
-
-  if (
-    currentPage >= pages.length
-  ) {
-
-    currentPage =
-      pages.length - 1;
-
-  }
-
-
-  if (
-    currentPage < 0
-  ) {
-
-    currentPage = 0;
-
-  }
-
-
-  pages.forEach(
-    function(page, index) {
-
-      page.classList.toggle(
-        "active",
-        index === currentPage
-      );
-
-    }
-  );
-
-
-  pageNumber.textContent =
-    `${currentPage + 1} / ${pages.length}`;
-
-
-  previousPage.disabled =
-    currentPage === 0;
-
-
-  nextPage.disabled =
-    currentPage ===
-    pages.length - 1;
-
-
-  /*
-     Mostra o aviso na última página.
-  */
-
-  if (
-    currentPage ===
-    pages.length - 1
-  ) {
-
-    letterFinalMessage
-      .classList
-      .add("visible");
-
-  } else {
-
-    letterFinalMessage
-      .classList
-      .remove("visible");
-
-  }
-
-}
-
-
-/* =========================================================
-   ABRIR SENHA
-========================================================= */
-
-function abrirSenha() {
-
-  passwordOverlay
-    .classList
-    .remove("hidden");
-
-  passwordInput.focus();
-
-}
 
 
 /* =========================================================
    LIVRO
 ========================================================= */
 
-bookHotspot.addEventListener(
+book.addEventListener(
   "click",
   function() {
 
     if (!unlocked) {
 
-      abrirSenha();
+      passwordOverlay
+        .classList
+        .remove("hidden");
 
-      passwordInput.dataset.action =
-        "book";
+      passwordInput.focus();
 
       return;
 
@@ -2397,16 +1921,17 @@ bookHotspot.addEventListener(
    CANETA
 ========================================================= */
 
-penHotspot.addEventListener(
+pen.addEventListener(
   "click",
   function() {
 
     if (!unlocked) {
 
-      abrirSenha();
+      passwordOverlay
+        .classList
+        .remove("hidden");
 
-      passwordInput.dataset.action =
-        "messages";
+      passwordInput.focus();
 
       return;
 
@@ -2432,9 +1957,7 @@ passwordInput.addEventListener(
   "keydown",
   function(event) {
 
-    if (
-      event.key === "Enter"
-    ) {
+    if (event.key === "Enter") {
 
       verificarSenha();
 
@@ -2450,9 +1973,7 @@ function verificarSenha() {
     passwordInput.value.trim();
 
 
-  if (
-    value === PASSWORD
-  ) {
+  if (value === PASSWORD) {
 
     unlocked = true;
 
@@ -2464,23 +1985,12 @@ function verificarSenha() {
 
     passwordError.textContent = "";
 
+    /*
+       Depois de desbloquear,
+       abrimos o livro.
+    */
 
-    const action =
-      passwordInput.dataset.action;
-
-
-    if (
-      action === "messages"
-    ) {
-
-      abrirMensagens();
-
-    } else {
-
-      abrirCarta();
-
-    }
-
+    abrirCarta();
 
   } else {
 
@@ -2511,14 +2021,14 @@ cancelPassword.addEventListener(
 
 
 /* =========================================================
-   ABRIR CARTA
+   CARTA
 ========================================================= */
 
 function abrirCarta() {
 
   currentPage = 0;
 
-  atualizarCarta();
+  atualizarPagina();
 
   letterOverlay
     .classList
@@ -2527,31 +2037,67 @@ function abrirCarta() {
 }
 
 
-/* =========================================================
-   PÁGINA ANTERIOR
-========================================================= */
+function atualizarPagina() {
+
+  pages.forEach(
+    function(page, index) {
+
+      page.classList.toggle(
+        "active",
+        index === currentPage
+      );
+
+    }
+  );
+
+
+  pageNumber.textContent =
+    `${currentPage + 1} / ${pages.length}`;
+
+
+  previousPage.disabled =
+    currentPage === 0;
+
+
+  nextPage.disabled =
+    currentPage === pages.length - 1;
+
+
+  if (
+    currentPage ===
+    pages.length - 1
+  ) {
+
+    letterMessage
+      .classList
+      .remove("hidden");
+
+  } else {
+
+    letterMessage
+      .classList
+      .add("hidden");
+
+  }
+
+}
+
 
 previousPage.addEventListener(
   "click",
   function() {
 
-    if (
-      currentPage > 0
-    ) {
+    if (currentPage > 0) {
 
       currentPage--;
 
-      atualizarCarta();
+      atualizarPagina();
 
     }
 
   }
 );
 
-
-/* =========================================================
-   PRÓXIMA PÁGINA
-========================================================= */
 
 nextPage.addEventListener(
   "click",
@@ -2564,17 +2110,13 @@ nextPage.addEventListener(
 
       currentPage++;
 
-      atualizarCarta();
+      atualizarPagina();
 
     }
 
   }
 );
 
-
-/* =========================================================
-   FECHAR CARTA
-========================================================= */
 
 closeLetter.addEventListener(
   "click",
@@ -2589,7 +2131,7 @@ closeLetter.addEventListener(
 
 
 /* =========================================================
-   ABRIR MENSAGENS
+   MENSAGENS
 ========================================================= */
 
 async function abrirMensagens() {
@@ -2602,10 +2144,6 @@ async function abrirMensagens() {
 
 }
 
-
-/* =========================================================
-   FECHAR MENSAGENS
-========================================================= */
 
 closeMessages.addEventListener(
   "click",
@@ -2695,9 +2233,7 @@ function obterFolhas() {
   }
 
 
-  if (
-    sheets.length === 0
-  ) {
+  if (sheets.length === 0) {
 
     sheets.push([]);
 
@@ -2753,16 +2289,19 @@ function renderizarSheet(index) {
     "";
 
 
-  if (
-    sheet.length === 0
-  ) {
+  if (sheet.length === 0) {
 
     const empty =
       document.createElement("div");
 
 
-    empty.className =
-      "empty-message";
+    empty.style.cssText =
+      `
+      text-align:center;
+      margin-top:100px;
+      opacity:.45;
+      font-family:Georgia,serif;
+      `;
 
 
     empty.textContent =
@@ -2790,6 +2329,17 @@ function renderizarSheet(index) {
         "message";
 
 
+      const rotation =
+        (Math.random() * 2 - 1)
+        .toFixed(2);
+
+
+      wrapper.style.setProperty(
+        "--rotation",
+        rotation + "deg"
+      );
+
+
       const name =
         document.createElement("div");
 
@@ -2799,7 +2349,7 @@ function renderizarSheet(index) {
 
 
       name.textContent =
-        item.name || "";
+        item.name;
 
 
       const text =
@@ -2811,7 +2361,7 @@ function renderizarSheet(index) {
 
 
       text.textContent =
-        item.message || "";
+        item.message;
 
 
       const date =
@@ -2846,7 +2396,7 @@ function renderizarSheet(index) {
 
 
 /* =========================================================
-   ARQUIVO DE FOLHAS
+   ARQUIVO
 ========================================================= */
 
 function atualizarArquivo(sheets) {
@@ -2859,9 +2409,7 @@ function atualizarArquivo(sheets) {
     sheets.length - 1;
 
 
-  if (
-    oldSheets <= 0
-  ) {
+  if (oldSheets <= 0) {
 
     const text =
       document.createElement("p");
@@ -2910,9 +2458,9 @@ function atualizarArquivo(sheets) {
         renderizarSheet(i);
 
 
-        archive
-          .classList
-          .add("hidden");
+        archive.classList.add(
+          "hidden"
+        );
 
       }
     );
@@ -2927,10 +2475,6 @@ function atualizarArquivo(sheets) {
 }
 
 
-/* =========================================================
-   ABRIR ARQUIVO
-========================================================= */
-
 archiveButton.addEventListener(
   "click",
   function() {
@@ -2944,24 +2488,18 @@ archiveButton.addEventListener(
     );
 
 
-    archive
-      .classList
+    archive.classList
       .remove("hidden");
 
   }
 );
 
 
-/* =========================================================
-   FECHAR ARQUIVO
-========================================================= */
-
 closeArchive.addEventListener(
   "click",
   function() {
 
-    archive
-      .classList
+    archive.classList
       .add("hidden");
 
   }
@@ -3047,25 +2585,26 @@ async function enviarMensagem() {
       await fetch(
         API_URL,
         {
-          method:
-            "POST",
 
-          headers:
-            {
-              "Content-Type":
-                "text/plain;charset=utf-8"
-            },
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "text/plain;charset=utf-8"
+
+          },
 
           body:
-            JSON.stringify(
-              {
-                name:
-                  name,
+            JSON.stringify({
 
-                message:
-                  message
-              }
-            )
+              name:
+                name,
+
+              message:
+                message
+
+            })
 
         }
       );
@@ -3075,9 +2614,7 @@ async function enviarMensagem() {
       await response.json();
 
 
-    if (
-      !data.success
-    ) {
+    if (!data.success) {
 
       throw new Error(
         data.error ||
@@ -3089,6 +2626,7 @@ async function enviarMensagem() {
 
     nameInput.value =
       "";
+
 
     messageInput.value =
       "";
@@ -3105,12 +2643,13 @@ async function enviarMensagem() {
   } catch (error) {
 
     console.error(
+      "Erro ao enviar:",
       error
     );
 
 
     alert(
-      "Não foi possível salvar a mensagem. Verifique a publicação do Google Apps Script."
+      "Não foi possível salvar a mensagem. Verifique o Google Apps Script."
     );
 
   }
@@ -3132,47 +2671,26 @@ async function enviarMensagem() {
 
 function formatarData(value) {
 
-  if (!value) {
-
-    return "";
-
-  }
-
-
   try {
 
     const date =
       new Date(value);
 
 
-    if (
-      isNaN(
-        date.getTime()
-      )
-    ) {
-
-      return "";
-
-    }
-
-
     return date.toLocaleString(
       "pt-BR",
       {
-        day:
-          "2-digit",
 
-        month:
-          "2-digit",
+        day: "2-digit",
 
-        year:
-          "numeric",
+        month: "2-digit",
 
-        hour:
-          "2-digit",
+        year: "numeric",
 
-        minute:
-          "2-digit"
+        hour: "2-digit",
+
+        minute: "2-digit"
+
       }
     );
 
@@ -3186,7 +2704,7 @@ function formatarData(value) {
 
 
 /* =========================================================
-   TECLADO
+   ESC
 ========================================================= */
 
 document.addEventListener(
@@ -3194,74 +2712,44 @@ document.addEventListener(
   function(event) {
 
     if (
-      event.key !== "Escape"
+      event.key === "Escape"
     ) {
 
-      return;
+      passwordOverlay
+        .classList
+        .add("hidden");
+
+
+      letterOverlay
+        .classList
+        .add("hidden");
+
+
+      messagesOverlay
+        .classList
+        .add("hidden");
+
+
+      archive
+        .classList
+        .add("hidden");
 
     }
-
-
-    passwordOverlay
-      .classList
-      .add("hidden");
-
-
-    letterOverlay
-      .classList
-      .add("hidden");
-
-
-    messagesOverlay
-      .classList
-      .add("hidden");
-
-
-    archive
-      .classList
-      .add("hidden");
 
   }
 );
 
 
 /* =========================================================
-   SWIPE NO CELULAR
+   NAVEGAÇÃO DA CARTA PELO TECLADO
 ========================================================= */
 
-let touchStartX = 0;
-
-
-letterWindow.addEventListener(
-  "touchstart",
+document.addEventListener(
+  "keydown",
   function(event) {
-
-    touchStartX =
-      event.changedTouches[0].screenX;
-
-  },
-  {
-    passive: true
-  }
-);
-
-
-letterWindow.addEventListener(
-  "touchend",
-  function(event) {
-
-    const touchEndX =
-      event.changedTouches[0].screenX;
-
-
-    const difference =
-      touchEndX -
-      touchStartX;
-
 
     if (
-      Math.abs(difference) <
-      50
+      letterOverlay.classList.contains("hidden")
     ) {
 
       return;
@@ -3269,9 +2757,7 @@ letterWindow.addEventListener(
     }
 
 
-    if (
-      difference < 0
-    ) {
+    if (event.key === "ArrowRight") {
 
       if (
         currentPage <
@@ -3280,11 +2766,14 @@ letterWindow.addEventListener(
 
         currentPage++;
 
-        atualizarCarta();
+        atualizarPagina();
 
       }
 
-    } else {
+    }
+
+
+    if (event.key === "ArrowLeft") {
 
       if (
         currentPage > 0
@@ -3292,15 +2781,12 @@ letterWindow.addEventListener(
 
         currentPage--;
 
-        atualizarCarta();
+        atualizarPagina();
 
       }
 
     }
 
-  },
-  {
-    passive: true
   }
 );
 
