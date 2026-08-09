@@ -1,0 +1,4 @@
+// COLE A URL /exec DO SEU GOOGLE APPS SCRIPT ENTRE AS ASPAS.
+window.SITE_CONFIG = {
+  API_URL: ""
+};
