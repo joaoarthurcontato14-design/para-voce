@@ -7,7 +7,7 @@
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1, viewport-fit=cover"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 >
 
 <meta
@@ -21,25 +21,23 @@
 <style>
 
 /* =========================================================
-   CONFIGURAÇÕES
+   CONFIGURAÇÕES GERAIS
 ========================================================= */
 
 :root {
 
   --blue: #283b54;
-  --blue-dark: #1d2c40;
+  --blue-dark: #1c2a3d;
 
   --paper: #f7f4ec;
+  --paper-dark: #ebe6d9;
+
   --ink: #252525;
 
   --white: #ffffff;
 
 }
 
-
-/* =========================================================
-   RESET
-========================================================= */
 
 * {
 
@@ -57,18 +55,16 @@ body {
   width: 100%;
   height: 100%;
 
+  overflow: hidden;
+
 }
 
 
 body {
 
-  overflow: hidden;
+  background: var(--blue);
 
-  background:
-    var(--blue);
-
-  color:
-    white;
+  color: white;
 
   font-family:
     -apple-system,
@@ -80,7 +76,7 @@ body {
 
 
 /* =========================================================
-   APP
+   APLICAÇÃO
 ========================================================= */
 
 #app {
@@ -96,7 +92,7 @@ body {
 
 
 /* =========================================================
-   LOADING
+   CARREGAMENTO
 ========================================================= */
 
 .loading {
@@ -107,8 +103,7 @@ body {
 
   z-index: 9999;
 
-  background:
-    var(--blue);
+  background: var(--blue);
 
   display: flex;
 
@@ -118,118 +113,94 @@ body {
 
   justify-content: center;
 
-  transition:
-    opacity 1s ease,
-    visibility 1s ease;
-
-}
-
-
-.loading.hidden {
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  pointer-events: none;
+  text-align: center;
 
 }
 
 
 .loader-title {
 
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  font-family: Georgia, serif;
 
-  font-size:
-    clamp(25px, 4vw, 42px);
+  font-size: clamp(22px, 4vw, 36px);
 
-  letter-spacing:
-    .5px;
+  letter-spacing: .5px;
 
-  margin-bottom:
-    12px;
+  animation: fadeIn 1.4s ease forwards;
 
 }
 
 
 .loader-sub {
 
-  font-family:
-    Georgia,
-    serif;
+  margin-top: 12px;
 
-  font-size:
-    14px;
+  font-size: 13px;
 
-  opacity:
-    .65;
+  opacity: .65;
+
+  animation: fadeIn 2s ease forwards;
 
 }
 
 
 .loader-line {
 
-  width:
-    100px;
+  width: 90px;
 
-  height:
-    1px;
+  height: 1px;
 
-  background:
-    rgba(255,255,255,.6);
+  background: rgba(255,255,255,.65);
 
-  margin-top:
-    30px;
+  margin-top: 25px;
 
-  animation:
-    loadingLine 2s ease-in-out infinite;
+  transform-origin: left;
+
+  animation: loadingLine 5s linear forwards;
 
 }
 
 
 @keyframes loadingLine {
 
-  0% {
-
-    transform:
-      scaleX(.2);
-
-    opacity:
-      .2;
-
+  from {
+    transform: scaleX(0);
   }
 
-  50% {
-
-    transform:
-      scaleX(1);
-
-    opacity:
-      .9;
-
-  }
-
-  100% {
-
-    transform:
-      scaleX(.2);
-
-    opacity:
-      .2;
-
+  to {
+    transform: scaleX(1);
   }
 
 }
 
 
+@keyframes fadeIn {
+
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+
+.hidden {
+
+  display: none !important;
+
+}
+
+
 /* =========================================================
-   CENA
+   INTERFACE PRINCIPAL
 ========================================================= */
 
-.scene-wrapper {
+.scene {
 
   position: absolute;
 
@@ -241,73 +212,53 @@ body {
 
   justify-content: center;
 
-  padding:
-    20px;
+  background: var(--blue);
 
 }
 
 
 /*
-   A imagem inteira fica dentro desta área.
-
-   NÃO usamos "cover".
-
-   Isso é importante porque "cover" poderia cortar
-   partes da imagem e fazer os hotspots perderem
-   a posição.
+   A interface inteira é mantida na proporção
+   da imagem para que os objetos não saiam
+   do lugar em diferentes telas.
 */
 
-.scene {
+.interface {
 
   position: relative;
 
-  width: min(
-    100%,
-    1600px
-  );
+  width: min(100vw, 177.78vh);
 
-  max-height:
-    calc(100vh - 40px);
+  aspect-ratio: 16 / 9;
 
-  display: inline-block;
+  max-height: 100vh;
 
 }
 
 
-.scene-image {
+.interface-image {
+
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
 
   display: block;
 
-  width: 100%;
+  user-select: none;
 
-  height: auto;
-
-  max-height:
-    calc(100vh - 40px);
-
-  object-fit:
-    contain;
-
-  user-select:
-    none;
-
-  -webkit-user-drag:
-    none;
+  -webkit-user-drag: none;
 
 }
 
 
 /* =========================================================
-   HOTSPOTS
+   ÁREAS CLICÁVEIS
 ========================================================= */
-
-
-/*
-   Todos os hotspots são transparentes.
-
-   Eles ficam sobre a imagem e servem somente
-   para tornar os objetos clicáveis.
-*/
 
 .hotspot {
 
@@ -315,35 +266,20 @@ body {
 
   border: none;
 
-  background:
-    transparent;
-
   padding: 0;
 
-  margin: 0;
+  background: transparent;
 
   cursor: pointer;
 
   z-index: 20;
 
-  border-radius: 50%;
-
-  appearance: none;
-
-  -webkit-tap-highlight-color:
-    transparent;
-
 }
 
 
-/*
-   Ao passar o mouse, não mostramos uma caixa.
-*/
-
 .hotspot:hover {
 
-  background:
-    rgba(255,255,255,0.025);
+  background: rgba(255,255,255,.025);
 
 }
 
@@ -354,15 +290,11 @@ body {
 
 .globe-hotspot {
 
-  /*
-     posição aproximada do globo
-  */
-
-  left: 7%;
-  top: 20%;
+  left: 8%;
+  top: 18%;
 
   width: 21%;
-  height: 48%;
+  height: 34%;
 
 }
 
@@ -373,11 +305,11 @@ body {
 
 .calendar-hotspot {
 
-  right: 7%;
-  top: 7%;
+  right: 8%;
+  top: 12%;
 
-  width: 18%;
-  height: 22%;
+  width: 17%;
+  height: 18%;
 
 }
 
@@ -389,9 +321,9 @@ body {
 .car-hotspot {
 
   right: 8%;
-  bottom: 12%;
+  bottom: 14%;
 
-  width: 22%;
+  width: 23%;
   height: 20%;
 
 }
@@ -403,11 +335,15 @@ body {
 
 .book-hotspot {
 
-  left: 31%;
-  top: 25%;
+  left: 50%;
+  top: 50%;
 
-  width: 38%;
-  height: 50%;
+  width: 27%;
+  height: 48%;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(-2deg);
 
 }
 
@@ -416,37 +352,29 @@ body {
    CANETA
 ========================================================= */
 
-
 /*
-   IMPORTANTE:
+   BOTÃO DA CANETA REDUZIDO.
 
-   Este hotspot é propositalmente pequeno.
-
-   Ele não cobre metade da mesa.
-   Ele fica somente sobre a caneta.
+   Antes ele estava grande demais.
+   Agora a área clicável é menor e mais
+   concentrada no corpo real da caneta.
 */
 
 .pen-hotspot {
 
-  right: 16.5%;
+  right: 22.8%;
+  bottom: 19.5%;
 
-  bottom: 23%;
+  width: 15%;
+  height: 5.5%;
 
-  width: 13%;
-
-  height: 6%;
-
-  transform:
-    rotate(-35deg);
-
-  border-radius:
-    999px;
+  transform: rotate(-25deg);
 
 }
 
 
 /* =========================================================
-   MODAL
+   MODAL DE SENHA
 ========================================================= */
 
 .overlay {
@@ -469,18 +397,7 @@ body {
     rgba(10,18,28,.88);
 
   backdrop-filter:
-    blur(14px);
-
-  -webkit-backdrop-filter:
-    blur(14px);
-
-}
-
-
-.hidden {
-
-  display:
-    none !important;
+    blur(12px);
 
 }
 
@@ -488,7 +405,7 @@ body {
 .modal {
 
   width:
-    min(440px, 92vw);
+    min(430px, 92vw);
 
   background:
     rgba(247,244,236,.98);
@@ -502,12 +419,12 @@ body {
   padding:
     35px;
 
+  text-align:
+    center;
+
   box-shadow:
     0 30px 80px
     rgba(0,0,0,.45);
-
-  text-align:
-    center;
 
 }
 
@@ -516,11 +433,7 @@ body {
 
   font-family:
     Georgia,
-    "Times New Roman",
     serif;
-
-  font-weight:
-    500;
 
   margin-bottom:
     10px;
@@ -537,7 +450,7 @@ body {
     1.5;
 
   margin-bottom:
-    24px;
+    22px;
 
 }
 
@@ -586,86 +499,65 @@ body {
 
 button {
 
-  border:
-    none;
+  border: none;
 
-  border-radius:
-    999px;
+  border-radius: 999px;
 
-  padding:
-    13px 22px;
+  padding: 13px 22px;
 
-  cursor:
-    pointer;
+  cursor: pointer;
 
-  background:
-    var(--blue);
+  background: var(--blue);
 
-  color:
-    white;
+  color: white;
 
-  font-size:
-    15px;
+  font-size: 15px;
 
-  transition:
-    transform .2s ease,
-    opacity .2s ease;
+  transition: .2s ease;
 
 }
 
 
 button:hover {
 
-  transform:
-    translateY(-2px);
+  transform: translateY(-2px);
+
+  opacity: .9;
 
 }
 
 
 button:disabled {
 
-  opacity:
-    .45;
+  opacity: .4;
 
-  cursor:
-    default;
+  cursor: default;
 
-  transform:
-    none;
+  transform: none;
 
 }
 
 
 .secondary {
 
-  background:
-    transparent;
+  background: transparent;
 
-  color:
-    #303030;
+  color: #303030;
 
-  border:
-    1px solid #ccc5b7;
+  border: 1px solid #ccc5b7;
 
-  margin-left:
-    8px;
+  margin-left: 8px;
 
 }
 
 
 .error {
 
-  color:
-    #9b3d3d !important;
+  color: #9b3d3d !important;
 
-  min-height:
-    20px;
+  margin-top: 14px;
 
-  margin-top:
-    12px;
-
-  margin-bottom:
-    0 !important;
+  margin-bottom: 0 !important;
 
 }
 
@@ -691,24 +583,27 @@ button:disabled {
 
   justify-content: center;
 
-  padding:
-    55px 20px 25px;
+  padding: 25px;
 
 }
 
+
+/*
+   IMPORTANTE:
+
+   A carta agora usa quase toda a área disponível,
+   mas SEM ultrapassar a altura da tela.
+
+   Isso impede que a página fique cortada.
+*/
 
 .letter {
 
   position: relative;
 
-  width:
-    min(900px, 94vw);
+  width: min(92vw, 900px);
 
-  height:
-    min(
-      calc(100vh - 100px),
-      800px
-    );
+  height: min(88vh, 850px);
 
   display: flex;
 
@@ -716,45 +611,76 @@ button:disabled {
 
   justify-content: center;
 
-  overflow: hidden;
-
-  background:
-    #fff;
-
-  box-shadow:
-    0 30px 80px
-    rgba(0,0,0,.5);
-
 }
 
 
 .letter-page {
 
-  display:
-    none;
+  position: absolute;
 
-  width:
-    100%;
+  left: 50%;
+  top: 50%;
 
-  height:
-    100%;
+  transform:
+    translate(-50%, -50%);
 
-  object-fit:
-    contain;
+  /*
+     A imagem nunca ultrapassa a caixa.
+  */
 
-  object-position:
-    center;
+  width: auto;
 
-  background:
-    white;
+  height: auto;
+
+  max-width: 100%;
+
+  max-height: 100%;
+
+  object-fit: contain;
+
+  display: none;
+
+  background: white;
+
+  box-shadow:
+    0 25px 70px
+    rgba(0,0,0,.55);
 
 }
 
 
 .letter-page.active {
 
-  display:
-    block;
+  display: block;
+
+}
+
+
+/* =========================================================
+   BOTÃO FECHAR CARTA
+========================================================= */
+
+.close-button {
+
+  position: fixed;
+
+  top: 20px;
+
+  right: 20px;
+
+  z-index: 700;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+
+  border-radius: 50%;
+
+  background:
+    rgba(0,0,0,.65);
+
+  font-size: 22px;
 
 }
 
@@ -765,11 +691,11 @@ button:disabled {
 
 .letter-controls {
 
-  position: absolute;
+  position: fixed;
 
   left: 50%;
 
-  bottom: 15px;
+  bottom: 22px;
 
   transform:
     translateX(-50%);
@@ -780,56 +706,43 @@ button:disabled {
 
   gap: 10px;
 
+  padding: 8px;
+
+  border-radius: 999px;
+
   background:
-    rgba(0,0,0,.78);
+    rgba(0,0,0,.75);
 
-  padding:
-    7px;
-
-  border-radius:
-    999px;
-
-  z-index: 5;
+  z-index: 700;
 
 }
 
 
 .letter-controls button {
 
-  width:
-    38px;
+  width: 38px;
+  height: 38px;
 
-  height:
-    38px;
+  padding: 0;
 
-  padding:
-    0;
+  display: flex;
 
-  display:
-    flex;
+  align-items: center;
 
-  align-items:
-    center;
-
-  justify-content:
-    center;
+  justify-content: center;
 
 }
 
 
 .page-number {
 
-  min-width:
-    55px;
+  min-width: 58px;
 
-  text-align:
-    center;
+  text-align: center;
 
-  color:
-    white;
+  font-size: 13px;
 
-  font-size:
-    13px;
+  color: white;
 
 }
 
@@ -840,25 +753,22 @@ button:disabled {
 
 .last-note {
 
-  position: absolute;
+  position: fixed;
 
   left: 50%;
 
-  bottom: 75px;
+  bottom: 85px;
 
   transform:
     translateX(-50%);
 
-  z-index: 10;
-
-  color:
-    white;
-
   background:
-    rgba(40,59,84,.94);
+    rgba(40,59,84,.96);
+
+  color: white;
 
   padding:
-    11px 18px;
+    12px 18px;
 
   border-radius:
     999px;
@@ -866,48 +776,13 @@ button:disabled {
   font-size:
     13px;
 
-  white-space:
-    nowrap;
-
-}
-
-
-.close-button {
-
-  position: absolute;
-
-  right: 20px;
-
-  top: 20px;
-
-  z-index: 20;
-
-  width:
-    42px;
-
-  height:
-    42px;
-
-  padding:
-    0;
-
-  border-radius:
-    50%;
-
-  background:
-    rgba(0,0,0,.7);
-
-  display:
-    flex;
-
-  align-items:
+  text-align:
     center;
 
-  justify-content:
-    center;
+  z-index: 700;
 
-  font-size:
-    22px;
+  max-width:
+    calc(100vw - 40px);
 
 }
 
@@ -922,42 +797,35 @@ button:disabled {
 
   inset: 0;
 
-  z-index: 700;
+  z-index: 800;
 
   background:
     var(--blue);
 
-  display:
-    flex;
+  display: flex;
 
-  align-items:
-    center;
+  align-items: center;
 
-  justify-content:
-    center;
+  justify-content: center;
 
-  padding:
-    25px;
+  padding: 20px;
 
 }
 
 
 .paper {
 
-  width:
-    min(900px, 94vw);
+  position: relative;
 
-  height:
-    min(850px, 88vh);
+  width: min(900px, 94vw);
+
+  height: min(82vh, 850px);
 
   background:
     var(--paper);
 
   color:
     var(--ink);
-
-  position:
-    relative;
 
   padding:
     50px;
@@ -966,66 +834,28 @@ button:disabled {
     0 30px 90px
     rgba(0,0,0,.45);
 
-  overflow:
-    hidden;
-
-}
-
-
-.paper::before {
-
-  content: "";
-
-  position: absolute;
-
-  inset:
-    25px;
-
-  border:
-    1px solid
-    rgba(50,50,50,.08);
-
-  pointer-events:
-    none;
-
 }
 
 
 .paper h1 {
 
-  text-align:
-    center;
+  text-align: center;
 
-  font-family:
-    Georgia,
-    "Times New Roman",
-    serif;
+  font-family: Georgia, serif;
 
-  font-size:
-    22px;
+  font-size: 22px;
 
-  font-weight:
-    500;
-
-  line-height:
-    1.4;
-
-  margin-bottom:
-    25px;
+  margin-bottom: 25px;
 
 }
 
 
 .messages {
 
-  position:
-    relative;
-
   height:
     calc(100% - 150px);
 
-  overflow:
-    hidden;
+  overflow: hidden;
 
 }
 
@@ -1038,88 +868,56 @@ button:disabled {
     "Comic Sans MS",
     cursive;
 
-  margin-bottom:
-    20px;
+  margin-bottom: 20px;
 
-  line-height:
-    1.45;
-
-  transform:
-    rotate(
-      var(--rotation)
-    );
+  line-height: 1.45;
 
 }
 
 
 .message-name {
 
-  font-weight:
-    bold;
-
-  font-size:
-    17px;
+  font-weight: bold;
 
 }
 
 
 .message-text {
 
-  white-space:
-    pre-wrap;
-
-  font-size:
-    16px;
+  white-space: pre-wrap;
 
 }
 
 
 .message-date {
 
-  font-family:
-    sans-serif;
+  font-family: sans-serif;
 
-  font-size:
-    10px;
+  font-size: 10px;
 
-  opacity:
-    .45;
+  opacity: .45;
 
-  margin-top:
-    3px;
+  margin-top: 3px;
 
 }
 
 
-/* =========================================================
-   FORMULÁRIO
-========================================================= */
-
 .message-form {
 
-  position:
-    absolute;
+  position: absolute;
 
-  left:
-    50%;
+  left: 50%;
 
-  bottom:
-    20px;
+  bottom: 18px;
 
   transform:
     translateX(-50%);
 
-  width:
-    calc(100% - 80px);
+  width: calc(100% - 50px);
 
-  display:
-    grid;
+  display: flex;
 
-  grid-template-columns:
-    150px 1fr auto;
-
-  gap:
-    8px;
+  gap: 8px;
 
 }
 
@@ -1127,17 +925,11 @@ button:disabled {
 .message-form input,
 .message-form textarea {
 
-  width:
-    100%;
-
   border:
     1px solid #d5d0c5;
 
   background:
     #fffdf8;
-
-  color:
-    #222;
 
   border-radius:
     12px;
@@ -1145,92 +937,52 @@ button:disabled {
   padding:
     12px;
 
-  font-size:
-    14px;
+}
 
-  outline:
-    none;
+
+.message-form input {
+
+  width: 22%;
 
 }
 
 
 .message-form textarea {
 
-  resize:
-    none;
+  width: 58%;
 
-  height:
-    48px;
+  min-height: 45px;
 
-}
-
-
-.message-form input:focus,
-.message-form textarea:focus {
-
-  border-color:
-    var(--blue);
+  resize: none;
 
 }
 
-
-.message-form button {
-
-  height:
-    48px;
-
-}
-
-
-/* =========================================================
-   BOTÕES DA ÁREA DE MENSAGENS
-========================================================= */
 
 .archive-button {
 
-  position:
-    absolute;
+  position: absolute;
 
-  left:
-    20px;
+  left: 20px;
 
-  top:
-    20px;
-
-  background:
-    rgba(40,59,84,.92);
+  top: 20px;
 
 }
 
 
 .messages-close {
 
-  position:
-    absolute;
+  position: absolute;
 
-  right:
-    20px;
+  right: 20px;
 
-  top:
-    20px;
+  top: 20px;
 
-  width:
-    40px;
+  width: 40px;
+  height: 40px;
 
-  height:
-    40px;
+  padding: 0;
 
-  padding:
-    0;
-
-  display:
-    flex;
-
-  align-items:
-    center;
-
-  justify-content:
-    center;
+  border-radius: 50%;
 
 }
 
@@ -1245,60 +997,42 @@ button:disabled {
 
   inset: 0;
 
-  z-index: 800;
+  z-index: 900;
 
   background:
     rgba(24,37,54,.98);
 
-  display:
-    flex;
+  display: flex;
 
-  flex-direction:
-    column;
+  flex-direction: column;
 
-  align-items:
-    center;
+  align-items: center;
 
-  justify-content:
-    center;
+  justify-content: center;
 
-  padding:
-    25px;
+  padding: 25px;
 
 }
 
 
 .archive h2 {
 
-  font-family:
-    Georgia,
-    serif;
+  font-family: Georgia, serif;
 
-  font-weight:
-    400;
-
-  margin-bottom:
-    20px;
+  margin-bottom: 20px;
 
 }
 
 
 .archive-list {
 
-  display:
-    flex;
+  display: flex;
 
-  flex-wrap:
-    wrap;
+  flex-wrap: wrap;
 
-  gap:
-    10px;
+  justify-content: center;
 
-  justify-content:
-    center;
-
-  max-width:
-    700px;
+  gap: 10px;
 
 }
 
@@ -1316,14 +1050,11 @@ button:disabled {
 
 .archive-close {
 
-  position:
-    absolute;
+  position: absolute;
 
-  right:
-    20px;
+  right: 20px;
 
-  top:
-    20px;
+  top: 20px;
 
 }
 
@@ -1335,188 +1066,100 @@ button:disabled {
 @media (max-width: 700px) {
 
 
-  .scene-wrapper {
+  /*
+     A interface permanece inteira visível.
+  */
 
-    padding:
-      8px;
+  .interface {
 
-  }
+    width: 100vw;
 
+    height: auto;
 
-  .scene {
-
-    width:
-      100%;
+    aspect-ratio: 16 / 9;
 
   }
 
 
   /*
-     Hotspots menores no celular.
+     CARTA NO CELULAR
+
+     Aumentamos a área disponível verticalmente
+     sem deixar a imagem sair da tela.
   */
-
-  .globe-hotspot {
-
-    left:
-      6%;
-
-    top:
-      19%;
-
-    width:
-      23%;
-
-    height:
-      46%;
-
-  }
-
-
-  .calendar-hotspot {
-
-    right:
-      6%;
-
-    top:
-      7%;
-
-    width:
-      20%;
-
-    height:
-      20%;
-
-  }
-
-
-  .car-hotspot {
-
-    right:
-      7%;
-
-    bottom:
-      11%;
-
-    width:
-      24%;
-
-    height:
-      19%;
-
-  }
-
-
-  .book-hotspot {
-
-    left:
-      29%;
-
-    top:
-      25%;
-
-    width:
-      42%;
-
-    height:
-      49%;
-
-  }
-
-
-  /*
-     A caneta é deliberadamente pequena.
-  */
-
-  .pen-hotspot {
-
-    right:
-      15%;
-
-    bottom:
-      22%;
-
-    width:
-      14%;
-
-    height:
-      5%;
-
-  }
-
 
   .letter-overlay {
 
     padding:
-      50px 8px 10px;
+      65px 12px 75px;
 
   }
 
 
   .letter {
 
-    width:
-      96vw;
+    width: 96vw;
 
-    height:
-      calc(100vh - 70px);
+    height: 76vh;
 
   }
 
 
-  .last-note {
+  .letter-page {
 
-    max-width:
-      90%;
+    max-width: 96vw;
 
-    text-align:
-      center;
-
-    white-space:
-      normal;
-
-    bottom:
-      65px;
-
-    font-size:
-      12px;
+    max-height: 76vh;
 
   }
 
 
   .letter-controls {
 
-    bottom:
-      10px;
+    bottom: 14px;
+
+  }
+
+
+  .last-note {
+
+    bottom: 68px;
+
+    font-size: 12px;
+
+    padding:
+      10px 14px;
+
+  }
+
+
+  /*
+     BOTÃO DA CANETA NO CELULAR
+
+     Menor e mais preciso.
+  */
+
+  .pen-hotspot {
+
+    right: 22%;
+
+    bottom: 19%;
+
+    width: 14%;
+
+    height: 5%;
 
   }
 
 
   .paper {
 
-    width:
-      94vw;
+    width: 94vw;
 
-    height:
-      90vh;
+    height: 88vh;
 
     padding:
-      45px 22px 85px;
-
-  }
-
-
-  .paper::before {
-
-    inset:
-      15px;
-
-  }
-
-
-  .paper h1 {
-
-    font-size:
-      19px;
+      40px 22px;
 
   }
 
@@ -1524,34 +1167,24 @@ button:disabled {
   .message-form {
 
     width:
-      calc(100% - 44px);
+      calc(100% - 30px);
 
-    grid-template-columns:
-      1fr;
+    flex-wrap:
+      wrap;
 
   }
 
 
   .message-form input {
 
-    height:
-      42px;
+    width: 35%;
 
   }
 
 
   .message-form textarea {
 
-    height:
-      55px;
-
-  }
-
-
-  .message-form button {
-
-    height:
-      42px;
+    width: 55%;
 
   }
 
@@ -1560,32 +1193,51 @@ button:disabled {
 
 
 /* =========================================================
-   TELAS MUITO PEQUENAS
+   CELULARES MUITO PEQUENOS
 ========================================================= */
 
-@media (max-height: 650px) {
-
-
-  .scene-wrapper {
-
-    padding:
-      5px;
-
-  }
+@media (max-width: 400px) {
 
 
   .letter {
 
-    height:
-      calc(100vh - 60px);
+    width: 97vw;
+
+    height: 73vh;
 
   }
 
 
-  .last-note {
+  .letter-page {
 
-    display:
-      none;
+    max-width: 97vw;
+
+    max-height: 73vh;
+
+  }
+
+
+  .letter-controls {
+
+    bottom: 10px;
+
+  }
+
+
+  .letter-controls button {
+
+    width: 34px;
+
+    height: 34px;
+
+  }
+
+
+  .page-number {
+
+    min-width: 50px;
+
+    font-size: 12px;
 
   }
 
@@ -1602,9 +1254,9 @@ button:disabled {
 <div id="app">
 
 
-<!-- =======================================================
-     TELA DE CARREGAMENTO
-======================================================== -->
+<!-- =====================================================
+     CARREGAMENTO
+===================================================== -->
 
 <div
   class="loading"
@@ -1624,36 +1276,18 @@ button:disabled {
 </div>
 
 
-<!-- =======================================================
+<!-- =====================================================
      CENA PRINCIPAL
-======================================================== -->
+===================================================== -->
 
-<div class="scene-wrapper">
+<div class="scene">
 
-  <div class="scene">
-
-
-    <!--
-      IMPORTANTE:
-
-      interface.png precisa estar diretamente
-      dentro da pasta assets.
-
-      Estrutura:
-
-      assets/
-        interface.png
-        page-1.png
-        page-2.png
-        page-3.png
-        page-4.png
-    -->
+  <div class="interface">
 
     <img
-      class="scene-image"
+      class="interface-image"
       src="assets/interface.png"
       alt="Mesa com livro, globo, calendário, Cadillac e caneta"
-      draggable="false"
     >
 
 
@@ -1663,7 +1297,6 @@ button:disabled {
       class="hotspot globe-hotspot"
       id="globeHotspot"
       aria-label="Globo"
-      title="Globo"
     ></button>
 
 
@@ -1673,7 +1306,6 @@ button:disabled {
       class="hotspot calendar-hotspot"
       id="calendarHotspot"
       aria-label="Calendário"
-      title="Calendário"
     ></button>
 
 
@@ -1683,7 +1315,6 @@ button:disabled {
       class="hotspot car-hotspot"
       id="carHotspot"
       aria-label="Cadillac"
-      title="Cadillac"
     ></button>
 
 
@@ -1693,7 +1324,6 @@ button:disabled {
       class="hotspot book-hotspot"
       id="book"
       aria-label="Abrir carta"
-      title="Abrir carta"
     ></button>
 
 
@@ -1703,18 +1333,16 @@ button:disabled {
       class="hotspot pen-hotspot"
       id="pen"
       aria-label="Escrever mensagem"
-      title="Escrever mensagem"
     ></button>
-
 
   </div>
 
 </div>
 
 
-<!-- =======================================================
-     MODAL DA SENHA
-======================================================== -->
+<!-- =====================================================
+     SENHA
+===================================================== -->
 
 <div
   class="overlay hidden"
@@ -1732,7 +1360,6 @@ button:disabled {
       somente com números.
     </p>
 
-
     <input
       id="passwordInput"
       type="password"
@@ -1742,15 +1369,11 @@ button:disabled {
       autocomplete="off"
     >
 
-
     <div>
 
-      <button
-        id="unlockButton"
-      >
+      <button id="unlockButton">
         abrir
       </button>
-
 
       <button
         class="secondary"
@@ -1760,7 +1383,6 @@ button:disabled {
       </button>
 
     </div>
-
 
     <p
       class="error"
@@ -1772,9 +1394,9 @@ button:disabled {
 </div>
 
 
-<!-- =======================================================
+<!-- =====================================================
      CARTA
-======================================================== -->
+===================================================== -->
 
 <div
   class="letter-overlay hidden"
@@ -1798,8 +1420,8 @@ button:disabled {
 
     <img
       class="letter-page active"
-      src="assets/page-1.png"
-      alt="Página 1"
+      src="assets/letter/page-1.png"
+      alt="Página 1 da carta"
     >
 
 
@@ -1807,8 +1429,8 @@ button:disabled {
 
     <img
       class="letter-page"
-      src="assets/page-2.png"
-      alt="Página 2"
+      src="assets/letter/page-2.png"
+      alt="Página 2 da carta"
     >
 
 
@@ -1816,8 +1438,8 @@ button:disabled {
 
     <img
       class="letter-page"
-      src="assets/page-3.png"
-      alt="Página 3"
+      src="assets/letter/page-3.png"
+      alt="Página 3 da carta"
     >
 
 
@@ -1825,67 +1447,63 @@ button:disabled {
 
     <img
       class="letter-page"
-      src="assets/page-4.png"
-      alt="Página 4"
+      src="assets/letter/page-4.png"
+      alt="Página 4 da carta"
     >
-
-
-    <!-- CONTROLES -->
-
-    <div class="letter-controls">
-
-
-      <button
-        id="previousPage"
-        aria-label="Página anterior"
-      >
-        ←
-      </button>
-
-
-      <span
-        class="page-number"
-        id="pageNumber"
-      >
-        1 / 4
-      </span>
-
-
-      <button
-        id="nextPage"
-        aria-label="Próxima página"
-      >
-        →
-      </button>
-
-
-    </div>
-
-
-    <!-- MENSAGEM FINAL -->
-
-    <div
-      class="last-note hidden"
-      id="lastNote"
-    >
-      Deixe uma mensagem ou comentário na caneta encima da mesa
-    </div>
 
 
   </div>
 
+
+  <!-- CONTROLES -->
+
+  <div class="letter-controls">
+
+    <button
+      id="previousPage"
+      aria-label="Página anterior"
+    >
+      ←
+    </button>
+
+    <span
+      class="page-number"
+      id="pageNumber"
+    >
+      1 / 4
+    </span>
+
+    <button
+      id="nextPage"
+      aria-label="Próxima página"
+    >
+      →
+    </button>
+
+  </div>
+
+
+  <!-- ÚLTIMA PÁGINA -->
+
+  <div
+    class="last-note hidden"
+    id="lastNote"
+  >
+    Deixe uma mensagem ou comentário na caneta encima da mesa
+  </div>
+
+
 </div>
 
 
-<!-- =======================================================
+<!-- =====================================================
      MENSAGENS
-======================================================== -->
+===================================================== -->
 
 <div
   class="messages-overlay hidden"
   id="messagesOverlay"
 >
-
 
   <div class="paper">
 
@@ -1923,14 +1541,11 @@ button:disabled {
 
     <div class="message-form">
 
-
       <input
         id="nameInput"
         maxlength="80"
         placeholder="teu nome"
-        autocomplete="off"
       >
-
 
       <textarea
         id="messageInput"
@@ -1938,13 +1553,11 @@ button:disabled {
         placeholder="escreva aqui..."
       ></textarea>
 
-
       <button
         id="sendButton"
       >
         enviar
       </button>
-
 
     </div>
 
@@ -1954,15 +1567,14 @@ button:disabled {
 </div>
 
 
-<!-- =======================================================
-     ARQUIVO DE FOLHAS
-======================================================== -->
+<!-- =====================================================
+     ARQUIVO
+===================================================== -->
 
 <div
   class="archive hidden"
   id="archive"
 >
-
 
   <button
     class="archive-close"
@@ -1971,17 +1583,14 @@ button:disabled {
     fechar
   </button>
 
-
   <h2>
     folhas anteriores
   </h2>
-
 
   <div
     class="archive-list"
     id="archiveList"
   ></div>
-
 
 </div>
 
@@ -1995,25 +1604,12 @@ button:disabled {
    CONFIGURAÇÕES
 ========================================================= */
 
-
-/*
-   SENHA DO LIVRO E DA CANETA
-*/
-
 const PASSWORD = "25102008";
 
-
-/*
-   URL DO GOOGLE APPS SCRIPT
-*/
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbz7mUY2SZA9sdeXLLVdheKYA4rVh7AbnDojfyLPxEXy204IGUwnARLYkXhh7pr7DWCcaw/exec";
 
-
-/*
-   QUANTAS MENSAGENS CABEM EM CADA FOLHA
-*/
 
 const MESSAGES_PER_SHEET = 6;
 
@@ -2023,88 +1619,88 @@ const MESSAGES_PER_SHEET = 6;
 ========================================================= */
 
 const loading =
-document.getElementById("loading");
+  document.getElementById("loading");
 
 const book =
-document.getElementById("book");
+  document.getElementById("book");
 
 const pen =
-document.getElementById("pen");
+  document.getElementById("pen");
 
 const passwordOverlay =
-document.getElementById("passwordOverlay");
+  document.getElementById("passwordOverlay");
 
 const passwordInput =
-document.getElementById("passwordInput");
+  document.getElementById("passwordInput");
 
 const passwordError =
-document.getElementById("passwordError");
+  document.getElementById("passwordError");
 
 const unlockButton =
-document.getElementById("unlockButton");
+  document.getElementById("unlockButton");
 
 const cancelPassword =
-document.getElementById("cancelPassword");
+  document.getElementById("cancelPassword");
 
 const letterOverlay =
-document.getElementById("letterOverlay");
+  document.getElementById("letterOverlay");
 
 const closeLetter =
-document.getElementById("closeLetter");
+  document.getElementById("closeLetter");
 
 const pages =
-document.querySelectorAll(".letter-page");
+  document.querySelectorAll(".letter-page");
 
 const previousPage =
-document.getElementById("previousPage");
+  document.getElementById("previousPage");
 
 const nextPage =
-document.getElementById("nextPage");
+  document.getElementById("nextPage");
 
 const pageNumber =
-document.getElementById("pageNumber");
+  document.getElementById("pageNumber");
 
 const lastNote =
-document.getElementById("lastNote");
+  document.getElementById("lastNote");
 
 const messagesOverlay =
-document.getElementById("messagesOverlay");
+  document.getElementById("messagesOverlay");
 
 const closeMessages =
-document.getElementById("closeMessages");
+  document.getElementById("closeMessages");
 
 const messagesContainer =
-document.getElementById("messages");
+  document.getElementById("messages");
 
 const nameInput =
-document.getElementById("nameInput");
+  document.getElementById("nameInput");
 
 const messageInput =
-document.getElementById("messageInput");
+  document.getElementById("messageInput");
 
 const sendButton =
-document.getElementById("sendButton");
+  document.getElementById("sendButton");
 
 const archiveButton =
-document.getElementById("archiveButton");
+  document.getElementById("archiveButton");
 
 const archive =
-document.getElementById("archive");
+  document.getElementById("archive");
 
 const archiveList =
-document.getElementById("archiveList");
+  document.getElementById("archiveList");
 
 const closeArchive =
-document.getElementById("closeArchive");
+  document.getElementById("closeArchive");
 
 
 /* =========================================================
    ESTADO
 ========================================================= */
 
-let currentPage = 0;
-
 let unlocked = false;
+
+let currentPage = 0;
 
 let allMessages = [];
 
@@ -2142,7 +1738,11 @@ book.addEventListener(
 
     if (!unlocked) {
 
-      abrirSenha();
+      passwordOverlay.classList.remove(
+        "hidden"
+      );
+
+      passwordInput.focus();
 
       return;
 
@@ -2164,7 +1764,11 @@ pen.addEventListener(
 
     if (!unlocked) {
 
-      abrirSenha();
+      passwordOverlay.classList.remove(
+        "hidden"
+      );
+
+      passwordInput.focus();
 
       return;
 
@@ -2179,28 +1783,6 @@ pen.addEventListener(
 /* =========================================================
    SENHA
 ========================================================= */
-
-function abrirSenha() {
-
-  passwordOverlay
-    .classList
-    .remove("hidden");
-
-  passwordError.textContent = "";
-
-  passwordInput.value = "";
-
-  setTimeout(
-    function() {
-
-      passwordInput.focus();
-
-    },
-    100
-  );
-
-}
-
 
 unlockButton.addEventListener(
   "click",
@@ -2232,19 +1814,13 @@ function verificarSenha() {
 
     unlocked = true;
 
-    passwordOverlay
-      .classList
-      .add("hidden");
+    passwordOverlay.classList.add(
+      "hidden"
+    );
 
     passwordInput.value = "";
 
     passwordError.textContent = "";
-
-
-    /*
-       Depois de desbloquear,
-       abre o livro.
-    */
 
     abrirCarta();
 
@@ -2264,9 +1840,9 @@ cancelPassword.addEventListener(
   "click",
   function() {
 
-    passwordOverlay
-      .classList
-      .add("hidden");
+    passwordOverlay.classList.add(
+      "hidden"
+    );
 
     passwordInput.value = "";
 
@@ -2286,9 +1862,9 @@ function abrirCarta() {
 
   atualizarPagina();
 
-  letterOverlay
-    .classList
-    .remove("hidden");
+  letterOverlay.classList.remove(
+    "hidden"
+  );
 
 }
 
@@ -2319,23 +1895,20 @@ function atualizarPagina() {
     currentPage === pages.length - 1;
 
 
-  /*
-     A mensagem só aparece na última página.
-  */
-
   if (
-    currentPage === pages.length - 1
+    currentPage ===
+    pages.length - 1
   ) {
 
-    lastNote
-      .classList
-      .remove("hidden");
+    lastNote.classList.remove(
+      "hidden"
+    );
 
   } else {
 
-    lastNote
-      .classList
-      .add("hidden");
+    lastNote.classList.add(
+      "hidden"
+    );
 
   }
 
@@ -2393,40 +1966,36 @@ closeLetter.addEventListener(
   "click",
   function() {
 
-    letterOverlay
-      .classList
-      .add("hidden");
+    letterOverlay.classList.add(
+      "hidden"
+    );
 
   }
 );
 
 
 /* =========================================================
-   ABRIR MENSAGENS
+   MENSAGENS
 ========================================================= */
 
 async function abrirMensagens() {
 
-  messagesOverlay
-    .classList
-    .remove("hidden");
+  messagesOverlay.classList.remove(
+    "hidden"
+  );
 
   await carregarMensagens();
 
 }
 
 
-/* =========================================================
-   FECHAR MENSAGENS
-========================================================= */
-
 closeMessages.addEventListener(
   "click",
   function() {
 
-    messagesOverlay
-      .classList
-      .add("hidden");
+    messagesOverlay.classList.add(
+      "hidden"
+    );
 
   }
 );
@@ -2468,10 +2037,7 @@ async function carregarMensagens() {
 
   } catch (error) {
 
-    console.error(
-      "Erro ao carregar mensagens:",
-      error
-    );
+    console.error(error);
 
     allMessages = [];
 
@@ -2484,7 +2050,7 @@ async function carregarMensagens() {
 
 
 /* =========================================================
-   ORGANIZAR FOLHAS
+   FOLHAS
 ========================================================= */
 
 function obterFolhas() {
@@ -2560,8 +2126,7 @@ function renderizarSheet(index) {
     sheets[index] || [];
 
 
-  messagesContainer.innerHTML =
-    "";
+  messagesContainer.innerHTML = "";
 
 
   if (sheet.length === 0) {
@@ -2570,12 +2135,13 @@ function renderizarSheet(index) {
       document.createElement("div");
 
 
-    empty.style.cssText = `
+    empty.style.cssText =
+      `
       text-align:center;
       margin-top:100px;
       opacity:.45;
       font-family:Georgia,serif;
-    `;
+      `;
 
 
     empty.textContent =
@@ -2601,18 +2167,6 @@ function renderizarSheet(index) {
 
       wrapper.className =
         "message";
-
-
-      const rotation =
-        (
-          Math.random() * 2 - 1
-        ).toFixed(2);
-
-
-      wrapper.style.setProperty(
-        "--rotation",
-        rotation + "deg"
-      );
 
 
       const name =
@@ -2676,8 +2230,7 @@ function renderizarSheet(index) {
 
 function atualizarArquivo(sheets) {
 
-  archiveList.innerHTML =
-    "";
+  archiveList.innerHTML = "";
 
 
   const oldSheets =
@@ -2690,17 +2243,14 @@ function atualizarArquivo(sheets) {
       document.createElement("p");
 
 
-    text.style.opacity =
-      ".6";
+    text.style.opacity = ".6";
 
 
     text.textContent =
       "Ainda não existem folhas anteriores.";
 
 
-    archiveList.appendChild(
-      text
-    );
+    archiveList.appendChild(text);
 
 
     return;
@@ -2726,18 +2276,13 @@ function atualizarArquivo(sheets) {
       "click",
       function() {
 
-        currentMessageSheet =
-          i;
+        currentMessageSheet = i;
 
+        renderizarSheet(i);
 
-        renderizarSheet(
-          i
+        archive.classList.add(
+          "hidden"
         );
-
-
-        archive
-          .classList
-          .add("hidden");
 
       }
     );
@@ -2752,10 +2297,6 @@ function atualizarArquivo(sheets) {
 }
 
 
-/* =========================================================
-   ABRIR ARQUIVO
-========================================================= */
-
 archiveButton.addEventListener(
   "click",
   function() {
@@ -2769,25 +2310,21 @@ archiveButton.addEventListener(
     );
 
 
-    archive
-      .classList
-      .remove("hidden");
+    archive.classList.remove(
+      "hidden"
+    );
 
   }
 );
 
 
-/* =========================================================
-   FECHAR ARQUIVO
-========================================================= */
-
 closeArchive.addEventListener(
   "click",
   function() {
 
-    archive
-      .classList
-      .add("hidden");
+    archive.classList.add(
+      "hidden"
+    );
 
   }
 );
@@ -2858,9 +2395,7 @@ async function enviarMensagem() {
   }
 
 
-  sendButton.disabled =
-    true;
-
+  sendButton.disabled = true;
 
   sendButton.textContent =
     "enviando...";
@@ -2872,8 +2407,7 @@ async function enviarMensagem() {
       await fetch(
         API_URL,
         {
-          method:
-            "POST",
+          method: "POST",
 
           headers: {
             "Content-Type":
@@ -2882,11 +2416,8 @@ async function enviarMensagem() {
 
           body:
             JSON.stringify({
-              name:
-                name,
-
-              message:
-                message
+              name: name,
+              message: message
             })
 
         }
@@ -2907,11 +2438,9 @@ async function enviarMensagem() {
     }
 
 
-    nameInput.value =
-      "";
+    nameInput.value = "";
 
-    messageInput.value =
-      "";
+    messageInput.value = "";
 
 
     await carregarMensagens();
@@ -2924,22 +2453,16 @@ async function enviarMensagem() {
 
   } catch (error) {
 
-    console.error(
-      "Erro ao enviar:",
-      error
-    );
-
+    console.error(error);
 
     alert(
-      "Não foi possível salvar a mensagem. Verifique a publicação do Google Apps Script."
+      "Não foi possível salvar a mensagem."
     );
 
   }
 
 
-  sendButton.disabled =
-    false;
-
+  sendButton.disabled = false;
 
   sendButton.textContent =
     "enviar";
@@ -2948,17 +2471,10 @@ async function enviarMensagem() {
 
 
 /* =========================================================
-   FORMATAR DATA
+   DATA
 ========================================================= */
 
 function formatarData(value) {
-
-  if (!value) {
-
-    return "";
-
-  }
-
 
   try {
 
@@ -2966,35 +2482,14 @@ function formatarData(value) {
       new Date(value);
 
 
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-
-      return "";
-
-    }
-
-
     return date.toLocaleString(
       "pt-BR",
       {
-        day:
-          "2-digit",
-
-        month:
-          "2-digit",
-
-        year:
-          "numeric",
-
-        hour:
-          "2-digit",
-
-        minute:
-          "2-digit"
-
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
       }
     );
 
@@ -3008,122 +2503,33 @@ function formatarData(value) {
 
 
 /* =========================================================
-   TECLA ESC
+   ESC
 ========================================================= */
 
 document.addEventListener(
   "keydown",
   function(event) {
 
-    if (
-      event.key === "Escape"
-    ) {
+    if (event.key === "Escape") {
 
-      passwordOverlay
-        .classList
-        .add("hidden");
+      passwordOverlay.classList.add(
+        "hidden"
+      );
 
+      letterOverlay.classList.add(
+        "hidden"
+      );
 
-      letterOverlay
-        .classList
-        .add("hidden");
+      messagesOverlay.classList.add(
+        "hidden"
+      );
 
-
-      messagesOverlay
-        .classList
-        .add("hidden");
-
-
-      archive
-        .classList
-        .add("hidden");
+      archive.classList.add(
+        "hidden"
+      );
 
     }
 
-  }
-);
-
-
-/* =========================================================
-   TOQUE / SWIPE NA CARTA
-========================================================= */
-
-
-/*
-   No celular, também é possível passar
-   a página arrastando o dedo.
-*/
-
-let touchStartX = 0;
-
-let touchEndX = 0;
-
-
-letterOverlay.addEventListener(
-  "touchstart",
-  function(event) {
-
-    touchStartX =
-      event.changedTouches[0].screenX;
-
-  },
-  {
-    passive: true
-  }
-);
-
-
-letterOverlay.addEventListener(
-  "touchend",
-  function(event) {
-
-    touchEndX =
-      event.changedTouches[0].screenX;
-
-
-    const difference =
-      touchEndX - touchStartX;
-
-
-    if (
-      Math.abs(difference) < 50
-    ) {
-
-      return;
-
-    }
-
-
-    if (difference < 0) {
-
-      if (
-        currentPage <
-        pages.length - 1
-      ) {
-
-        currentPage++;
-
-        atualizarPagina();
-
-      }
-
-    } else {
-
-      if (
-        currentPage > 0
-      ) {
-
-        currentPage--;
-
-        atualizarPagina();
-
-      }
-
-    }
-
-  },
-  {
-    passive: true
   }
 );
 
