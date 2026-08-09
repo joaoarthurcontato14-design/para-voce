@@ -7,7 +7,7 @@
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1, viewport-fit=cover"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 >
 
 <meta
@@ -27,12 +27,12 @@
 :root {
 
   --blue: #283b54;
-  --blue-dark: #1d2c40;
+  --blue-dark: #1b293b;
 
-  --paper: #f7f4ec;
-  --paper-dark: #ebe6d9;
+  --paper: #f5f1e7;
+  --paper-dark: #e8e1d2;
 
-  --ink: #242424;
+  --ink: #262626;
 
   --white: #ffffff;
 
@@ -40,9 +40,13 @@
 
 
 * {
+
   box-sizing: border-box;
+
   margin: 0;
+
   padding: 0;
+
 }
 
 
@@ -52,24 +56,24 @@ body {
   width: 100%;
   height: 100%;
 
+  overflow: hidden;
+
 }
 
 
 body {
 
-  overflow: hidden;
-
   background:
     var(--blue);
-
-  color:
-    white;
 
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+
+  color:
+    white;
 
 }
 
@@ -80,12 +84,10 @@ body {
 
 #app {
 
-  position: fixed;
-
-  inset: 0;
-
   width: 100vw;
   height: 100vh;
+
+  position: relative;
 
   overflow: hidden;
 
@@ -105,7 +107,7 @@ body {
   z-index: 9999;
 
   background:
-    var(--blue);
+    #283b54;
 
   display: flex;
 
@@ -117,21 +119,6 @@ body {
 
   text-align: center;
 
-  transition:
-    opacity .8s ease,
-    visibility .8s ease;
-
-}
-
-
-.loading.hidden {
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  pointer-events: none;
-
 }
 
 
@@ -142,7 +129,7 @@ body {
     serif;
 
   font-size:
-    clamp(24px, 5vw, 38px);
+    clamp(25px, 4vw, 42px);
 
   letter-spacing:
     .5px;
@@ -150,22 +137,16 @@ body {
   margin-bottom:
     12px;
 
-  animation:
-    loaderFade 1.8s ease infinite alternate;
-
 }
 
 
 .loader-sub {
 
   font-size:
-    12px;
-
-  letter-spacing:
-    1.5px;
+    13px;
 
   opacity:
-    .55;
+    .65;
 
 }
 
@@ -173,16 +154,16 @@ body {
 .loader-line {
 
   width:
-    90px;
+    80px;
 
   height:
     1px;
 
-  margin-top:
-    28px;
-
   background:
-    rgba(255,255,255,.55);
+    rgba(255,255,255,.6);
+
+  margin-top:
+    25px;
 
   animation:
     loaderLine 2s ease-in-out infinite;
@@ -190,35 +171,30 @@ body {
 }
 
 
-@keyframes loaderFade {
+@keyframes loaderLine {
 
-  from {
-    opacity: .55;
+  0% {
+    transform: scaleX(.25);
+    opacity: .25;
   }
 
-  to {
+  50% {
+    transform: scaleX(1);
     opacity: 1;
+  }
+
+  100% {
+    transform: scaleX(.25);
+    opacity: .25;
   }
 
 }
 
 
-@keyframes loaderLine {
+.hidden {
 
-  0% {
-    transform: scaleX(.2);
-    opacity: .2;
-  }
-
-  50% {
-    transform: scaleX(1);
-    opacity: .8;
-  }
-
-  100% {
-    transform: scaleX(.2);
-    opacity: .2;
-  }
+  display:
+    none !important;
 
 }
 
@@ -227,7 +203,7 @@ body {
    INTERFACE PRINCIPAL
 ========================================================= */
 
-.scene {
+.main-interface {
 
   position: absolute;
 
@@ -246,28 +222,24 @@ body {
 
 
 /*
-   A imagem inteira é mantida dentro da tela.
-
-   contain = nada da interface será cortado.
+   A imagem ocupa a tela inteira,
+   mas preserva sua proporção.
 */
 
 .interface-image {
 
-  position: absolute;
-
   width: 100vw;
-
   height: 100vh;
 
-  object-fit: contain;
+  object-fit: cover;
 
   object-position: center;
+
+  display: block;
 
   user-select: none;
 
   -webkit-user-drag: none;
-
-  pointer-events: none;
 
 }
 
@@ -276,226 +248,166 @@ body {
    HOTSPOTS
 ========================================================= */
 
-/*
-   Os botões são transparentes.
-
-   Eles ficam por cima da imagem e servem somente
-   para detectar o clique.
-*/
-
 .hotspot {
 
   position: absolute;
 
-  z-index: 20;
-
   border: none;
+
+  padding: 0;
+
+  margin: 0;
 
   background: transparent;
 
   cursor: pointer;
 
-  padding: 0;
+  z-index: 50;
 
   outline: none;
 
-  -webkit-tap-highlight-color:
-    transparent;
+  transform:
+    translate(-50%, -50%);
 
 }
 
-
-/*
-   Ao passar o mouse NÃO colocamos uma caixa gigante.
-   Apenas um pequeno brilho discreto.
-*/
-
-.hotspot::after {
-
-  content: "";
-
-  position: absolute;
-
-  inset: -4px;
-
-  border-radius: 50%;
-
-  background:
-    rgba(255,255,255,0);
-
-  transition:
-    background .2s ease;
-
-}
-
-
-.hotspot:hover::after {
-
-  background:
-    rgba(255,255,255,.08);
-
-}
-
-
-/* =========================================================
-   LIVRO
-========================================================= */
 
 /*
    IMPORTANTE:
 
-   Estes valores representam a posição do livro
-   na interface.png.
-
-   Se precisar ajustar posteriormente, alteraremos
-   somente estes números.
+   Os valores abaixo são relativos à tela.
+   Eles foram feitos para que os hotspots
+   permaneçam pequenos e discretos.
 */
 
-.book-hotspot {
 
-  /*
-     centro aproximado do livro
-  */
-
-  left: 50%;
-
-  top: 50%;
-
-  width: 19vw;
-
-  height: 28vw;
-
-  max-width: 230px;
-
-  max-height: 330px;
-
-  transform:
-    translate(-50%, -50%);
-
-}
-
-
-/* =========================================================
-   CANETA
-========================================================= */
-
-/*
-   Área pequena e centralizada sobre a caneta.
-*/
-
-.pen-hotspot {
-
-  /*
-     posição aproximada da caneta
-  */
-
-  left: 68%;
-
-  top: 73%;
-
-  width: 12vw;
-
-  height: 4vw;
-
-  max-width: 150px;
-
-  max-height: 45px;
-
-  transform:
-    translate(-50%, -50%)
-    rotate(-25deg);
-
-}
-
-
-/* =========================================================
-   OUTROS HOTSPOTS
-========================================================= */
-
-/*
-   Mantidos pequenos para não atrapalhar a interface.
-*/
+/* -------------------------
+   GLOBO
+------------------------- */
 
 .globe-hotspot {
 
-  left: 21%;
+  left: 24.5%;
+  top: 47%;
 
-  top: 35%;
+  width: 42px;
+  height: 42px;
 
-  width: 11vw;
-
-  height: 11vw;
-
-  max-width: 150px;
-
-  max-height: 150px;
-
-  transform:
-    translate(-50%, -50%);
+  border-radius: 50%;
 
 }
 
+
+/* -------------------------
+   CALENDÁRIO
+------------------------- */
 
 .calendar-hotspot {
 
-  right: 18%;
+  left: 79%;
+  top: 28%;
 
-  top: 24%;
-
-  width: 12vw;
-
-  height: 7vw;
-
-  max-width: 160px;
-
-  max-height: 100px;
-
-  transform:
-    translate(50%, -50%);
+  width: 58px;
+  height: 48px;
 
 }
 
 
+/* -------------------------
+   CADILLAC
+------------------------- */
+
 .car-hotspot {
 
-  right: 17%;
+  left: 78%;
+  top: 72%;
 
-  bottom: 20%;
+  width: 105px;
+  height: 60px;
 
-  width: 14vw;
+  border-radius:
+    20px;
 
-  height: 7vw;
+}
 
-  max-width: 190px;
 
-  max-height: 90px;
+/* -------------------------
+   LIVRO
+------------------------- */
+
+.book-hotspot {
+
+  left: 50%;
+  top: 52%;
+
+  width: 235px;
+  height: 295px;
+
+  border-radius:
+    15px;
+
+}
+
+
+/* -------------------------
+   CANETA
+------------------------- */
+
+.pen-hotspot {
+
+  left: 72%;
+  top: 76%;
+
+  width: 95px;
+  height: 30px;
+
+  border-radius:
+    30px;
+
+}
+
+
+/*
+   Pequeno feedback visual.
+*/
+
+.hotspot:hover {
+
+  background:
+    rgba(255,255,255,.025);
+
+}
+
+
+.hotspot:active {
 
   transform:
-    translate(50%, 50%);
+    translate(-50%, -50%)
+    scale(.96);
 
 }
 
 
 /* =========================================================
-   MODAL DE SENHA
+   POP-UP DO GLOBO
 ========================================================= */
 
-.overlay {
+.globe-popup-overlay {
 
   position: fixed;
 
   inset: 0;
 
-  z-index: 500;
+  z-index: 1000;
 
   background:
-    rgba(15,24,36,.86);
+    rgba(10,18,28,.70);
 
   backdrop-filter:
-    blur(15px);
+    blur(10px);
 
   -webkit-backdrop-filter:
-    blur(15px);
+    blur(10px);
 
   display: flex;
 
@@ -508,20 +420,181 @@ body {
 }
 
 
-.overlay.hidden {
+.globe-popup {
 
-  display: none;
+  width:
+    min(430px, 90vw);
+
+  padding:
+    48px 38px 42px;
+
+  position: relative;
+
+  background:
+    rgba(247,244,236,.98);
+
+  color:
+    #222;
+
+  border-radius:
+    24px;
+
+  box-shadow:
+    0 30px 80px
+    rgba(0,0,0,.45);
+
+  text-align:
+    center;
+
+  animation:
+    popupIn .3s ease;
 
 }
 
 
-.modal {
+@keyframes popupIn {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(15px)
+      scale(.96);
+
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+}
+
+
+.globe-popup-close {
+
+  position: absolute;
+
+  top: 13px;
+  right: 13px;
+
+  width: 34px;
+  height: 34px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background:
+    rgba(40,59,84,.08);
+
+  color:
+    #283b54;
+
+  font-size:
+    23px;
+
+  cursor: pointer;
+
+}
+
+
+.globe-popup-title {
+
+  font-family:
+    Georgia,
+    serif;
+
+  font-size:
+    23px;
+
+  margin-bottom:
+    22px;
+
+}
+
+
+.globe-popup-line {
 
   width:
-    min(420px, 92vw);
+    45px;
+
+  height:
+    1px;
+
+  margin:
+    0 auto 22px;
+
+  background:
+    rgba(40,59,84,.3);
+
+}
+
+
+.globe-popup-place {
+
+  font-size:
+    15px;
+
+  line-height:
+    1.5;
+
+}
+
+
+.globe-popup-arrow {
+
+  margin:
+    10px 0;
+
+  color:
+    var(--blue);
+
+}
+
+
+/* =========================================================
+   MODAL DA SENHA
+========================================================= */
+
+.password-overlay {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 1100;
+
+  background:
+    rgba(10,18,28,.82);
+
+  backdrop-filter:
+    blur(10px);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+
+}
+
+
+.password-modal {
+
+  width:
+    min(420px, 90vw);
 
   padding:
-    34px;
+    38px;
 
   border-radius:
     24px;
@@ -542,28 +615,28 @@ body {
 }
 
 
-.modal h2 {
+.password-modal h2 {
 
   font-family:
     Georgia,
     serif;
 
-  font-weight:
-    500;
-
   font-size:
     24px;
 
   margin-bottom:
-    12px;
+    10px;
 
 }
 
 
-.modal p {
+.password-modal p {
 
   color:
     #666;
+
+  font-size:
+    14px;
 
   line-height:
     1.5;
@@ -574,41 +647,43 @@ body {
 }
 
 
-.modal input {
+.password-modal input {
 
   width: 100%;
 
+  height: 50px;
+
+  padding:
+    0 16px;
+
   border:
-    1px solid #d3cec2;
-
-  background:
-    #fffdf8;
-
-  color:
-    #222;
+    1px solid #d6d0c3;
 
   border-radius:
     14px;
 
-  padding:
-    14px 16px;
+  background:
+    #fffdf8;
 
   font-size:
-    16px;
-
-  outline:
-    none;
+    17px;
 
   text-align:
     center;
 
+  letter-spacing:
+    2px;
+
+  outline:
+    none;
+
   margin-bottom:
-    15px;
+    14px;
 
 }
 
 
-.modal input:focus {
+.password-modal input:focus {
 
   border-color:
     var(--blue);
@@ -616,7 +691,21 @@ body {
 }
 
 
-.modal button {
+.modal-buttons {
+
+  display:
+    flex;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+}
+
+
+.modal-buttons button {
 
   border:
     none;
@@ -625,7 +714,7 @@ body {
     999px;
 
   padding:
-    12px 22px;
+    12px 20px;
 
   background:
     var(--blue);
@@ -636,42 +725,33 @@ body {
   cursor:
     pointer;
 
-  font-size:
-    14px;
-
 }
 
 
-.modal button.secondary {
+.modal-buttons .secondary {
 
   background:
     transparent;
 
+  border:
+    1px solid #d1c9ba;
+
   color:
     #333;
-
-  border:
-    1px solid #ccc6b9;
-
-  margin-left:
-    7px;
 
 }
 
 
-.error {
+.password-error {
 
   color:
-    #a23d3d !important;
+    #9c4040 !important;
 
   min-height:
-    18px;
+    20px;
 
   margin:
-    13px 0 0 !important;
-
-  font-size:
-    13px;
+    12px 0 0 !important;
 
 }
 
@@ -686,80 +766,72 @@ body {
 
   inset: 0;
 
-  z-index: 600;
+  z-index: 1200;
 
   background:
-    rgba(22,34,50,.97);
+    rgba(24,37,54,.96);
 
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  justify-content: center;
+  justify-content:
+    center;
 
   padding:
-    18px;
+    25px;
 
 }
 
 
-.letter-overlay.hidden {
+.letter-container {
 
-  display: none;
-
-}
-
-
-.letter {
-
-  position: relative;
+  position:
+    relative;
 
   width:
-    min(88vw, 760px);
+    min(720px, 90vw);
 
   height:
-    min(88vh, 760px);
+    min(82vh, 850px);
 
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  justify-content: center;
+  justify-content:
+    center;
 
 }
 
-
-/*
-   A página NÃO ocupa mais a tela inteira.
-
-   Ela é limitada pelo tamanho da janela.
-*/
 
 .letter-page {
 
-  display: none;
-
-  max-width:
-    100%;
-
-  max-height:
-    calc(100vh - 100px);
+  display:
+    none;
 
   width:
-    auto;
+    100%;
 
   height:
-    auto;
+    100%;
 
   object-fit:
     contain;
 
+  object-position:
+    center;
+
+  background:
+    white;
+
   box-shadow:
     0 25px 70px
     rgba(0,0,0,.5);
-
-  user-select:
-    none;
 
 }
 
@@ -772,69 +844,80 @@ body {
 }
 
 
-/* =========================================================
-   BOTÃO FECHAR CARTA
-========================================================= */
+/* -------------------------
+   FECHAR CARTA
+------------------------- */
 
 .close-button {
 
-  position: fixed;
+  position:
+    fixed;
 
-  top: 18px;
+  top:
+    20px;
 
-  right: 18px;
+  right:
+    20px;
 
-  z-index: 700;
+  z-index:
+    1300;
 
-  width: 38px;
+  width:
+    40px;
 
-  height: 38px;
+  height:
+    40px;
 
-  border: none;
+  padding:
+    0;
 
-  border-radius: 50%;
+  border:
+    none;
+
+  border-radius:
+    50%;
 
   background:
-    rgba(0,0,0,.6);
+    rgba(0,0,0,.55);
 
   color:
     white;
 
   font-size:
-    23px;
+    25px;
 
-  line-height:
-    38px;
-
-  padding: 0;
-
-  cursor: pointer;
+  cursor:
+    pointer;
 
 }
 
 
-/* =========================================================
+/* -------------------------
    CONTROLES DA CARTA
-========================================================= */
+------------------------- */
 
 .letter-controls {
 
-  position: fixed;
+  position:
+    absolute;
 
-  left: 50%;
+  left:
+    50%;
 
-  bottom: 18px;
+  bottom:
+    -25px;
 
   transform:
     translateX(-50%);
 
-  z-index: 710;
+  display:
+    flex;
 
-  display: flex;
+  align-items:
+    center;
 
-  align-items: center;
-
-  gap: 8px;
+  gap:
+    10px;
 
   padding:
     6px 8px;
@@ -843,11 +926,7 @@ body {
     999px;
 
   background:
-    rgba(0,0,0,.75);
-
-  box-shadow:
-    0 10px 30px
-    rgba(0,0,0,.3);
+    rgba(0,0,0,.78);
 
 }
 
@@ -860,9 +939,11 @@ body {
   height:
     34px;
 
-  padding: 0;
+  padding:
+    0;
 
-  border: none;
+  border:
+    none;
 
   border-radius:
     50%;
@@ -874,7 +955,7 @@ body {
     white;
 
   font-size:
-    18px;
+    17px;
 
   cursor:
     pointer;
@@ -885,7 +966,7 @@ body {
 .letter-controls button:disabled {
 
   opacity:
-    .25;
+    .3;
 
   cursor:
     default;
@@ -896,39 +977,40 @@ body {
 .page-number {
 
   min-width:
-    55px;
+    50px;
 
-  text-align:
-    center;
+  color:
+    white;
 
   font-size:
     12px;
 
-  color:
-    rgba(255,255,255,.85);
+  text-align:
+    center;
 
 }
 
 
-/* =========================================================
-   TEXTO DA ÚLTIMA PÁGINA
-========================================================= */
+/* -------------------------
+   AVISO ÚLTIMA PÁGINA
+------------------------- */
 
 .last-note {
 
-  position: absolute;
+  position:
+    absolute;
 
-  left: 50%;
+  left:
+    50%;
 
-  bottom: 75px;
+  bottom:
+    35px;
 
   transform:
     translateX(-50%);
 
-  z-index: 720;
-
   max-width:
-    min(520px, 80vw);
+    80%;
 
   padding:
     10px 17px;
@@ -942,23 +1024,11 @@ body {
   color:
     white;
 
+  font-size:
+    12px;
+
   text-align:
     center;
-
-  font-size:
-    13px;
-
-  box-shadow:
-    0 10px 30px
-    rgba(0,0,0,.25);
-
-}
-
-
-.hidden {
-
-  display:
-    none !important;
 
 }
 
@@ -973,10 +1043,13 @@ body {
 
   inset: 0;
 
-  z-index: 800;
+  z-index: 1400;
 
   background:
-    rgba(24,37,54,.97);
+    rgba(30,43,60,.94);
+
+  backdrop-filter:
+    blur(8px);
 
   display:
     flex;
@@ -988,28 +1061,25 @@ body {
     center;
 
   padding:
-    18px;
+    20px;
 
 }
 
 
-.messages-overlay.hidden {
-
-  display:
-    none;
-
-}
-
+/*
+   Folha principal.
+*/
 
 .paper {
 
-  position: relative;
+  position:
+    relative;
 
   width:
-    min(900px, 94vw);
+    min(760px, 92vw);
 
   height:
-    min(86vh, 820px);
+    min(78vh, 720px);
 
   background:
     var(--paper);
@@ -1018,11 +1088,14 @@ body {
     var(--ink);
 
   padding:
-    50px;
+    48px 50px 125px;
+
+  border-radius:
+    3px;
 
   box-shadow:
     0 30px 90px
-    rgba(0,0,0,.5);
+    rgba(0,0,0,.48);
 
   overflow:
     hidden;
@@ -1030,18 +1103,24 @@ body {
 }
 
 
+/*
+   Textura sutil do papel.
+*/
+
 .paper::before {
 
-  content: "";
+  content:
+    "";
 
-  position: absolute;
+  position:
+    absolute;
 
   inset:
-    24px;
+    18px;
 
   border:
     1px solid
-    rgba(50,50,50,.08);
+    rgba(40,40,40,.08);
 
   pointer-events:
     none;
@@ -1049,94 +1128,158 @@ body {
 }
 
 
+/* -------------------------
+   TÍTULO
+------------------------- */
+
 .paper h1 {
 
-  position: relative;
+  position:
+    relative;
 
-  z-index: 2;
-
-  text-align:
-    center;
+  z-index:
+    2;
 
   font-family:
     Georgia,
     serif;
 
+  font-weight:
+    normal;
+
   font-size:
     22px;
 
-  font-weight:
-    500;
-
   line-height:
-    1.4;
+    1.3;
+
+  text-align:
+    center;
 
   margin-bottom:
-    20px;
+    25px;
 
 }
 
 
-/* =========================================================
-   MENSAGENS EXISTENTES
-========================================================= */
+/* -------------------------
+   FECHAR
+------------------------- */
+
+.messages-close {
+
+  position:
+    absolute;
+
+  right:
+    17px;
+
+  top:
+    17px;
+
+  z-index:
+    5;
+
+  width:
+    34px;
+
+  height:
+    34px;
+
+  padding:
+    0;
+
+  border:
+    none;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(40,59,84,.1);
+
+  color:
+    var(--blue);
+
+  font-size:
+    22px;
+
+  cursor:
+    pointer;
+
+}
+
+
+/* -------------------------
+   MENSAGENS
+------------------------- */
 
 .messages {
 
-  position: relative;
-
-  z-index: 2;
+  position:
+    relative;
 
   height:
-    calc(100% - 150px);
+    calc(100% - 50px);
 
   overflow-y:
     auto;
 
   padding:
-    10px 15px;
+    5px 8px;
+
+  scrollbar-width:
+    thin;
 
 }
 
 
 .message {
 
-  font-family:
-    "Segoe Print",
-    "Bradley Hand",
-    "Comic Sans MS",
-    cursive;
+  padding:
+    12px 4px 15px;
 
-  margin-bottom:
-    22px;
-
-  line-height:
-    1.45;
-
-  transform:
-    rotate(var(--rotation));
+  border-bottom:
+    1px dashed
+    rgba(30,30,30,.14);
 
 }
 
 
 .message-name {
 
+  font-family:
+    "Segoe Print",
+    "Bradley Hand",
+    cursive;
+
   font-weight:
     bold;
 
   font-size:
-    17px;
+    16px;
+
+  margin-bottom:
+    4px;
 
 }
 
 
 .message-text {
 
-  white-space:
-    pre-wrap;
+  font-family:
+    "Segoe Print",
+    "Bradley Hand",
+    cursive;
 
   font-size:
-    16px;
+    15px;
+
+  line-height:
+    1.5;
+
+  white-space:
+    pre-wrap;
 
   word-break:
     break-word;
@@ -1146,10 +1289,10 @@ body {
 
 .message-date {
 
+  margin-top:
+    5px;
+
   font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
     sans-serif;
 
   font-size:
@@ -1158,41 +1301,35 @@ body {
   opacity:
     .45;
 
-  margin-top:
-    3px;
-
 }
 
 
-/* =========================================================
+/* -------------------------
    FORMULÁRIO
-========================================================= */
+------------------------- */
 
 .message-form {
 
   position:
     absolute;
 
+  left:
+    35px;
+
+  right:
+    35px;
+
+  bottom:
+    22px;
+
   z-index:
     5;
 
-  left:
-    50%;
-
-  bottom:
-    18px;
-
-  transform:
-    translateX(-50%);
-
-  width:
-    calc(100% - 70px);
-
   display:
-    flex;
+    grid;
 
-  align-items:
-    center;
+  grid-template-columns:
+    150px 1fr auto;
 
   gap:
     8px;
@@ -1203,10 +1340,12 @@ body {
 .message-form input,
 .message-form textarea {
 
-  margin: 0;
+  width:
+    100%;
 
   border:
-    1px solid #d3cec2;
+    1px solid
+    #d2cbbb;
 
   background:
     #fffdf8;
@@ -1220,33 +1359,30 @@ body {
   padding:
     11px 13px;
 
-  outline:
-    none;
-
   font-family:
     inherit;
+
+  font-size:
+    14px;
+
+  outline:
+    none;
 
 }
 
 
 .message-form input {
 
-  width:
-    150px;
+  height:
+    44px;
 
 }
 
 
 .message-form textarea {
 
-  flex:
-    1;
-
   height:
-    42px;
-
-  min-height:
-    42px;
+    44px;
 
   resize:
     none;
@@ -1254,19 +1390,28 @@ body {
 }
 
 
+.message-form input:focus,
+.message-form textarea:focus {
+
+  border-color:
+    var(--blue);
+
+}
+
+
 .message-form button {
 
   height:
-    42px;
+    44px;
+
+  padding:
+    0 18px;
 
   border:
     none;
 
   border-radius:
-    999px;
-
-  padding:
-    0 18px;
+    12px;
 
   background:
     var(--blue);
@@ -1280,23 +1425,23 @@ body {
 }
 
 
-/* =========================================================
-   BOTÕES DAS MENSAGENS
-========================================================= */
+/* -------------------------
+   FOLHAS ANTERIORES
+------------------------- */
 
 .archive-button {
 
   position:
     absolute;
 
+  left:
+    20px;
+
   top:
     18px;
 
-  left:
-    18px;
-
   z-index:
-    10;
+    5;
 
   border:
     none;
@@ -1305,60 +1450,16 @@ body {
     999px;
 
   padding:
-    8px 14px;
+    8px 13px;
 
   background:
+    rgba(40,59,84,.1);
+
+  color:
     var(--blue);
 
-  color:
-    white;
-
   font-size:
-    12px;
-
-  cursor:
-    pointer;
-
-}
-
-
-.messages-close {
-
-  position:
-    absolute;
-
-  top:
-    18px;
-
-  right:
-    18px;
-
-  z-index:
-    10;
-
-  width:
-    36px;
-
-  height:
-    36px;
-
-  padding:
-    0;
-
-  border:
-    none;
-
-  border-radius:
-    50%;
-
-  background:
-    rgba(0,0,0,.15);
-
-  color:
-    #222;
-
-  font-size:
-    21px;
+    11px;
 
   cursor:
     pointer;
@@ -1372,14 +1473,17 @@ body {
 
 .archive {
 
-  position: fixed;
+  position:
+    fixed;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 900;
+  z-index:
+    1500;
 
   background:
-    rgba(24,37,54,.98);
+    rgba(24,37,54,.97);
 
   display:
     flex;
@@ -1399,19 +1503,14 @@ body {
 }
 
 
-.archive.hidden {
-
-  display:
-    none;
-
-}
-
-
 .archive h2 {
 
   font-family:
     Georgia,
     serif;
+
+  font-weight:
+    normal;
 
   margin-bottom:
     20px;
@@ -1434,7 +1533,7 @@ body {
     10px;
 
   max-width:
-    700px;
+    600px;
 
 }
 
@@ -1467,11 +1566,11 @@ body {
   position:
     absolute;
 
-  top:
-    18px;
-
   right:
-    18px;
+    20px;
+
+  top:
+    20px;
 
   border:
     none;
@@ -1480,10 +1579,10 @@ body {
     999px;
 
   padding:
-    9px 15px;
+    10px 16px;
 
   background:
-    rgba(255,255,255,.15);
+    rgba(255,255,255,.12);
 
   color:
     white;
@@ -1502,7 +1601,7 @@ body {
 
 
   /*
-     A interface continua inteira na tela.
+     INTERFACE
   */
 
   .interface-image {
@@ -1514,78 +1613,133 @@ body {
       100vh;
 
     object-fit:
-      contain;
+      cover;
 
   }
 
 
   /*
-     LIVRO — menor no celular.
+     HOTSPOTS
   */
+
+  .globe-hotspot {
+
+    left:
+      24.5%;
+
+    top:
+      47%;
+
+    width:
+      32px;
+
+    height:
+      32px;
+
+  }
+
+
+  .calendar-hotspot {
+
+    left:
+      79%;
+
+    top:
+      28%;
+
+    width:
+      45px;
+
+    height:
+      36px;
+
+  }
+
+
+  .car-hotspot {
+
+    left:
+      78%;
+
+    top:
+      72%;
+
+    width:
+      78px;
+
+    height:
+      45px;
+
+  }
+
 
   .book-hotspot {
 
+    left:
+      50%;
+
+    top:
+      52%;
+
     width:
-      24vw;
+      175px;
 
     height:
-      32vw;
-
-    max-width:
-      125px;
-
-    max-height:
-      190px;
+      230px;
 
   }
 
-
-  /*
-     CANETA — área pequena.
-  */
 
   .pen-hotspot {
 
+    left:
+      72%;
+
+    top:
+      76%;
+
     width:
-      17vw;
+      70px;
 
     height:
-      5vw;
-
-    max-width:
-      90px;
-
-    max-height:
-      30px;
+      23px;
 
   }
 
 
   /*
-     Carta.
-
-     O limite de altura é o que impede
-     a página de ficar gigante.
+     CARTA
   */
 
-  .letter {
+  .letter-overlay {
+
+    padding:
+      12px;
+
+  }
+
+
+  .letter-container {
 
     width:
-      96vw;
+      94vw;
 
     height:
-      82vh;
+      78vh;
 
   }
 
 
   .letter-page {
 
-    max-width:
-      92vw;
+    width:
+      100%;
 
-    max-height:
-      calc(100vh - 125px);
+    height:
+      100%;
+
+    object-fit:
+      contain;
 
   }
 
@@ -1593,7 +1747,7 @@ body {
   .letter-controls {
 
     bottom:
-      12px;
+      -15px;
 
   }
 
@@ -1601,17 +1755,28 @@ body {
   .last-note {
 
     bottom:
-      62px;
+      32px;
 
     font-size:
-      11px;
+      10px;
+
+    max-width:
+      88%;
 
   }
 
 
   /*
-     Folha de mensagens.
+     MENSAGENS
   */
+
+  .messages-overlay {
+
+    padding:
+      12px;
+
+  }
+
 
   .paper {
 
@@ -1619,10 +1784,10 @@ body {
       94vw;
 
     height:
-      90vh;
+      88vh;
 
     padding:
-      45px 22px 100px;
+      45px 22px 125px;
 
   }
 
@@ -1635,50 +1800,50 @@ body {
   }
 
 
-  .messages {
-
-    height:
-      calc(100% - 130px);
-
-  }
-
-
   .message-form {
 
-    width:
-      calc(100% - 30px);
+    left:
+      20px;
 
-    flex-wrap:
-      wrap;
+    right:
+      20px;
 
-  }
+    grid-template-columns:
+      1fr;
 
-
-  .message-form input {
-
-    width:
-      105px;
+    gap:
+      6px;
 
   }
 
 
+  .message-form input,
   .message-form textarea {
 
-    min-width:
-      0;
-
-    flex:
-      1;
+    height:
+      40px;
 
   }
 
 
   .message-form button {
 
-    width:
-      100%;
+    height:
+      40px;
 
   }
+
+
+  .archive-button {
+
+    left:
+      15px;
+
+    top:
+      15px;
+
+  }
+
 
 }
 
@@ -1687,17 +1852,24 @@ body {
    ACESSIBILIDADE
 ========================================================= */
 
+button {
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+}
+
+
 button:focus-visible {
 
   outline:
     2px solid
-    rgba(255,255,255,.8);
+    rgba(255,255,255,.7);
 
   outline-offset:
     3px;
 
 }
-
 
 </style>
 
@@ -1710,9 +1882,9 @@ button:focus-visible {
 <div id="app">
 
 
-<!-- =====================================================
+<!-- =======================================================
      CARREGAMENTO
-===================================================== -->
+======================================================= -->
 
 <div
   class="loading"
@@ -1732,101 +1904,118 @@ button:focus-visible {
 </div>
 
 
-<!-- =====================================================
-     CENA PRINCIPAL
-===================================================== -->
+<!-- =======================================================
+     INTERFACE
+======================================================= -->
 
-<div class="scene">
-
-
-  <!--
-       ESTA É A IMAGEM PRINCIPAL.
-
-       Ela deve estar em:
-
-       assets/interface.png
-  -->
+<main class="main-interface">
 
   <img
     class="interface-image"
     src="assets/interface.png"
-    alt="Mesa com livro, globo, calendário, Cadillac e caneta"
+    alt="Mesa com globo, livro, calendário, Cadillac e caneta"
   >
 
 
-  <!-- ===================================================
-       GLOBO
-  ==================================================== -->
+  <!-- GLOBO -->
 
   <button
     class="hotspot globe-hotspot"
     id="globeHotspot"
-    aria-label="Globo"
-    title="Globo"
+    aria-label="Abrir informações sobre o globo"
   ></button>
 
 
-  <!-- ===================================================
-       CALENDÁRIO
-  ==================================================== -->
+  <!-- CALENDÁRIO -->
 
   <button
     class="hotspot calendar-hotspot"
     id="calendarHotspot"
     aria-label="Calendário"
-    title="Calendário"
   ></button>
 
 
-  <!-- ===================================================
-       CADILLAC
-  ==================================================== -->
+  <!-- CADILLAC -->
 
   <button
     class="hotspot car-hotspot"
     id="carHotspot"
     aria-label="Cadillac"
-    title="Cadillac"
   ></button>
 
 
-  <!-- ===================================================
-       LIVRO
-  ==================================================== -->
+  <!-- LIVRO -->
 
   <button
     class="hotspot book-hotspot"
     id="book"
     aria-label="Abrir carta"
-    title="Abrir carta"
   ></button>
 
 
-  <!-- ===================================================
-       CANETA
-  ==================================================== -->
+  <!-- CANETA -->
 
   <button
     class="hotspot pen-hotspot"
     id="pen"
     aria-label="Escrever mensagem"
-    title="Escrever mensagem"
   ></button>
 
+</main>
+
+
+<!-- =======================================================
+     POP-UP DO GLOBO
+======================================================= -->
+
+<div
+  class="globe-popup-overlay hidden"
+  id="globePopupOverlay"
+>
+
+  <div class="globe-popup">
+
+    <button
+      class="globe-popup-close"
+      id="closeGlobePopup"
+      aria-label="Fechar"
+    >
+      ×
+    </button>
+
+    <div class="globe-popup-title">
+      Um ano de distância.
+    </div>
+
+    <div class="globe-popup-line"></div>
+
+    <div class="globe-popup-place">
+      Costa Marques/Cacoal - RO
+    </div>
+
+    <div class="globe-popup-arrow">
+      ↓
+    </div>
+
+    <div class="globe-popup-place">
+      Recife - PE
+    </div>
+
+  </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- =======================================================
      SENHA
-===================================================== -->
+======================================================= -->
 
 <div
-  class="overlay hidden"
+  class="password-overlay hidden"
   id="passwordOverlay"
 >
 
-  <div class="modal">
+  <div class="password-modal">
 
     <h2>
       Teu aniversário
@@ -1846,11 +2035,9 @@ button:focus-visible {
       autocomplete="off"
     >
 
-    <div>
+    <div class="modal-buttons">
 
-      <button
-        id="unlockButton"
-      >
+      <button id="unlockButton">
         abrir
       </button>
 
@@ -1864,7 +2051,7 @@ button:focus-visible {
     </div>
 
     <p
-      class="error"
+      class="password-error"
       id="passwordError"
     ></p>
 
@@ -1873,15 +2060,14 @@ button:focus-visible {
 </div>
 
 
-<!-- =====================================================
+<!-- =======================================================
      CARTA
-===================================================== -->
+======================================================= -->
 
 <div
   class="letter-overlay hidden"
   id="letterOverlay"
 >
-
 
   <button
     class="close-button"
@@ -1892,12 +2078,10 @@ button:focus-visible {
   </button>
 
 
-  <div class="letter">
+  <div class="letter-container">
 
 
-    <!-- ================================================
-         PÁGINA 1
-    ================================================= -->
+    <!-- PÁGINA 1 -->
 
     <img
       class="letter-page active"
@@ -1906,9 +2090,7 @@ button:focus-visible {
     >
 
 
-    <!-- ================================================
-         PÁGINA 2
-    ================================================= -->
+    <!-- PÁGINA 2 -->
 
     <img
       class="letter-page"
@@ -1917,9 +2099,7 @@ button:focus-visible {
     >
 
 
-    <!-- ================================================
-         PÁGINA 3
-    ================================================= -->
+    <!-- PÁGINA 3 -->
 
     <img
       class="letter-page"
@@ -1928,9 +2108,7 @@ button:focus-visible {
     >
 
 
-    <!-- ================================================
-         PÁGINA 4
-    ================================================= -->
+    <!-- PÁGINA 4 -->
 
     <img
       class="letter-page"
@@ -1939,12 +2117,9 @@ button:focus-visible {
     >
 
 
-    <!-- ================================================
-         CONTROLES
-    ================================================= -->
+    <!-- CONTROLES -->
 
     <div class="letter-controls">
-
 
       <button
         id="previousPage"
@@ -1953,14 +2128,12 @@ button:focus-visible {
         ←
       </button>
 
-
       <span
         class="page-number"
         id="pageNumber"
       >
         1 / 4
       </span>
-
 
       <button
         id="nextPage"
@@ -1969,36 +2142,32 @@ button:focus-visible {
         →
       </button>
 
-
     </div>
 
 
-    <!-- ================================================
-         AVISO DA ÚLTIMA PÁGINA
-    ================================================= -->
+    <!-- AVISO FINAL -->
 
     <div
       class="last-note hidden"
       id="lastNote"
     >
-      Deixe uma mensagem ou comentário na caneta encima da mesa
+      Deixe uma mensagem ou comentário
+      na caneta encima da mesa
     </div>
-
 
   </div>
 
 </div>
 
 
-<!-- =====================================================
+<!-- =======================================================
      MENSAGENS
-===================================================== -->
+======================================================= -->
 
 <div
   class="messages-overlay hidden"
   id="messagesOverlay"
 >
-
 
   <div class="paper">
 
@@ -2036,13 +2205,12 @@ button:focus-visible {
 
     <div class="message-form">
 
-
       <input
         id="nameInput"
+        type="text"
         maxlength="80"
         placeholder="teu nome"
       >
-
 
       <textarea
         id="messageInput"
@@ -2050,13 +2218,11 @@ button:focus-visible {
         placeholder="escreva aqui..."
       ></textarea>
 
-
       <button
         id="sendButton"
       >
         enviar
       </button>
-
 
     </div>
 
@@ -2066,15 +2232,14 @@ button:focus-visible {
 </div>
 
 
-<!-- =====================================================
+<!-- =======================================================
      ARQUIVO DE FOLHAS
-===================================================== -->
+======================================================= -->
 
 <div
   class="archive hidden"
   id="archive"
 >
-
 
   <button
     class="archive-close"
@@ -2083,17 +2248,14 @@ button:focus-visible {
     fechar
   </button>
 
-
   <h2>
     folhas anteriores
   </h2>
-
 
   <div
     class="archive-list"
     id="archiveList"
   ></div>
-
 
 </div>
 
@@ -2109,7 +2271,7 @@ button:focus-visible {
 
 
 /*
-   SENHA DO LIVRO E DA CANETA
+   SENHA
 */
 
 const PASSWORD = "25102008";
@@ -2118,8 +2280,8 @@ const PASSWORD = "25102008";
 /*
    URL DO GOOGLE APPS SCRIPT
 
-   Se você já criou o Apps Script,
-   mantenha a URL correta aqui.
+   Mantida conforme a configuração
+   que você já estava utilizando.
 */
 
 const API_URL =
@@ -2127,7 +2289,7 @@ const API_URL =
 
 
 /*
-   Quantidade de mensagens por folha.
+   QUANTIDADE DE MENSAGENS POR FOLHA
 */
 
 const MESSAGES_PER_SHEET = 6;
@@ -2138,79 +2300,88 @@ const MESSAGES_PER_SHEET = 6;
 ========================================================= */
 
 const loading =
-document.getElementById("loading");
+  document.getElementById("loading");
 
 const book =
-document.getElementById("book");
+  document.getElementById("book");
 
 const pen =
-document.getElementById("pen");
+  document.getElementById("pen");
 
 const passwordOverlay =
-document.getElementById("passwordOverlay");
+  document.getElementById("passwordOverlay");
 
 const passwordInput =
-document.getElementById("passwordInput");
+  document.getElementById("passwordInput");
 
 const passwordError =
-document.getElementById("passwordError");
+  document.getElementById("passwordError");
 
 const unlockButton =
-document.getElementById("unlockButton");
+  document.getElementById("unlockButton");
 
 const cancelPassword =
-document.getElementById("cancelPassword");
+  document.getElementById("cancelPassword");
 
 const letterOverlay =
-document.getElementById("letterOverlay");
+  document.getElementById("letterOverlay");
 
 const closeLetter =
-document.getElementById("closeLetter");
+  document.getElementById("closeLetter");
 
 const pages =
-document.querySelectorAll(".letter-page");
+  document.querySelectorAll(".letter-page");
 
 const previousPage =
-document.getElementById("previousPage");
+  document.getElementById("previousPage");
 
 const nextPage =
-document.getElementById("nextPage");
+  document.getElementById("nextPage");
 
 const pageNumber =
-document.getElementById("pageNumber");
+  document.getElementById("pageNumber");
 
 const lastNote =
-document.getElementById("lastNote");
+  document.getElementById("lastNote");
 
 const messagesOverlay =
-document.getElementById("messagesOverlay");
+  document.getElementById("messagesOverlay");
 
 const closeMessages =
-document.getElementById("closeMessages");
+  document.getElementById("closeMessages");
 
 const messagesContainer =
-document.getElementById("messages");
+  document.getElementById("messages");
 
 const nameInput =
-document.getElementById("nameInput");
+  document.getElementById("nameInput");
 
 const messageInput =
-document.getElementById("messageInput");
+  document.getElementById("messageInput");
 
 const sendButton =
-document.getElementById("sendButton");
+  document.getElementById("sendButton");
 
 const archiveButton =
-document.getElementById("archiveButton");
+  document.getElementById("archiveButton");
 
 const archive =
-document.getElementById("archive");
+  document.getElementById("archive");
 
 const archiveList =
-document.getElementById("archiveList");
+  document.getElementById("archiveList");
 
 const closeArchive =
-document.getElementById("closeArchive");
+  document.getElementById("closeArchive");
+
+const globeHotspot =
+  document.getElementById("globeHotspot");
+
+const globePopupOverlay =
+  document.getElementById("globePopupOverlay");
+
+const closeGlobePopup =
+  document.getElementById("closeGlobePopup");
 
 
 /* =========================================================
@@ -2230,6 +2401,10 @@ let currentMessageSheet = 0;
    CARREGAMENTO
 ========================================================= */
 
+/*
+   Mantém a tela inicial durante 5 segundos.
+*/
+
 window.addEventListener(
   "load",
   function() {
@@ -2248,7 +2423,56 @@ window.addEventListener(
 
 
 /* =========================================================
-   ABRIR LIVRO
+   GLOBO
+========================================================= */
+
+globeHotspot.addEventListener(
+  "click",
+  function(event) {
+
+    event.stopPropagation();
+
+    globePopupOverlay
+      .classList
+      .remove("hidden");
+
+  }
+);
+
+
+closeGlobePopup.addEventListener(
+  "click",
+  function() {
+
+    globePopupOverlay
+      .classList
+      .add("hidden");
+
+  }
+);
+
+
+globePopupOverlay.addEventListener(
+  "click",
+  function(event) {
+
+    if (
+      event.target ===
+      globePopupOverlay
+    ) {
+
+      globePopupOverlay
+        .classList
+        .add("hidden");
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   LIVRO
 ========================================================= */
 
 book.addEventListener(
@@ -2270,7 +2494,7 @@ book.addEventListener(
 
 
 /* =========================================================
-   ABRIR CANETA
+   CANETA
 ========================================================= */
 
 pen.addEventListener(
@@ -2301,18 +2525,7 @@ function abrirSenha() {
     .classList
     .remove("hidden");
 
-  passwordError.textContent = "";
-
-  passwordInput.value = "";
-
-  setTimeout(
-    function() {
-
-      passwordInput.focus();
-
-    },
-    100
-  );
+  passwordInput.focus();
 
 }
 
@@ -2327,7 +2540,9 @@ passwordInput.addEventListener(
   "keydown",
   function(event) {
 
-    if (event.key === "Enter") {
+    if (
+      event.key === "Enter"
+    ) {
 
       verificarSenha();
 
@@ -2343,7 +2558,9 @@ function verificarSenha() {
     passwordInput.value.trim();
 
 
-  if (value === PASSWORD) {
+  if (
+    value === PASSWORD
+  ) {
 
     unlocked = true;
 
@@ -2354,6 +2571,11 @@ function verificarSenha() {
     passwordInput.value = "";
 
     passwordError.textContent = "";
+
+
+    /*
+       Depois da senha, abrimos o livro.
+    */
 
     abrirCarta();
 
@@ -2429,7 +2651,8 @@ function atualizarPagina() {
 
 
   if (
-    currentPage === pages.length - 1
+    currentPage ===
+    pages.length - 1
   ) {
 
     lastNote
@@ -2447,15 +2670,13 @@ function atualizarPagina() {
 }
 
 
-/* =========================================================
-   PÁGINA ANTERIOR
-========================================================= */
-
 previousPage.addEventListener(
   "click",
   function() {
 
-    if (currentPage > 0) {
+    if (
+      currentPage > 0
+    ) {
 
       currentPage--;
 
@@ -2466,10 +2687,6 @@ previousPage.addEventListener(
   }
 );
 
-
-/* =========================================================
-   PRÓXIMA PÁGINA
-========================================================= */
 
 nextPage.addEventListener(
   "click",
@@ -2490,10 +2707,6 @@ nextPage.addEventListener(
 );
 
 
-/* =========================================================
-   FECHAR CARTA
-========================================================= */
-
 closeLetter.addEventListener(
   "click",
   function() {
@@ -2507,7 +2720,7 @@ closeLetter.addEventListener(
 
 
 /* =========================================================
-   ABRIR MENSAGENS
+   MENSAGENS
 ========================================================= */
 
 async function abrirMensagens() {
@@ -2520,10 +2733,6 @@ async function abrirMensagens() {
 
 }
 
-
-/* =========================================================
-   FECHAR MENSAGENS
-========================================================= */
 
 closeMessages.addEventListener(
   "click",
@@ -2589,7 +2798,7 @@ async function carregarMensagens() {
 
 
 /* =========================================================
-   ORGANIZAR FOLHAS
+   FOLHAS
 ========================================================= */
 
 function obterFolhas() {
@@ -2613,7 +2822,9 @@ function obterFolhas() {
   }
 
 
-  if (sheets.length === 0) {
+  if (
+    sheets.length === 0
+  ) {
 
     sheets.push([]);
 
@@ -2626,7 +2837,7 @@ function obterFolhas() {
 
 
 /* =========================================================
-   RENDERIZAR FOLHA ATUAL
+   FOLHA ATUAL
 ========================================================= */
 
 function renderizarFolhaAtual() {
@@ -2669,7 +2880,9 @@ function renderizarSheet(index) {
     "";
 
 
-  if (sheet.length === 0) {
+  if (
+    sheet.length === 0
+  ) {
 
     const empty =
       document.createElement("div");
@@ -2709,18 +2922,6 @@ function renderizarSheet(index) {
         "message";
 
 
-      const rotation =
-        (
-          Math.random() * 2 - 1
-        ).toFixed(2);
-
-
-      wrapper.style.setProperty(
-        "--rotation",
-        rotation + "deg"
-      );
-
-
       const name =
         document.createElement("div");
 
@@ -2730,7 +2931,7 @@ function renderizarSheet(index) {
 
 
       name.textContent =
-        item.name || "";
+        item.name || "anônimo";
 
 
       const text =
@@ -2759,11 +2960,19 @@ function renderizarSheet(index) {
         );
 
 
-      wrapper.appendChild(name);
+      wrapper.appendChild(
+        name
+      );
 
-      wrapper.appendChild(text);
 
-      wrapper.appendChild(date);
+      wrapper.appendChild(
+        text
+      );
+
+
+      wrapper.appendChild(
+        date
+      );
 
 
       messagesContainer.appendChild(
@@ -2780,7 +2989,9 @@ function renderizarSheet(index) {
    ARQUIVO
 ========================================================= */
 
-function atualizarArquivo(sheets) {
+function atualizarArquivo(
+  sheets
+) {
 
   archiveList.innerHTML =
     "";
@@ -2790,7 +3001,9 @@ function atualizarArquivo(sheets) {
     sheets.length - 1;
 
 
-  if (oldSheets <= 0) {
+  if (
+    oldSheets <= 0
+  ) {
 
     const text =
       document.createElement("p");
@@ -2836,12 +3049,14 @@ function atualizarArquivo(sheets) {
           i;
 
 
-        renderizarSheet(i);
-
-
-        archive.classList.add(
-          "hidden"
+        renderizarSheet(
+          i
         );
+
+
+        archive
+          .classList
+          .add("hidden");
 
       }
     );
@@ -2856,10 +3071,6 @@ function atualizarArquivo(sheets) {
 }
 
 
-/* =========================================================
-   ABRIR ARQUIVO
-========================================================= */
-
 archiveButton.addEventListener(
   "click",
   function() {
@@ -2873,22 +3084,20 @@ archiveButton.addEventListener(
     );
 
 
-    archive.classList
+    archive
+      .classList
       .remove("hidden");
 
   }
 );
 
 
-/* =========================================================
-   FECHAR ARQUIVO
-========================================================= */
-
 closeArchive.addEventListener(
   "click",
   function() {
 
-    archive.classList
+    archive
+      .classList
       .add("hidden");
 
   }
@@ -2911,7 +3120,7 @@ messageInput.addEventListener(
 
     if (
       event.key === "Enter" &&
-      !event.shiftKey
+      event.shiftKey === false
     ) {
 
       event.preventDefault();
@@ -2974,7 +3183,6 @@ async function enviarMensagem() {
       await fetch(
         API_URL,
         {
-
           method:
             "POST",
 
@@ -2985,14 +3193,15 @@ async function enviarMensagem() {
             },
 
           body:
-            JSON.stringify({
-              name:
-                name,
+            JSON.stringify(
+              {
+                name:
+                  name,
 
-              message:
-                message
-            })
-
+                message:
+                  message
+              }
+            )
         }
       );
 
@@ -3001,7 +3210,9 @@ async function enviarMensagem() {
       await response.json();
 
 
-    if (!data.success) {
+    if (
+      !data.success
+    ) {
 
       throw new Error(
         data.error ||
@@ -3029,7 +3240,6 @@ async function enviarMensagem() {
   } catch (error) {
 
     console.error(
-      "Erro ao enviar:",
       error
     );
 
@@ -3055,7 +3265,9 @@ async function enviarMensagem() {
    DATA
 ========================================================= */
 
-function formatarData(value) {
+function formatarData(
+  value
+) {
 
   if (!value) {
 
@@ -3068,6 +3280,17 @@ function formatarData(value) {
 
     const date =
       new Date(value);
+
+
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
+
+      return "";
+
+    }
 
 
     return date.toLocaleString(
@@ -3100,7 +3323,7 @@ function formatarData(value) {
 
 
 /* =========================================================
-   TECLA ESC
+   ESC
 ========================================================= */
 
 document.addEventListener(
@@ -3121,6 +3344,11 @@ document.addEventListener(
       .add("hidden");
 
 
+    globePopupOverlay
+      .classList
+      .add("hidden");
+
+
     letterOverlay
       .classList
       .add("hidden");
@@ -3137,7 +3365,6 @@ document.addEventListener(
 
   }
 );
-
 
 </script>
 
