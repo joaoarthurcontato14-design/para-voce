@@ -21,30 +21,33 @@
 <style>
 
 /* =========================================================
-   CONFIGURAÇÕES GERAIS
+   CONFIGURAÇÕES
 ========================================================= */
 
 :root {
 
   --blue: #283b54;
   --blue-dark: #1b293b;
+  --blue-soft: #344b68;
 
-  --paper: #f5f1e7;
-  --paper-dark: #e8e1d2;
+  --black: #090909;
+  --paper: #f6f2e8;
+  --paper-dark: #e8e1d3;
 
-  --ink: #262626;
-
+  --ink: #222222;
   --white: #ffffff;
 
 }
 
 
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
 
   box-sizing: border-box;
-
   margin: 0;
-
   padding: 0;
 
 }
@@ -56,8 +59,6 @@ body {
   width: 100%;
   height: 100%;
 
-  overflow: hidden;
-
 }
 
 
@@ -66,14 +67,17 @@ body {
   background:
     var(--blue);
 
+  color:
+    white;
+
+  overflow:
+    hidden;
+
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
-
-  color:
-    white;
 
 }
 
@@ -84,12 +88,20 @@ body {
 
 #app {
 
-  width: 100vw;
-  height: 100vh;
+  position:
+    fixed;
 
-  position: relative;
+  inset:
+    0;
 
-  overflow: hidden;
+  width:
+    100%;
+
+  height:
+    100%;
+
+  overflow:
+    hidden;
 
 }
 
@@ -98,26 +110,49 @@ body {
    TELA DE CARREGAMENTO
 ========================================================= */
 
-.loading {
+#loading {
 
-  position: fixed;
+  position:
+    fixed;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 9999;
+  z-index:
+    9999;
 
   background:
-    #283b54;
+    var(--blue);
 
-  display: flex;
+  display:
+    flex;
 
-  flex-direction: column;
+  flex-direction:
+    column;
 
-  align-items: center;
+  align-items:
+    center;
 
-  justify-content: center;
+  justify-content:
+    center;
 
-  text-align: center;
+  color:
+    white;
+
+  transition:
+    opacity .8s ease,
+    visibility .8s ease;
+
+}
+
+
+#loading.hidden {
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
 
 }
 
@@ -126,10 +161,11 @@ body {
 
   font-family:
     Georgia,
+    "Times New Roman",
     serif;
 
   font-size:
-    clamp(25px, 4vw, 42px);
+    clamp(22px, 3vw, 34px);
 
   letter-spacing:
     .5px;
@@ -143,10 +179,13 @@ body {
 .loader-sub {
 
   font-size:
-    13px;
+    12px;
 
   opacity:
-    .65;
+    .55;
+
+  letter-spacing:
+    .8px;
 
 }
 
@@ -154,42 +193,337 @@ body {
 .loader-line {
 
   width:
-    80px;
+    90px;
 
   height:
     1px;
 
   background:
-    rgba(255,255,255,.6);
+    rgba(255,255,255,.5);
 
   margin-top:
     25px;
 
+  transform-origin:
+    left;
+
   animation:
-    loaderLine 2s ease-in-out infinite;
+    loadingLine 4.5s ease forwards;
 
 }
 
 
-@keyframes loaderLine {
+@keyframes loadingLine {
 
-  0% {
-    transform: scaleX(.25);
-    opacity: .25;
+  from {
+    transform: scaleX(0);
   }
 
-  50% {
+  to {
     transform: scaleX(1);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scaleX(.25);
-    opacity: .25;
   }
 
 }
 
+
+/* =========================================================
+   PALCO DA IMAGEM
+========================================================= */
+
+/*
+   IMPORTANTE:
+
+   A imagem e os hotspots ficam dentro deste mesmo
+   "stage".
+
+   Isso impede que os botões saiam do lugar quando
+   a imagem for redimensionada.
+*/
+
+.scene {
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  top:
+    50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  width:
+    min(100vw, 150vh);
+
+  aspect-ratio:
+    3 / 2;
+
+  max-height:
+    100vh;
+
+  max-width:
+    100vw;
+
+}
+
+
+/* =========================================================
+   IMAGEM PRINCIPAL
+========================================================= */
+
+.scene-image {
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  width:
+    100%;
+
+  height:
+    100%;
+
+  display:
+    block;
+
+  object-fit:
+    contain;
+
+  user-select:
+    none;
+
+  -webkit-user-drag:
+    none;
+
+}
+
+
+/* =========================================================
+   HOTSPOTS
+========================================================= */
+
+/*
+   Todos os botões são transparentes.
+
+   O tamanho deles foi propositalmente reduzido para
+   que não fiquem se encostando.
+
+   Eles são posicionados em porcentagem da própria imagem.
+*/
+
+.hotspot {
+
+  position:
+    absolute;
+
+  z-index:
+    20;
+
+  border:
+    none;
+
+  outline:
+    none;
+
+  padding:
+    0;
+
+  margin:
+    0;
+
+  background:
+    transparent;
+
+  cursor:
+    pointer;
+
+  border-radius:
+    50%;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+}
+
+
+/*
+   Pequeno efeito visual ao tocar.
+*/
+
+.hotspot::after {
+
+  content:
+    "";
+
+  position:
+    absolute;
+
+  inset:
+    0;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(255,255,255,.08);
+
+  opacity:
+    0;
+
+  transition:
+    opacity .2s ease,
+    transform .2s ease;
+
+}
+
+
+.hotspot:hover::after,
+.hotspot:active::after {
+
+  opacity:
+    1;
+
+  transform:
+    scale(1.08);
+
+}
+
+
+/* =========================================================
+   GLOBO
+========================================================= */
+
+/*
+   O centro do botão fica no centro visual do globo.
+
+   Se sua imagem estiver exatamente como a referência,
+   este ponto acompanha o globo.
+*/
+
+.globe-hotspot {
+
+  left:
+    25.2%;
+
+  top:
+    49%;
+
+  width:
+    10%;
+
+  height:
+    18%;
+
+  transform:
+    translate(-50%, -50%);
+
+}
+
+
+/* =========================================================
+   LIVRO
+========================================================= */
+
+.book-hotspot {
+
+  left:
+    51%;
+
+  top:
+    51%;
+
+  width:
+    24%;
+
+  height:
+    31%;
+
+  transform:
+    translate(-50%, -50%);
+
+}
+
+
+/* =========================================================
+   CANETA
+========================================================= */
+
+.pen-hotspot {
+
+  left:
+    66.5%;
+
+  top:
+    76%;
+
+  width:
+    15%;
+
+  height:
+    7%;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(-25deg);
+
+}
+
+
+/* =========================================================
+   CALENDÁRIO
+========================================================= */
+
+.calendar-hotspot {
+
+  left:
+    79%;
+
+  top:
+    24%;
+
+  width:
+    13%;
+
+  height:
+    13%;
+
+  transform:
+    translate(-50%, -50%);
+
+}
+
+
+/* =========================================================
+   CADILLAC
+========================================================= */
+
+.car-hotspot {
+
+  left:
+    76%;
+
+  top:
+    73%;
+
+  width:
+    19%;
+
+  height:
+    14%;
+
+  transform:
+    translate(-50%, -50%);
+
+}
+
+
+/* =========================================================
+   ELEMENTOS INVISÍVEIS
+========================================================= */
 
 .hidden {
 
@@ -200,273 +534,90 @@ body {
 
 
 /* =========================================================
-   INTERFACE PRINCIPAL
+   POP-UP GERAL
 ========================================================= */
 
-.main-interface {
+.overlay {
 
-  position: absolute;
+  position:
+    fixed;
 
-  inset: 0;
+  inset:
+    0;
 
-  display: flex;
+  z-index:
+    500;
 
-  align-items: center;
+  display:
+    flex;
 
-  justify-content: center;
+  align-items:
+    center;
 
-  background:
-    var(--blue);
-
-}
-
-
-/*
-   A imagem ocupa a tela inteira,
-   mas preserva sua proporção.
-*/
-
-.interface-image {
-
-  width: 100vw;
-  height: 100vh;
-
-  object-fit: cover;
-
-  object-position: center;
-
-  display: block;
-
-  user-select: none;
-
-  -webkit-user-drag: none;
-
-}
-
-
-/* =========================================================
-   HOTSPOTS
-========================================================= */
-
-.hotspot {
-
-  position: absolute;
-
-  border: none;
-
-  padding: 0;
-
-  margin: 0;
-
-  background: transparent;
-
-  cursor: pointer;
-
-  z-index: 50;
-
-  outline: none;
-
-  transform:
-    translate(-50%, -50%);
-
-}
-
-
-/*
-   IMPORTANTE:
-
-   Os valores abaixo são relativos à tela.
-   Eles foram feitos para que os hotspots
-   permaneçam pequenos e discretos.
-*/
-
-
-/* -------------------------
-   GLOBO
-------------------------- */
-
-.globe-hotspot {
-
-  left: 24.5%;
-  top: 47%;
-
-  width: 42px;
-  height: 42px;
-
-  border-radius: 50%;
-
-}
-
-
-/* -------------------------
-   CALENDÁRIO
-------------------------- */
-
-.calendar-hotspot {
-
-  left: 79%;
-  top: 28%;
-
-  width: 58px;
-  height: 48px;
-
-}
-
-
-/* -------------------------
-   CADILLAC
-------------------------- */
-
-.car-hotspot {
-
-  left: 78%;
-  top: 72%;
-
-  width: 105px;
-  height: 60px;
-
-  border-radius:
-    20px;
-
-}
-
-
-/* -------------------------
-   LIVRO
-------------------------- */
-
-.book-hotspot {
-
-  left: 50%;
-  top: 52%;
-
-  width: 235px;
-  height: 295px;
-
-  border-radius:
-    15px;
-
-}
-
-
-/* -------------------------
-   CANETA
-------------------------- */
-
-.pen-hotspot {
-
-  left: 72%;
-  top: 76%;
-
-  width: 95px;
-  height: 30px;
-
-  border-radius:
-    30px;
-
-}
-
-
-/*
-   Pequeno feedback visual.
-*/
-
-.hotspot:hover {
-
-  background:
-    rgba(255,255,255,.025);
-
-}
-
-
-.hotspot:active {
-
-  transform:
-    translate(-50%, -50%)
-    scale(.96);
-
-}
-
-
-/* =========================================================
-   POP-UP DO GLOBO
-========================================================= */
-
-.globe-popup-overlay {
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 1000;
-
-  background:
-    rgba(10,18,28,.70);
-
-  backdrop-filter:
-    blur(10px);
-
-  -webkit-backdrop-filter:
-    blur(10px);
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding: 20px;
-
-}
-
-
-.globe-popup {
-
-  width:
-    min(430px, 90vw);
+  justify-content:
+    center;
 
   padding:
-    48px 38px 42px;
-
-  position: relative;
+    22px;
 
   background:
-    rgba(247,244,236,.98);
+    rgba(12,20,30,.78);
 
-  color:
-    #222;
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+
+}
+
+
+.modal {
+
+  width:
+    min(420px, 92vw);
+
+  padding:
+    34px 30px;
 
   border-radius:
     24px;
 
-  box-shadow:
-    0 30px 80px
-    rgba(0,0,0,.45);
+  background:
+    rgba(248,246,239,.98);
+
+  color:
+    var(--ink);
 
   text-align:
     center;
 
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.45);
+
   animation:
-    popupIn .3s ease;
+    modalIn .3s ease;
 
 }
 
 
-@keyframes popupIn {
+@keyframes modalIn {
 
   from {
 
-    opacity: 0;
+    opacity:
+      0;
 
     transform:
-      translateY(15px)
-      scale(.96);
+      translateY(12px)
+      scale(.97);
 
   }
 
   to {
 
-    opacity: 1;
+    opacity:
+      1;
 
     transform:
       translateY(0)
@@ -477,42 +628,35 @@ body {
 }
 
 
-.globe-popup-close {
+.modal h2 {
 
-  position: absolute;
-
-  top: 13px;
-  right: 13px;
-
-  width: 34px;
-  height: 34px;
-
-  border: none;
-
-  border-radius: 50%;
-
-  background:
-    rgba(40,59,84,.08);
-
-  color:
-    #283b54;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
 
   font-size:
-    23px;
+    25px;
 
-  cursor: pointer;
+  font-weight:
+    500;
+
+  margin-bottom:
+    12px;
 
 }
 
 
-.globe-popup-title {
+.modal p {
 
-  font-family:
-    Georgia,
-    serif;
+  color:
+    #666;
+
+  line-height:
+    1.55;
 
   font-size:
-    23px;
+    14px;
 
   margin-bottom:
     22px;
@@ -520,173 +664,87 @@ body {
 }
 
 
-.globe-popup-line {
+.modal-location {
 
-  width:
-    45px;
-
-  height:
-    1px;
-
-  margin:
-    0 auto 22px;
-
-  background:
-    rgba(40,59,84,.3);
-
-}
-
-
-.globe-popup-place {
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
 
   font-size:
-    15px;
+    18px;
 
   line-height:
-    1.5;
+    1.7;
+
+  margin:
+    15px 0 25px;
 
 }
 
 
-.globe-popup-arrow {
+.modal-location span {
 
-  margin:
-    10px 0;
-
-  color:
-    var(--blue);
+  display:
+    block;
 
 }
 
 
 /* =========================================================
-   MODAL DA SENHA
+   INPUTS
 ========================================================= */
 
-.password-overlay {
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 1100;
-
-  background:
-    rgba(10,18,28,.82);
-
-  backdrop-filter:
-    blur(10px);
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  padding: 20px;
-
-}
-
-
-.password-modal {
+input,
+textarea {
 
   width:
-    min(420px, 90vw);
-
-  padding:
-    38px;
-
-  border-radius:
-    24px;
-
-  background:
-    rgba(247,244,236,.98);
-
-  color:
-    #222;
-
-  text-align:
-    center;
-
-  box-shadow:
-    0 30px 80px
-    rgba(0,0,0,.45);
-
-}
-
-
-.password-modal h2 {
-
-  font-family:
-    Georgia,
-    serif;
-
-  font-size:
-    24px;
-
-  margin-bottom:
-    10px;
-
-}
-
-
-.password-modal p {
-
-  color:
-    #666;
-
-  font-size:
-    14px;
-
-  line-height:
-    1.5;
-
-  margin-bottom:
-    22px;
-
-}
-
-
-.password-modal input {
-
-  width: 100%;
-
-  height: 50px;
-
-  padding:
-    0 16px;
+    100%;
 
   border:
-    1px solid #d6d0c3;
-
-  border-radius:
-    14px;
+    1px solid #d6d0c4;
 
   background:
     #fffdf8;
 
+  color:
+    #222;
+
+  border-radius:
+    13px;
+
+  padding:
+    14px 15px;
+
+  font-family:
+    inherit;
+
   font-size:
-    17px;
-
-  text-align:
-    center;
-
-  letter-spacing:
-    2px;
+    16px;
 
   outline:
     none;
 
-  margin-bottom:
-    14px;
+}
+
+
+input:focus,
+textarea:focus {
+
+  border-color:
+    var(--blue);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(40,59,84,.08);
 
 }
 
 
-.password-modal input:focus {
+button {
 
-  border-color:
-    var(--blue);
+  font-family:
+    inherit;
 
 }
 
@@ -705,16 +763,10 @@ body {
 }
 
 
-.modal-buttons button {
+.primary-button {
 
   border:
     none;
-
-  border-radius:
-    999px;
-
-  padding:
-    12px 20px;
 
   background:
     var(--blue);
@@ -722,36 +774,54 @@ body {
   color:
     white;
 
+  padding:
+    12px 22px;
+
+  border-radius:
+    999px;
+
   cursor:
     pointer;
 
 }
 
 
-.modal-buttons .secondary {
+.secondary {
+
+  border:
+    1px solid #d1cabd;
 
   background:
     transparent;
 
-  border:
-    1px solid #d1c9ba;
-
   color:
     #333;
+
+  padding:
+    12px 22px;
+
+  border-radius:
+    999px;
+
+  cursor:
+    pointer;
 
 }
 
 
-.password-error {
-
-  color:
-    #9c4040 !important;
+.error {
 
   min-height:
     20px;
 
+  color:
+    #a23b3b !important;
+
   margin:
-    12px 0 0 !important;
+    13px 0 0 !important;
+
+  font-size:
+    13px !important;
 
 }
 
@@ -762,14 +832,17 @@ body {
 
 .letter-overlay {
 
-  position: fixed;
+  position:
+    fixed;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 1200;
+  z-index:
+    600;
 
   background:
-    rgba(24,37,54,.96);
+    rgba(20,31,45,.96);
 
   display:
     flex;
@@ -781,21 +854,21 @@ body {
     center;
 
   padding:
-    25px;
+    60px 20px 25px;
 
 }
 
 
-.letter-container {
+.letter {
 
   position:
     relative;
 
   width:
-    min(720px, 90vw);
+    min(780px, 92vw);
 
   height:
-    min(82vh, 850px);
+    min(82vh, 720px);
 
   display:
     flex;
@@ -806,32 +879,37 @@ body {
   justify-content:
     center;
 
+  background:
+    transparent;
+
 }
 
 
 .letter-page {
 
+  position:
+    absolute;
+
   display:
     none;
 
-  width:
+  max-width:
     100%;
 
-  height:
+  max-height:
     100%;
+
+  width:
+    auto;
+
+  height:
+    auto;
 
   object-fit:
     contain;
 
-  object-position:
-    center;
-
-  background:
-    white;
-
   box-shadow:
-    0 25px 70px
-    rgba(0,0,0,.5);
+    0 25px 70px rgba(0,0,0,.45);
 
 }
 
@@ -844,57 +922,9 @@ body {
 }
 
 
-/* -------------------------
-   FECHAR CARTA
-------------------------- */
-
-.close-button {
-
-  position:
-    fixed;
-
-  top:
-    20px;
-
-  right:
-    20px;
-
-  z-index:
-    1300;
-
-  width:
-    40px;
-
-  height:
-    40px;
-
-  padding:
-    0;
-
-  border:
-    none;
-
-  border-radius:
-    50%;
-
-  background:
-    rgba(0,0,0,.55);
-
-  color:
-    white;
-
-  font-size:
-    25px;
-
-  cursor:
-    pointer;
-
-}
-
-
-/* -------------------------
+/* =========================================================
    CONTROLES DA CARTA
-------------------------- */
+========================================================= */
 
 .letter-controls {
 
@@ -905,7 +935,7 @@ body {
     50%;
 
   bottom:
-    -25px;
+    -5px;
 
   transform:
     translateX(-50%);
@@ -926,7 +956,10 @@ body {
     999px;
 
   background:
-    rgba(0,0,0,.78);
+    rgba(0,0,0,.72);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.25);
 
 }
 
@@ -934,13 +967,10 @@ body {
 .letter-controls button {
 
   width:
-    34px;
+    32px;
 
   height:
-    34px;
-
-  padding:
-    0;
+    32px;
 
   border:
     none;
@@ -954,11 +984,11 @@ body {
   color:
     white;
 
-  font-size:
-    17px;
-
   cursor:
     pointer;
+
+  font-size:
+    17px;
 
 }
 
@@ -966,7 +996,7 @@ body {
 .letter-controls button:disabled {
 
   opacity:
-    .3;
+    .25;
 
   cursor:
     default;
@@ -977,23 +1007,23 @@ body {
 .page-number {
 
   min-width:
-    50px;
-
-  color:
-    white;
-
-  font-size:
-    12px;
+    48px;
 
   text-align:
     center;
 
+  font-size:
+    12px;
+
+  color:
+    white;
+
 }
 
 
-/* -------------------------
+/* =========================================================
    AVISO ÚLTIMA PÁGINA
-------------------------- */
+========================================================= */
 
 .last-note {
 
@@ -1004,19 +1034,10 @@ body {
     50%;
 
   bottom:
-    35px;
+    48px;
 
   transform:
     translateX(-50%);
-
-  max-width:
-    80%;
-
-  padding:
-    10px 17px;
-
-  border-radius:
-    999px;
 
   background:
     rgba(40,59,84,.95);
@@ -1024,11 +1045,68 @@ body {
   color:
     white;
 
+  padding:
+    10px 17px;
+
+  border-radius:
+    999px;
+
   font-size:
     12px;
 
   text-align:
     center;
+
+  white-space:
+    nowrap;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.25);
+
+}
+
+
+/* =========================================================
+   BOTÃO FECHAR
+========================================================= */
+
+.close-button {
+
+  position:
+    fixed;
+
+  top:
+    18px;
+
+  right:
+    18px;
+
+  z-index:
+    700;
+
+  width:
+    38px;
+
+  height:
+    38px;
+
+  border:
+    none;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(0,0,0,.65);
+
+  color:
+    white;
+
+  font-size:
+    22px;
+
+  cursor:
+    pointer;
 
 }
 
@@ -1039,17 +1117,14 @@ body {
 
 .messages-overlay {
 
-  position: fixed;
+  position:
+    fixed;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 1400;
-
-  background:
-    rgba(30,43,60,.94);
-
-  backdrop-filter:
-    blur(8px);
+  z-index:
+    800;
 
   display:
     flex;
@@ -1061,14 +1136,13 @@ body {
     center;
 
   padding:
-    20px;
+    25px;
+
+  background:
+    rgba(23,35,49,.96);
 
 }
 
-
-/*
-   Folha principal.
-*/
 
 .paper {
 
@@ -1076,36 +1150,32 @@ body {
     relative;
 
   width:
-    min(760px, 92vw);
+    min(900px, 94vw);
 
   height:
-    min(78vh, 720px);
-
-  background:
-    var(--paper);
-
-  color:
-    var(--ink);
+    min(82vh, 850px);
 
   padding:
-    48px 50px 125px;
-
-  border-radius:
-    3px;
-
-  box-shadow:
-    0 30px 90px
-    rgba(0,0,0,.48);
+    50px 50px 120px;
 
   overflow:
     hidden;
 
+  background:
+    linear-gradient(
+      135deg,
+      #faf7ee,
+      #f1ecdf
+    );
+
+  color:
+    var(--ink);
+
+  box-shadow:
+    0 30px 90px rgba(0,0,0,.5);
+
 }
 
-
-/*
-   Textura sutil do papel.
-*/
 
 .paper::before {
 
@@ -1116,7 +1186,7 @@ body {
     absolute;
 
   inset:
-    18px;
+    25px;
 
   border:
     1px solid
@@ -1128,33 +1198,27 @@ body {
 }
 
 
-/* -------------------------
-   TÍTULO
-------------------------- */
-
 .paper h1 {
 
   position:
     relative;
 
-  z-index:
-    2;
+  text-align:
+    center;
 
   font-family:
     Georgia,
+    "Times New Roman",
     serif;
 
-  font-weight:
-    normal;
-
   font-size:
-    22px;
+    23px;
+
+  font-weight:
+    500;
 
   line-height:
-    1.3;
-
-  text-align:
-    center;
+    1.45;
 
   margin-bottom:
     25px;
@@ -1162,74 +1226,26 @@ body {
 }
 
 
-/* -------------------------
-   FECHAR
-------------------------- */
-
-.messages-close {
-
-  position:
-    absolute;
-
-  right:
-    17px;
-
-  top:
-    17px;
-
-  z-index:
-    5;
-
-  width:
-    34px;
-
-  height:
-    34px;
-
-  padding:
-    0;
-
-  border:
-    none;
-
-  border-radius:
-    50%;
-
-  background:
-    rgba(40,59,84,.1);
-
-  color:
-    var(--blue);
-
-  font-size:
-    22px;
-
-  cursor:
-    pointer;
-
-}
-
-
-/* -------------------------
-   MENSAGENS
-------------------------- */
+/* =========================================================
+   MENSAGENS SALVAS
+========================================================= */
 
 .messages {
 
   position:
     relative;
 
+  z-index:
+    2;
+
   height:
-    calc(100% - 50px);
+    calc(100% - 80px);
 
   overflow-y:
     auto;
 
   padding:
-    5px 8px;
-
-  scrollbar-width:
-    thin;
+    10px 15px;
 
 }
 
@@ -1237,11 +1253,17 @@ body {
 .message {
 
   padding:
-    12px 4px 15px;
+    15px 0;
+
+  margin-bottom:
+    10px;
 
   border-bottom:
     1px dashed
-    rgba(30,30,30,.14);
+    rgba(0,0,0,.12);
+
+  transform:
+    rotate(var(--rotation));
 
 }
 
@@ -1254,13 +1276,10 @@ body {
     cursive;
 
   font-weight:
-    bold;
+    700;
 
   font-size:
     16px;
-
-  margin-bottom:
-    4px;
 
 }
 
@@ -1281,8 +1300,8 @@ body {
   white-space:
     pre-wrap;
 
-  word-break:
-    break-word;
+  margin-top:
+    3px;
 
 }
 
@@ -1292,38 +1311,38 @@ body {
   margin-top:
     5px;
 
-  font-family:
-    sans-serif;
-
   font-size:
     10px;
 
   opacity:
-    .45;
+    .4;
 
 }
 
 
-/* -------------------------
+/* =========================================================
    FORMULÁRIO
-------------------------- */
+========================================================= */
 
 .message-form {
 
   position:
     absolute;
 
-  left:
-    35px;
+  z-index:
+    5;
 
-  right:
-    35px;
+  left:
+    50%;
 
   bottom:
     22px;
 
-  z-index:
-    5;
+  transform:
+    translateX(-50%);
+
+  width:
+    calc(100% - 60px);
 
   display:
     grid;
@@ -1340,49 +1359,19 @@ body {
 .message-form input,
 .message-form textarea {
 
-  width:
-    100%;
-
-  border:
-    1px solid
-    #d2cbbb;
-
-  background:
-    #fffdf8;
-
-  color:
-    #222;
-
-  border-radius:
-    12px;
-
-  padding:
-    11px 13px;
-
-  font-family:
-    inherit;
-
-  font-size:
-    14px;
-
-  outline:
-    none;
-
-}
-
-
-.message-form input {
-
-  height:
-    44px;
+  margin:
+    0;
 
 }
 
 
 .message-form textarea {
 
-  height:
-    44px;
+  min-height:
+    48px;
+
+  max-height:
+    100px;
 
   resize:
     none;
@@ -1390,28 +1379,13 @@ body {
 }
 
 
-.message-form input:focus,
-.message-form textarea:focus {
-
-  border-color:
-    var(--blue);
-
-}
-
-
 .message-form button {
-
-  height:
-    44px;
-
-  padding:
-    0 18px;
 
   border:
     none;
 
   border-radius:
-    12px;
+    999px;
 
   background:
     var(--blue);
@@ -1419,29 +1393,40 @@ body {
   color:
     white;
 
+  padding:
+    0 20px;
+
   cursor:
     pointer;
 
 }
 
 
-/* -------------------------
-   FOLHAS ANTERIORES
-------------------------- */
+.message-form button:disabled {
+
+  opacity:
+    .5;
+
+}
+
+
+/* =========================================================
+   BOTÕES MENSAGENS
+========================================================= */
 
 .archive-button {
 
   position:
     absolute;
 
-  left:
-    20px;
-
   top:
     18px;
 
+  left:
+    18px;
+
   z-index:
-    5;
+    10;
 
   border:
     none;
@@ -1450,16 +1435,60 @@ body {
     999px;
 
   padding:
-    8px 13px;
+    9px 15px;
 
   background:
-    rgba(40,59,84,.1);
-
-  color:
     var(--blue);
 
+  color:
+    white;
+
   font-size:
-    11px;
+    12px;
+
+  cursor:
+    pointer;
+
+}
+
+
+.messages-close {
+
+  position:
+    absolute;
+
+  top:
+    18px;
+
+  right:
+    18px;
+
+  z-index:
+    10;
+
+  width:
+    35px;
+
+  height:
+    35px;
+
+  padding:
+    0;
+
+  border:
+    none;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(0,0,0,.6);
+
+  color:
+    white;
+
+  font-size:
+    20px;
 
   cursor:
     pointer;
@@ -1480,10 +1509,10 @@ body {
     0;
 
   z-index:
-    1500;
+    1000;
 
   background:
-    rgba(24,37,54,.97);
+    rgba(20,31,45,.98);
 
   display:
     flex;
@@ -1498,7 +1527,7 @@ body {
     center;
 
   padding:
-    25px;
+    30px;
 
 }
 
@@ -1508,9 +1537,6 @@ body {
   font-family:
     Georgia,
     serif;
-
-  font-weight:
-    normal;
 
   margin-bottom:
     20px;
@@ -1533,7 +1559,7 @@ body {
     10px;
 
   max-width:
-    600px;
+    700px;
 
 }
 
@@ -1543,17 +1569,17 @@ body {
   border:
     none;
 
-  border-radius:
-    999px;
-
-  padding:
-    10px 16px;
-
   background:
     var(--paper);
 
   color:
     #222;
+
+  border-radius:
+    999px;
+
+  padding:
+    10px 18px;
 
   cursor:
     pointer;
@@ -1566,11 +1592,11 @@ body {
   position:
     absolute;
 
-  right:
-    20px;
-
   top:
-    20px;
+    18px;
+
+  right:
+    18px;
 
   border:
     none;
@@ -1579,7 +1605,7 @@ body {
     999px;
 
   padding:
-    10px 16px;
+    10px 17px;
 
   background:
     rgba(255,255,255,.12);
@@ -1594,135 +1620,100 @@ body {
 
 
 /* =========================================================
-   CELULAR
+   RESPONSIVO
 ========================================================= */
 
 @media (max-width: 700px) {
 
 
   /*
-     INTERFACE
+     No celular a cena continua proporcional.
   */
 
-  .interface-image {
+  .scene {
 
     width:
       100vw;
 
     height:
+      auto;
+
+    max-height:
       100vh;
 
-    object-fit:
-      cover;
+    aspect-ratio:
+      3 / 2;
 
   }
 
-
-  /*
-     HOTSPOTS
-  */
 
   .globe-hotspot {
 
-    left:
-      24.5%;
-
-    top:
-      47%;
-
     width:
-      32px;
+      13%;
 
     height:
-      32px;
-
-  }
-
-
-  .calendar-hotspot {
-
-    left:
-      79%;
-
-    top:
-      28%;
-
-    width:
-      45px;
-
-    height:
-      36px;
-
-  }
-
-
-  .car-hotspot {
-
-    left:
-      78%;
-
-    top:
-      72%;
-
-    width:
-      78px;
-
-    height:
-      45px;
+      20%;
 
   }
 
 
   .book-hotspot {
 
-    left:
-      50%;
-
-    top:
-      52%;
-
     width:
-      175px;
+      25%;
 
     height:
-      230px;
+      33%;
 
   }
 
 
   .pen-hotspot {
 
-    left:
-      72%;
-
-    top:
-      76%;
-
     width:
-      70px;
+      17%;
 
     height:
-      23px;
+      8%;
 
   }
 
 
-  /*
-     CARTA
-  */
+  .calendar-hotspot {
+
+    width:
+      15%;
+
+    height:
+      15%;
+
+  }
+
+
+  .car-hotspot {
+
+    width:
+      21%;
+
+    height:
+      16%;
+
+  }
+
 
   .letter-overlay {
 
     padding:
-      12px;
+      50px 8px 20px;
 
   }
 
 
-  .letter-container {
+  .letter {
 
     width:
-      94vw;
+      96vw;
 
     height:
       78vh;
@@ -1732,48 +1723,25 @@ body {
 
   .letter-page {
 
-    width:
-      100%;
+    max-width:
+      96vw;
 
-    height:
-      100%;
-
-    object-fit:
-      contain;
-
-  }
-
-
-  .letter-controls {
-
-    bottom:
-      -15px;
+    max-height:
+      75vh;
 
   }
 
 
   .last-note {
 
-    bottom:
-      32px;
-
-    font-size:
-      10px;
-
     max-width:
-      88%;
+      85vw;
 
-  }
+    white-space:
+      normal;
 
-
-  /*
-     MENSAGENS
-  */
-
-  .messages-overlay {
-
-    padding:
-      12px;
+    line-height:
+      1.35;
 
   }
 
@@ -1787,7 +1755,7 @@ body {
       88vh;
 
     padding:
-      45px 22px 125px;
+      55px 22px 135px;
 
   }
 
@@ -1802,17 +1770,11 @@ body {
 
   .message-form {
 
-    left:
-      20px;
-
-    right:
-      20px;
+    width:
+      calc(100% - 30px);
 
     grid-template-columns:
       1fr;
-
-    gap:
-      6px;
 
   }
 
@@ -1820,8 +1782,8 @@ body {
   .message-form input,
   .message-form textarea {
 
-    height:
-      40px;
+    width:
+      100%;
 
   }
 
@@ -1829,18 +1791,7 @@ body {
   .message-form button {
 
     height:
-      40px;
-
-  }
-
-
-  .archive-button {
-
-    left:
-      15px;
-
-    top:
-      15px;
+      42px;
 
   }
 
@@ -1849,25 +1800,50 @@ body {
 
 
 /* =========================================================
-   ACESSIBILIDADE
+   CELULARES MUITO PEQUENOS
 ========================================================= */
 
-button {
-
-  -webkit-tap-highlight-color:
-    transparent;
-
-}
+@media (max-width: 420px) {
 
 
-button:focus-visible {
+  .scene {
 
-  outline:
-    2px solid
-    rgba(255,255,255,.7);
+    width:
+      108vw;
 
-  outline-offset:
-    3px;
+  }
+
+
+  .letter {
+
+    height:
+      74vh;
+
+  }
+
+
+  .letter-page {
+
+    max-height:
+      70vh;
+
+  }
+
+
+  .letter-controls {
+
+    bottom:
+      -3px;
+
+  }
+
+
+  .modal {
+
+    padding:
+      28px 22px;
+
+  }
 
 }
 
@@ -1882,14 +1858,11 @@ button:focus-visible {
 <div id="app">
 
 
-<!-- =======================================================
+<!-- =====================================================
      CARREGAMENTO
-======================================================= -->
+===================================================== -->
 
-<div
-  class="loading"
-  id="loading"
->
+<div id="loading">
 
   <div class="loader-title">
     Um Ano Depois...
@@ -1904,118 +1877,200 @@ button:focus-visible {
 </div>
 
 
-<!-- =======================================================
-     INTERFACE
-======================================================= -->
+<!-- =====================================================
+     CENA
+===================================================== -->
 
-<main class="main-interface">
+<div class="scene" id="scene">
+
+
+  <!-- IMAGEM PRINCIPAL -->
 
   <img
-    class="interface-image"
+    class="scene-image"
     src="assets/interface.png"
-    alt="Mesa com globo, livro, calendário, Cadillac e caneta"
+    alt="Mesa com livro, globo, calendário, Cadillac e caneta"
   >
 
 
-  <!-- GLOBO -->
+  <!-- ===================================================
+       GLOBO
+  ==================================================== -->
 
   <button
     class="hotspot globe-hotspot"
     id="globeHotspot"
-    aria-label="Abrir informações sobre o globo"
+    aria-label="Abrir informações sobre os lugares"
+    title="Um ano de distância"
   ></button>
 
 
-  <!-- CALENDÁRIO -->
+  <!-- ===================================================
+       CALENDÁRIO
+  ==================================================== -->
 
   <button
     class="hotspot calendar-hotspot"
     id="calendarHotspot"
     aria-label="Calendário"
+    title="10 de agosto de 2025"
   ></button>
 
 
-  <!-- CADILLAC -->
+  <!-- ===================================================
+       CADILLAC
+  ==================================================== -->
 
   <button
     class="hotspot car-hotspot"
     id="carHotspot"
     aria-label="Cadillac"
+    title="Cadillac Escalade"
   ></button>
 
 
-  <!-- LIVRO -->
+  <!-- ===================================================
+       LIVRO
+  ==================================================== -->
 
   <button
     class="hotspot book-hotspot"
     id="book"
     aria-label="Abrir carta"
+    title="Abrir carta"
   ></button>
 
 
-  <!-- CANETA -->
+  <!-- ===================================================
+       CANETA
+  ==================================================== -->
 
   <button
     class="hotspot pen-hotspot"
     id="pen"
     aria-label="Escrever mensagem"
+    title="Escrever mensagem"
   ></button>
 
-</main>
+
+</div>
 
 
-<!-- =======================================================
+<!-- =====================================================
      POP-UP DO GLOBO
-======================================================= -->
+===================================================== -->
 
 <div
-  class="globe-popup-overlay hidden"
-  id="globePopupOverlay"
+  class="overlay hidden"
+  id="globeOverlay"
 >
 
-  <div class="globe-popup">
+  <div class="modal">
+
+    <h2>
+      Um ano de distância.
+    </h2>
+
+    <div class="modal-location">
+
+      <span>
+        Costa Marques/Cacoal - RO
+      </span>
+
+      <span>
+        ↕
+      </span>
+
+      <span>
+        Recife - PE
+      </span>
+
+    </div>
 
     <button
-      class="globe-popup-close"
-      id="closeGlobePopup"
-      aria-label="Fechar"
+      class="primary-button"
+      id="closeGlobe"
     >
-      ×
+      fechar
     </button>
-
-    <div class="globe-popup-title">
-      Um ano de distância.
-    </div>
-
-    <div class="globe-popup-line"></div>
-
-    <div class="globe-popup-place">
-      Costa Marques/Cacoal - RO
-    </div>
-
-    <div class="globe-popup-arrow">
-      ↓
-    </div>
-
-    <div class="globe-popup-place">
-      Recife - PE
-    </div>
 
   </div>
 
 </div>
 
 
-<!-- =======================================================
-     SENHA
-======================================================= -->
+<!-- =====================================================
+     POP-UP CALENDÁRIO
+===================================================== -->
 
 <div
-  class="password-overlay hidden"
+  class="overlay hidden"
+  id="calendarOverlay"
+>
+
+  <div class="modal">
+
+    <h2>
+      10 de agosto de 2025
+    </h2>
+
+    <p>
+      O começo de um ano que ainda seria lembrado.
+    </p>
+
+    <button
+      class="primary-button"
+      id="closeCalendar"
+    >
+      fechar
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     POP-UP CADILLAC
+===================================================== -->
+
+<div
+  class="overlay hidden"
+  id="carOverlay"
+>
+
+  <div class="modal">
+
+    <h2>
+      Cadillac Escalade
+    </h2>
+
+    <p>
+      Um pequeno detalhe sobre a mesa.
+    </p>
+
+    <button
+      class="primary-button"
+      id="closeCar"
+    >
+      fechar
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     SENHA
+===================================================== -->
+
+<div
+  class="overlay hidden"
   id="passwordOverlay"
 >
 
-  <div class="password-modal">
+  <div class="modal">
 
     <h2>
       Teu aniversário
@@ -2035,9 +2090,15 @@ button:focus-visible {
       autocomplete="off"
     >
 
-    <div class="modal-buttons">
+    <div
+      class="modal-buttons"
+      style="margin-top:15px;"
+    >
 
-      <button id="unlockButton">
+      <button
+        class="primary-button"
+        id="unlockButton"
+      >
         abrir
       </button>
 
@@ -2051,7 +2112,7 @@ button:focus-visible {
     </div>
 
     <p
-      class="password-error"
+      class="error"
       id="passwordError"
     ></p>
 
@@ -2060,14 +2121,15 @@ button:focus-visible {
 </div>
 
 
-<!-- =======================================================
+<!-- =====================================================
      CARTA
-======================================================= -->
+===================================================== -->
 
 <div
   class="letter-overlay hidden"
   id="letterOverlay"
 >
+
 
   <button
     class="close-button"
@@ -2078,7 +2140,7 @@ button:focus-visible {
   </button>
 
 
-  <div class="letter-container">
+  <div class="letter">
 
 
     <!-- PÁGINA 1 -->
@@ -2145,7 +2207,7 @@ button:focus-visible {
     </div>
 
 
-    <!-- AVISO FINAL -->
+    <!-- ÚLTIMA PÁGINA -->
 
     <div
       class="last-note hidden"
@@ -2155,19 +2217,21 @@ button:focus-visible {
       na caneta encima da mesa
     </div>
 
+
   </div>
 
 </div>
 
 
-<!-- =======================================================
+<!-- =====================================================
      MENSAGENS
-======================================================= -->
+===================================================== -->
 
 <div
   class="messages-overlay hidden"
   id="messagesOverlay"
 >
+
 
   <div class="paper">
 
@@ -2205,6 +2269,7 @@ button:focus-visible {
 
     <div class="message-form">
 
+
       <input
         id="nameInput"
         type="text"
@@ -2212,17 +2277,20 @@ button:focus-visible {
         placeholder="teu nome"
       >
 
+
       <textarea
         id="messageInput"
         maxlength="2000"
         placeholder="escreva aqui..."
       ></textarea>
 
+
       <button
         id="sendButton"
       >
         enviar
       </button>
+
 
     </div>
 
@@ -2232,14 +2300,15 @@ button:focus-visible {
 </div>
 
 
-<!-- =======================================================
-     ARQUIVO DE FOLHAS
-======================================================= -->
+<!-- =====================================================
+     ARQUIVO
+===================================================== -->
 
 <div
   class="archive hidden"
   id="archive"
 >
+
 
   <button
     class="archive-close"
@@ -2248,14 +2317,17 @@ button:focus-visible {
     fechar
   </button>
 
+
   <h2>
     folhas anteriores
   </h2>
+
 
   <div
     class="archive-list"
     id="archiveList"
   ></div>
+
 
 </div>
 
@@ -2269,28 +2341,12 @@ button:focus-visible {
    CONFIGURAÇÕES
 ========================================================= */
 
-
-/*
-   SENHA
-*/
-
 const PASSWORD = "25102008";
 
-
-/*
-   URL DO GOOGLE APPS SCRIPT
-
-   Mantida conforme a configuração
-   que você já estava utilizando.
-*/
 
 const API_URL =
 "https://script.google.com/macros/s/AKfycbz7mUY2SZA9sdeXLLVdheKYA4rVh7AbnDojfyLPxEXy204IGUwnARLYkXhh7pr7DWCcaw/exec";
 
-
-/*
-   QUANTIDADE DE MENSAGENS POR FOLHA
-*/
 
 const MESSAGES_PER_SHEET = 6;
 
@@ -2300,88 +2356,139 @@ const MESSAGES_PER_SHEET = 6;
 ========================================================= */
 
 const loading =
-  document.getElementById("loading");
+document.getElementById("loading");
+
 
 const book =
-  document.getElementById("book");
+document.getElementById("book");
+
 
 const pen =
-  document.getElementById("pen");
+document.getElementById("pen");
 
-const passwordOverlay =
-  document.getElementById("passwordOverlay");
-
-const passwordInput =
-  document.getElementById("passwordInput");
-
-const passwordError =
-  document.getElementById("passwordError");
-
-const unlockButton =
-  document.getElementById("unlockButton");
-
-const cancelPassword =
-  document.getElementById("cancelPassword");
-
-const letterOverlay =
-  document.getElementById("letterOverlay");
-
-const closeLetter =
-  document.getElementById("closeLetter");
-
-const pages =
-  document.querySelectorAll(".letter-page");
-
-const previousPage =
-  document.getElementById("previousPage");
-
-const nextPage =
-  document.getElementById("nextPage");
-
-const pageNumber =
-  document.getElementById("pageNumber");
-
-const lastNote =
-  document.getElementById("lastNote");
-
-const messagesOverlay =
-  document.getElementById("messagesOverlay");
-
-const closeMessages =
-  document.getElementById("closeMessages");
-
-const messagesContainer =
-  document.getElementById("messages");
-
-const nameInput =
-  document.getElementById("nameInput");
-
-const messageInput =
-  document.getElementById("messageInput");
-
-const sendButton =
-  document.getElementById("sendButton");
-
-const archiveButton =
-  document.getElementById("archiveButton");
-
-const archive =
-  document.getElementById("archive");
-
-const archiveList =
-  document.getElementById("archiveList");
-
-const closeArchive =
-  document.getElementById("closeArchive");
 
 const globeHotspot =
-  document.getElementById("globeHotspot");
+document.getElementById("globeHotspot");
 
-const globePopupOverlay =
-  document.getElementById("globePopupOverlay");
 
-const closeGlobePopup =
-  document.getElementById("closeGlobePopup");
+const calendarHotspot =
+document.getElementById("calendarHotspot");
+
+
+const carHotspot =
+document.getElementById("carHotspot");
+
+
+const globeOverlay =
+document.getElementById("globeOverlay");
+
+
+const calendarOverlay =
+document.getElementById("calendarOverlay");
+
+
+const carOverlay =
+document.getElementById("carOverlay");
+
+
+const closeGlobe =
+document.getElementById("closeGlobe");
+
+
+const closeCalendar =
+document.getElementById("closeCalendar");
+
+
+const closeCar =
+document.getElementById("closeCar");
+
+
+const passwordOverlay =
+document.getElementById("passwordOverlay");
+
+
+const passwordInput =
+document.getElementById("passwordInput");
+
+
+const passwordError =
+document.getElementById("passwordError");
+
+
+const unlockButton =
+document.getElementById("unlockButton");
+
+
+const cancelPassword =
+document.getElementById("cancelPassword");
+
+
+const letterOverlay =
+document.getElementById("letterOverlay");
+
+
+const closeLetter =
+document.getElementById("closeLetter");
+
+
+const pages =
+document.querySelectorAll(".letter-page");
+
+
+const previousPage =
+document.getElementById("previousPage");
+
+
+const nextPage =
+document.getElementById("nextPage");
+
+
+const pageNumber =
+document.getElementById("pageNumber");
+
+
+const lastNote =
+document.getElementById("lastNote");
+
+
+const messagesOverlay =
+document.getElementById("messagesOverlay");
+
+
+const closeMessages =
+document.getElementById("closeMessages");
+
+
+const messagesContainer =
+document.getElementById("messages");
+
+
+const nameInput =
+document.getElementById("nameInput");
+
+
+const messageInput =
+document.getElementById("messageInput");
+
+
+const sendButton =
+document.getElementById("sendButton");
+
+
+const archiveButton =
+document.getElementById("archiveButton");
+
+
+const archive =
+document.getElementById("archive");
+
+
+const archiveList =
+document.getElementById("archiveList");
+
+
+const closeArchive =
+document.getElementById("closeArchive");
 
 
 /* =========================================================
@@ -2400,10 +2507,6 @@ let currentMessageSheet = 0;
 /* =========================================================
    CARREGAMENTO
 ========================================================= */
-
-/*
-   Mantém a tela inicial durante 5 segundos.
-*/
 
 window.addEventListener(
   "load",
@@ -2428,42 +2531,107 @@ window.addEventListener(
 
 globeHotspot.addEventListener(
   "click",
-  function(event) {
+  function() {
 
-    event.stopPropagation();
-
-    globePopupOverlay
-      .classList
-      .remove("hidden");
+    globeOverlay.classList.remove("hidden");
 
   }
 );
 
 
-closeGlobePopup.addEventListener(
+closeGlobe.addEventListener(
   "click",
   function() {
 
-    globePopupOverlay
-      .classList
-      .add("hidden");
+    globeOverlay.classList.add("hidden");
 
   }
 );
 
 
-globePopupOverlay.addEventListener(
+globeOverlay.addEventListener(
   "click",
   function(event) {
 
-    if (
-      event.target ===
-      globePopupOverlay
-    ) {
+    if (event.target === globeOverlay) {
 
-      globePopupOverlay
-        .classList
-        .add("hidden");
+      globeOverlay.classList.add("hidden");
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   CALENDÁRIO
+========================================================= */
+
+calendarHotspot.addEventListener(
+  "click",
+  function() {
+
+    calendarOverlay.classList.remove("hidden");
+
+  }
+);
+
+
+closeCalendar.addEventListener(
+  "click",
+  function() {
+
+    calendarOverlay.classList.add("hidden");
+
+  }
+);
+
+
+calendarOverlay.addEventListener(
+  "click",
+  function(event) {
+
+    if (event.target === calendarOverlay) {
+
+      calendarOverlay.classList.add("hidden");
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   CADILLAC
+========================================================= */
+
+carHotspot.addEventListener(
+  "click",
+  function() {
+
+    carOverlay.classList.remove("hidden");
+
+  }
+);
+
+
+closeCar.addEventListener(
+  "click",
+  function() {
+
+    carOverlay.classList.add("hidden");
+
+  }
+);
+
+
+carOverlay.addEventListener(
+  "click",
+  function(event) {
+
+    if (event.target === carOverlay) {
+
+      carOverlay.classList.add("hidden");
 
     }
 
@@ -2521,11 +2689,20 @@ pen.addEventListener(
 
 function abrirSenha() {
 
-  passwordOverlay
-    .classList
-    .remove("hidden");
+  passwordOverlay.classList.remove("hidden");
 
-  passwordInput.focus();
+  passwordInput.value = "";
+
+  passwordError.textContent = "";
+
+  setTimeout(
+    function() {
+
+      passwordInput.focus();
+
+    },
+    100
+  );
 
 }
 
@@ -2540,9 +2717,7 @@ passwordInput.addEventListener(
   "keydown",
   function(event) {
 
-    if (
-      event.key === "Enter"
-    ) {
+    if (event.key === "Enter") {
 
       verificarSenha();
 
@@ -2558,15 +2733,13 @@ function verificarSenha() {
     passwordInput.value.trim();
 
 
-  if (
-    value === PASSWORD
-  ) {
+  if (value === PASSWORD) {
 
     unlocked = true;
 
-    passwordOverlay
-      .classList
-      .add("hidden");
+    passwordOverlay.classList.add(
+      "hidden"
+    );
 
     passwordInput.value = "";
 
@@ -2574,10 +2747,25 @@ function verificarSenha() {
 
 
     /*
-       Depois da senha, abrimos o livro.
+       Se a senha foi digitada através do livro,
+       abre o livro.
+
+       Se foi através da caneta,
+       abre as mensagens.
     */
 
-    abrirCarta();
+    if (
+      passwordOverlay.dataset.destination ===
+      "messages"
+    ) {
+
+      abrirMensagens();
+
+    } else {
+
+      abrirCarta();
+
+    }
 
   } else {
 
@@ -2591,13 +2779,47 @@ function verificarSenha() {
 }
 
 
+/*
+   Descobre de onde a senha foi solicitada.
+*/
+
+book.addEventListener(
+  "click",
+  function() {
+
+    if (!unlocked) {
+
+      passwordOverlay.dataset.destination =
+        "letter";
+
+    }
+
+  }
+);
+
+
+pen.addEventListener(
+  "click",
+  function() {
+
+    if (!unlocked) {
+
+      passwordOverlay.dataset.destination =
+        "messages";
+
+    }
+
+  }
+);
+
+
 cancelPassword.addEventListener(
   "click",
   function() {
 
-    passwordOverlay
-      .classList
-      .add("hidden");
+    passwordOverlay.classList.add(
+      "hidden"
+    );
 
     passwordInput.value = "";
 
@@ -2617,9 +2839,9 @@ function abrirCarta() {
 
   atualizarPagina();
 
-  letterOverlay
-    .classList
-    .remove("hidden");
+  letterOverlay.classList.remove(
+    "hidden"
+  );
 
 }
 
@@ -2651,19 +2873,18 @@ function atualizarPagina() {
 
 
   if (
-    currentPage ===
-    pages.length - 1
+    currentPage === pages.length - 1
   ) {
 
-    lastNote
-      .classList
-      .remove("hidden");
+    lastNote.classList.remove(
+      "hidden"
+    );
 
   } else {
 
-    lastNote
-      .classList
-      .add("hidden");
+    lastNote.classList.add(
+      "hidden"
+    );
 
   }
 
@@ -2674,9 +2895,7 @@ previousPage.addEventListener(
   "click",
   function() {
 
-    if (
-      currentPage > 0
-    ) {
+    if (currentPage > 0) {
 
       currentPage--;
 
@@ -2711,9 +2930,9 @@ closeLetter.addEventListener(
   "click",
   function() {
 
-    letterOverlay
-      .classList
-      .add("hidden");
+    letterOverlay.classList.add(
+      "hidden"
+    );
 
   }
 );
@@ -2725,9 +2944,9 @@ closeLetter.addEventListener(
 
 async function abrirMensagens() {
 
-  messagesOverlay
-    .classList
-    .remove("hidden");
+  messagesOverlay.classList.remove(
+    "hidden"
+  );
 
   await carregarMensagens();
 
@@ -2738,9 +2957,9 @@ closeMessages.addEventListener(
   "click",
   function() {
 
-    messagesOverlay
-      .classList
-      .add("hidden");
+    messagesOverlay.classList.add(
+      "hidden"
+    );
 
   }
 );
@@ -2822,9 +3041,7 @@ function obterFolhas() {
   }
 
 
-  if (
-    sheets.length === 0
-  ) {
+  if (sheets.length === 0) {
 
     sheets.push([]);
 
@@ -2880,9 +3097,7 @@ function renderizarSheet(index) {
     "";
 
 
-  if (
-    sheet.length === 0
-  ) {
+  if (sheet.length === 0) {
 
     const empty =
       document.createElement("div");
@@ -2890,10 +3105,10 @@ function renderizarSheet(index) {
 
     empty.style.cssText =
       `
-        text-align:center;
-        margin-top:100px;
-        opacity:.45;
-        font-family:Georgia,serif;
+      text-align:center;
+      margin-top:80px;
+      opacity:.45;
+      font-family:Georgia,serif;
       `;
 
 
@@ -2922,6 +3137,18 @@ function renderizarSheet(index) {
         "message";
 
 
+      const rotation =
+        (
+          Math.random() * 1.6 - .8
+        ).toFixed(2);
+
+
+      wrapper.style.setProperty(
+        "--rotation",
+        rotation + "deg"
+      );
+
+
       const name =
         document.createElement("div");
 
@@ -2931,7 +3158,7 @@ function renderizarSheet(index) {
 
 
       name.textContent =
-        item.name || "anônimo";
+        item.name || "";
 
 
       const text =
@@ -2989,9 +3216,7 @@ function renderizarSheet(index) {
    ARQUIVO
 ========================================================= */
 
-function atualizarArquivo(
-  sheets
-) {
+function atualizarArquivo(sheets) {
 
   archiveList.innerHTML =
     "";
@@ -3001,9 +3226,7 @@ function atualizarArquivo(
     sheets.length - 1;
 
 
-  if (
-    oldSheets <= 0
-  ) {
+  if (oldSheets <= 0) {
 
     const text =
       document.createElement("p");
@@ -3049,14 +3272,12 @@ function atualizarArquivo(
           i;
 
 
-        renderizarSheet(
-          i
+        renderizarSheet(i);
+
+
+        archive.classList.add(
+          "hidden"
         );
-
-
-        archive
-          .classList
-          .add("hidden");
 
       }
     );
@@ -3084,9 +3305,9 @@ archiveButton.addEventListener(
     );
 
 
-    archive
-      .classList
-      .remove("hidden");
+    archive.classList.remove(
+      "hidden"
+    );
 
   }
 );
@@ -3096,9 +3317,9 @@ closeArchive.addEventListener(
   "click",
   function() {
 
-    archive
-      .classList
-      .add("hidden");
+    archive.classList.add(
+      "hidden"
+    );
 
   }
 );
@@ -3120,7 +3341,7 @@ messageInput.addEventListener(
 
     if (
       event.key === "Enter" &&
-      event.shiftKey === false
+      !event.shiftKey
     ) {
 
       event.preventDefault();
@@ -3186,22 +3407,20 @@ async function enviarMensagem() {
           method:
             "POST",
 
-          headers:
-            {
-              "Content-Type":
-                "text/plain;charset=utf-8"
-            },
+          headers: {
+            "Content-Type":
+              "text/plain;charset=utf-8"
+          },
 
           body:
-            JSON.stringify(
-              {
-                name:
-                  name,
+            JSON.stringify({
+              name:
+                name,
 
-                message:
-                  message
-              }
-            )
+              message:
+                message
+            })
+
         }
       );
 
@@ -3210,9 +3429,7 @@ async function enviarMensagem() {
       await response.json();
 
 
-    if (
-      !data.success
-    ) {
+    if (!data.success) {
 
       throw new Error(
         data.error ||
@@ -3230,11 +3447,6 @@ async function enviarMensagem() {
 
 
     await carregarMensagens();
-
-
-    alert(
-      "Mensagem guardada."
-    );
 
 
   } catch (error) {
@@ -3265,9 +3477,7 @@ async function enviarMensagem() {
    DATA
 ========================================================= */
 
-function formatarData(
-  value
-) {
+function formatarData(value) {
 
   if (!value) {
 
@@ -3280,17 +3490,6 @@ function formatarData(
 
     const date =
       new Date(value);
-
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-
-      return "";
-
-    }
 
 
     return date.toLocaleString(
@@ -3310,6 +3509,7 @@ function formatarData(
 
         minute:
           "2-digit"
+
       }
     );
 
@@ -3339,29 +3539,39 @@ document.addEventListener(
     }
 
 
-    passwordOverlay
-      .classList
-      .add("hidden");
+    passwordOverlay.classList.add(
+      "hidden"
+    );
 
 
-    globePopupOverlay
-      .classList
-      .add("hidden");
+    globeOverlay.classList.add(
+      "hidden"
+    );
 
 
-    letterOverlay
-      .classList
-      .add("hidden");
+    calendarOverlay.classList.add(
+      "hidden"
+    );
 
 
-    messagesOverlay
-      .classList
-      .add("hidden");
+    carOverlay.classList.add(
+      "hidden"
+    );
 
 
-    archive
-      .classList
-      .add("hidden");
+    letterOverlay.classList.add(
+      "hidden"
+    );
+
+
+    messagesOverlay.classList.add(
+      "hidden"
+    );
+
+
+    archive.classList.add(
+      "hidden"
+    );
 
   }
 );
