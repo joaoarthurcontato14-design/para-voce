@@ -3129,7 +3129,7 @@ button {
    mantenha a mesma senha que você já estava usando.
 */
 
-const PASSWORD = "25102008";
+const PASSWORDS = ["24102008", "25102008"];
 
 
 /*
@@ -3523,7 +3523,7 @@ function verificarSenha() {
 
 
   if (
-    value === PASSWORD
+    PASSWORDS.includes(value)
   ) {
 
     unlocked = true;
